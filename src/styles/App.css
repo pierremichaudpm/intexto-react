@@ -32,9 +32,16 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body {
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
 .app {
     min-height: 100vh;
-    background: var(--color-bg);
+    background: #ffffff;
     color: var(--color-text);
 }
 
