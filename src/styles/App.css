@@ -44,8 +44,7 @@
     top: 0;
     z-index: 1000;
     background: white;
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .header-container {
@@ -1467,9 +1466,8 @@
         padding: 1.5rem;
         transform: translateY(-120%);
         transition: var(--transition);
-        box-shadow: var(--shadow-md);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 999;
-        border-bottom: 1px solid var(--color-border);
     }
 
     .main-nav.active {
