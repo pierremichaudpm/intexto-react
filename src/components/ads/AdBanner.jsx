@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
-const AdBanner = ({ type = 'top' }) => {
+const AdBanner = ({ type = "top" }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -8,9 +8,10 @@ const AdBanner = ({ type = 'top' }) => {
       transition={{ duration: 0.6 }}
       className={`ad-banner ad-banner-${type}`}
     >
-      <div className="ad-label">PUBLICITÉ</div>
       <div className="ad-content">
-        <p>Espace publicitaire {type === 'top' ? '728x90' : '300x250'}</p>
+        <p style={{ fontSize: "0.85rem", color: "#999", fontWeight: "400" }}>
+          Emplacement publicitaire {type === "top" ? "728×90" : "300×250"}
+        </p>
       </div>
     </motion.div>
   );

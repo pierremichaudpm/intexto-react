@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
-const AdBox = ({ position = 'sidebar' }) => {
+const AdBox = ({ position = "sidebar" }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -8,10 +8,10 @@ const AdBox = ({ position = 'sidebar' }) => {
       transition={{ duration: 0.5 }}
       className={`ad-box ad-box-${position}`}
     >
-      <div className="ad-label">PUBLICITÉ</div>
       <div className="ad-box-content">
-        <p>Big Box</p>
-        <p className="ad-box-size">300x600</p>
+        <p style={{ fontSize: "0.85rem", color: "#999", fontWeight: "400" }}>
+          Emplacement publicitaire 300×600
+        </p>
       </div>
     </motion.div>
   );
