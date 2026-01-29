@@ -1409,7 +1409,8 @@
     }
 
     .content-sidebar {
-        display: none;
+        position: relative;
+        top: 0;
     }
 
     .hero-carousel-nav-left {
