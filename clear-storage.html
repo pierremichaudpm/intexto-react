@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Intexto Storage</title>
+</head>
+<body>
+    <h1>Clear Intexto Data</h1>
+    <button onclick="clearData()">Clear LocalStorage and Reload</button>
+    <script>
+        function clearData() {
+            localStorage.removeItem('intexto_content');
+            alert('Storage cleared! The page will reload with fresh data.');
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>

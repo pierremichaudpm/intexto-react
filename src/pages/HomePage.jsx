@@ -2,10 +2,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useContent } from "../context/ContentContext";
 import HeroSection from "../components/content/HeroSection";
+import CategoryFilter from "../components/sections/CategoryFilter";
+import MediaSection from "../components/sections/MediaSection";
 import ContentCard from "../components/common/ContentCard";
 import ContentModal from "../components/common/ContentModal";
 import AdBanner from "../components/ads/AdBanner";
 import AdBox from "../components/ads/AdBox";
+import MagazineWidget from "../components/widgets/MagazineWidget";
 
 const typeFilters = [
   { id: "all", label: "Tous" },
@@ -15,15 +18,25 @@ const typeFilters = [
 ];
 
 const HomePage = () => {
-  const { filter, setFilter, getFilteredContent, loading } = useContent();
+  const { filter, setFilter, getFilteredContent, loading, content } =
+    useContent();
   const [selectedContent, setSelectedContent] = useState(null);
   const [displayCount, setDisplayCount] = useState(9);
 
   const filteredContent = getFilteredContent();
   const displayedContent = filteredContent.slice(0, displayCount);
 
+  // Get all videos and audios for dedicated sections
+  const allVideos = content.filter((item) => item.type === "video");
+  const allAudios = content.filter((item) => item.type === "audio");
+
   const handleTypeFilter = (typeId) => {
     setFilter((prev) => ({ ...prev, type: typeId }));
+    setDisplayCount(9);
+  };
+
+  const handleCategoryFilter = (categoryId) => {
+    setFilter((prev) => ({ ...prev, category: categoryId }));
     setDisplayCount(9);
   };
 
@@ -46,28 +59,19 @@ const HomePage = () => {
 
   return (
     <>
-      {/* Top Ad Banner */}
-      <AdBanner type="top" />
-
       {/* Hero Section */}
       <HeroSection onContentClick={handleContentClick} />
 
-      {/* Filter Bar */}
-      <div className="filter-bar">
-        <div className="container">
-          {typeFilters.map((type) => (
-            <motion.button
-              key={type.id}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className={`filter-btn ${filter.type === type.id ? "active" : ""}`}
-              onClick={() => handleTypeFilter(type.id)}
-            >
-              {type.label}
-            </motion.button>
-          ))}
-        </div>
+      {/* Mobile Ad - Below Hero */}
+      <div className="mobile-ad-slot">
+        <AdBanner type="top" />
       </div>
+
+      {/* Category Filter */}
+      <CategoryFilter
+        activeCategory={filter.category}
+        onCategoryChange={handleCategoryFilter}
+      />
 
       {/* Main Content with Sidebar */}
       <main className="main-content-wrapper">
@@ -112,12 +116,21 @@ const HomePage = () => {
             )}
           </div>
 
-          {/* Sidebar with Big Box Ad */}
+          {/* Sidebar with Ad and Magazine Widget */}
           <aside className="content-sidebar">
             <AdBox position="sidebar" />
+            <MagazineWidget />
+            <AdBox position="sidebar-half" />
           </aside>
         </div>
       </main>
+
+      {/* Dedicated Media Section - Audio et Vidéo */}
+      <MediaSection
+        videos={allVideos}
+        audios={allAudios}
+        onContentClick={handleContentClick}
+      />
 
       {/* Content Modal */}
       <ContentModal

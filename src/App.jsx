@@ -5,6 +5,8 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import SearchOverlay from "./components/layout/SearchOverlay";
 import AdminPanel from "./components/admin/AdminPanel";
+import AdBanner from "./components/ads/AdBanner";
+import GDPRBanner from "./components/common/GDPRBanner";
 import HomePage from "./pages/HomePage";
 import "./styles/App.css";
 
@@ -15,7 +17,10 @@ function App() {
   return (
     <ContentProvider>
       <div className="app">
-        <Header onSearchClick={() => setSearchOpen(true)} />
+        <Header
+          onSearchClick={() => setSearchOpen(true)}
+          adBanner={<AdBanner type="top" />}
+        />
 
         <HomePage />
 
@@ -35,6 +40,8 @@ function App() {
         >
           <Settings size={24} />
         </button>
+
+        <GDPRBanner />
       </div>
     </ContentProvider>
   );

@@ -6,11 +6,11 @@ const AdBanner = ({ type = "top" }) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className={`ad-banner ad-banner-${type}`}
+      className={`promo-banner promo-banner-${type}`}
     >
-      <div className="ad-content">
+      <div className="promo-content">
         <p style={{ fontSize: "1.2rem", color: "#dd4f4f", fontWeight: "700" }}>
-          EMPLACEMENT PUBLICITAIRE {type === "top" ? "728×90" : "300×250"}
+          EMPLACEMENT PUBLICITAIRE {type === "top" ? "970×90" : "300×250"}
         </p>
       </div>
     </motion.div>

@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+  Video,
+  Headphones,
+} from "lucide-react";
 import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
 
@@ -37,7 +43,7 @@ const HeroSection = ({ onContentClick }) => {
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % articles.length);
-    }, 8000);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [articles.length]);
@@ -134,20 +140,19 @@ const HeroSection = ({ onContentClick }) => {
                   alt={featuredVideo.title}
                   className="hero-side-image"
                 />
-                <div className="hero-side-gradient" />
                 <div className="hero-side-media-badge">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
+                  <Video size={24} />
                 </div>
               </div>
-              <div className="hero-side-content">
-                <span className="hero-side-category">VIDÉO</span>
+              <div className="hero-side-body">
+                <span
+                  className="hero-side-category"
+                  style={{
+                    backgroundColor: categoryColors[featuredVideo.category],
+                  }}
+                >
+                  {categoryLabels[featuredVideo.category]}
+                </span>
                 <h3 className="hero-side-title">{featuredVideo.title}</h3>
                 <div className="hero-side-meta">
                   <span>{featuredVideo.author}</span>
@@ -170,21 +175,19 @@ const HeroSection = ({ onContentClick }) => {
                   alt={featuredAudio.title}
                   className="hero-side-image"
                 />
-                <div className="hero-side-gradient" />
                 <div className="hero-side-media-badge">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
-                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-                  </svg>
+                  <Headphones size={24} />
                 </div>
               </div>
-              <div className="hero-side-content">
-                <span className="hero-side-category">AUDIO</span>
+              <div className="hero-side-body">
+                <span
+                  className="hero-side-category"
+                  style={{
+                    backgroundColor: categoryColors[featuredAudio.category],
+                  }}
+                >
+                  {categoryLabels[featuredAudio.category]}
+                </span>
                 <h3 className="hero-side-title">{featuredAudio.title}</h3>
                 <div className="hero-side-meta">
                   <span>{featuredAudio.author}</span>

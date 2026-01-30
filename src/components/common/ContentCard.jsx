@@ -1,19 +1,19 @@
-import { motion } from 'framer-motion';
-import { Video, Headphones } from 'lucide-react';
-import cmsService from '../../services/cmsService';
+import { motion } from "framer-motion";
+import { Video, Headphones } from "lucide-react";
+import cmsService from "../../services/cmsService";
 
 const categoryColors = {
-  actualite: '#0f0600',
-  politique: '#dd4f4f',
-  voyage: '#dd9933',
-  culture: '#008bff'
+  actualite: "#0f0600",
+  politique: "#dd4f4f",
+  voyage: "#dd9933",
+  culture: "#008bff",
 };
 
 const categoryLabels = {
-  actualite: 'Actualité',
-  politique: 'Politique',
-  voyage: 'Voyage',
-  culture: 'Culture'
+  actualite: "Actualité",
+  politique: "Politique",
+  voyage: "Voyage",
+  culture: "Culture",
 };
 
 const ContentCard = ({ content, onClick, delay = 0 }) => {
@@ -26,16 +26,17 @@ const ContentCard = ({ content, onClick, delay = 0 }) => {
       transition={{ duration: 0.5, delay }}
       whileHover={{ y: -8 }}
       className="content-card"
+      data-type={type}
       onClick={() => onClick(content)}
     >
       <div className="content-card-image-wrapper">
         <img src={image} alt={title} className="content-card-image" />
-        {type === 'video' && (
+        {type === "video" && (
           <div className="content-card-media-icon">
             <Video size={24} />
           </div>
         )}
-        {type === 'audio' && (
+        {type === "audio" && (
           <div className="content-card-media-icon">
             <Headphones size={24} />
           </div>

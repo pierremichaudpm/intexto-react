@@ -281,6 +281,86 @@ class CMSService {
         featured: true,
         mediaUrl: "https://example.com/audio/culture-haitienne-mtl.mp3",
       },
+      {
+        id: this.generateId(),
+        type: "video",
+        title: "Table ronde: L'entrepreneuriat dans la communauté noire",
+        category: "politique",
+        image:
+          "https://www.intexto.ca/wp-content/uploads/2025/10/WhatsApp-Image-2025-10-20-at-11.33.01_69cf56a0-1140x660.png",
+        excerpt:
+          "Discussion approfondie sur les défis et opportunités de l'entrepreneuriat noir au Canada, avec des entrepreneurs à succès.",
+        content:
+          "Table ronde réunissant quatre entrepreneurs noirs à succès qui partagent leurs expériences, défis et conseils. Une discussion enrichissante sur l'accès au financement, le mentorat, et les stratégies de croissance.",
+        author: "Rédaction Intexto",
+        date: new Date("2026-01-18").toISOString(),
+        featured: false,
+        mediaUrl: "https://example.com/video/entrepreneuriat-noir.mp4",
+      },
+      {
+        id: this.generateId(),
+        type: "audio",
+        title: "Podcast: Immigrer au Canada - Guide pratique",
+        category: "actualite",
+        image:
+          "https://www.intexto.ca/wp-content/uploads/2025/12/diab-1-1140x660.jpg",
+        excerpt:
+          "Guide audio complet sur les démarches d'immigration au Canada, avec des conseils d'experts et témoignages de nouveaux arrivants.",
+        content:
+          "Ce podcast de 45 minutes offre un guide complet pour naviguer le processus d'immigration au Canada. Avec des experts en immigration et des témoignages de nouveaux arrivants.",
+        author: "Jean Numa Goudou",
+        date: new Date("2026-01-15").toISOString(),
+        featured: false,
+        mediaUrl: "https://example.com/audio/immigration-canada.mp3",
+      },
+      {
+        id: this.generateId(),
+        type: "video",
+        title: "Reportage: La santé mentale dans les communautés noires",
+        category: "actualite",
+        image:
+          "https://www.intexto.ca/wp-content/uploads/2025/12/sante-mentale-noir-390x325.png",
+        excerpt:
+          "Reportage vidéo explorant les enjeux de santé mentale spécifiques aux communautés noires et les ressources disponibles.",
+        content:
+          "Un reportage de 30 minutes qui aborde les stigmates, les barrières d'accès aux soins et les initiatives communautaires pour améliorer la santé mentale dans les communautés noires.",
+        author: "Rédaction Intexto",
+        date: new Date("2026-01-12").toISOString(),
+        featured: false,
+        mediaUrl: "https://example.com/video/sante-mentale-noirs.mp4",
+      },
+      {
+        id: this.generateId(),
+        type: "audio",
+        title: "Podcast: Histoires de la diaspora haïtienne",
+        category: "voyage",
+        image:
+          "https://www.intexto.ca/wp-content/uploads/2025/11/Lhistoire-et-lavenir-1140x660.png",
+        excerpt:
+          "Série de témoignages sur les parcours migratoires et l'adaptation des Haïtiens à travers le monde.",
+        content:
+          "Une série captivante de témoignages personnels qui racontent les histoires de migration, d'adaptation et de succès de membres de la diaspora haïtienne à travers le monde. Durée: 38 minutes",
+        author: "Rony Sanon",
+        date: new Date("2026-01-10").toISOString(),
+        featured: false,
+        mediaUrl: "https://example.com/audio/diaspora-haitienne.mp3",
+      },
+      {
+        id: this.generateId(),
+        type: "video",
+        title: "Festival de musique haïtienne 2026 - Highlights",
+        category: "culture",
+        image:
+          "https://www.intexto.ca/wp-content/uploads/2026/01/Larose-1-1-270x205.jpg",
+        excerpt:
+          "Les meilleurs moments du Festival de musique haïtienne 2026, célébrant la richesse musicale d'Haïti.",
+        content:
+          "Revivez les moments forts du Festival de musique haïtienne 2026 avec des performances exceptionnelles de compas, racines, et musique contemporaine. Une célébration vibrante de la culture musicale haïtienne.",
+        author: "Rédaction Intexto",
+        date: new Date("2026-01-08").toISOString(),
+        featured: false,
+        mediaUrl: "https://example.com/video/festival-musique-2026.mp4",
+      },
     ];
   }
 
