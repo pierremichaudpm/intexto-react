@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 
 const StructuredData = ({ content }) => {
   if (!content) return null;
@@ -8,28 +8,35 @@ const StructuredData = ({ content }) => {
   // Article structured data
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": type === "video" ? "VideoObject" : type === "audio" ? "AudioObject" : "NewsArticle",
-    "headline": title,
-    "description": excerpt,
-    "image": [image],
-    "datePublished": date,
-    "dateModified": date,
-    "author": [{
-      "@type": "Person",
-      "name": author
-    }],
-    "publisher": {
+    "@type":
+      type === "video"
+        ? "VideoObject"
+        : type === "audio"
+          ? "AudioObject"
+          : "NewsArticle",
+    headline: title,
+    description: excerpt,
+    image: [image],
+    datePublished: date,
+    dateModified: date,
+    author: [
+      {
+        "@type": "Person",
+        name: author,
+      },
+    ],
+    publisher: {
       "@type": "Organization",
-      "name": "Intexto",
-      "logo": {
+      name: "Intexto",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://intexto.ca/Images/intextologo.png"
-      }
+        url: "https://intexto.ca/Images/intextologo.png",
+      },
     },
-    "mainEntityOfPage": {
+    mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://intexto.ca/${type}/${content.id}`
-    }
+      "@id": `https://intexto.ca/${type}/${content.id}`,
+    },
   };
 
   // Add video-specific properties
@@ -47,36 +54,41 @@ const StructuredData = ({ content }) => {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
-    "name": "Intexto",
-    "url": "https://intexto.ca",
-    "logo": "https://intexto.ca/Images/intextologo.png",
-    "description": "Journal haïtien à Montréal - Actualités, politique, culture et événements de la communauté haïtienne",
-    "sameAs": [
+    name: "Intexto",
+    url: "https://intexto.ca",
+    logo: "https://intexto.ca/Images/intextologo.png",
+    description:
+      "Journal haïtien à Montréal - Actualités, politique, culture et événements de la communauté haïtienne",
+    sameAs: [
       "https://www.facebook.com/intexto",
       "https://twitter.com/intexto",
-      "https://www.instagram.com/intexto"
-    ]
+      "https://www.instagram.com/intexto",
+    ],
   };
 
   // Breadcrumb schema
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": [{
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Accueil",
-      "item": "https://intexto.ca"
-    }, {
-      "@type": "ListItem",
-      "position": 2,
-      "name": category.charAt(0).toUpperCase() + category.slice(1),
-      "item": `https://intexto.ca/categorie/${category}`
-    }, {
-      "@type": "ListItem",
-      "position": 3,
-      "name": title
-    }]
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Accueil",
+        item: "https://intexto.ca",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: category.charAt(0).toUpperCase() + category.slice(1),
+        item: `https://intexto.ca/categorie/${category}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: title,
+      },
+    ],
   };
 
   return (
