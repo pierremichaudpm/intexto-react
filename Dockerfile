@@ -6,8 +6,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Install dependencies with legacy peer deps
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
@@ -26,8 +26,5 @@ RUN npm install -g serve
 # Copy built assets from builder
 COPY --from=builder /app/dist ./dist
 
-# Expose port
-EXPOSE 3000
-
-# Start the app
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Start the app - Railway provides PORT env var
+CMD sh -c "serve -s dist -l ${PORT:-3000}"
