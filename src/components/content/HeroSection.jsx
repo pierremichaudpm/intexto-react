@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
+import ResponsiveImage from "../common/ResponsiveImage";
 
 const categoryColors = {
   actualite: "#0f0600",
@@ -31,9 +32,29 @@ const HeroSection = ({ onContentClick }) => {
   const allContent = getFilteredContent();
   const articles = allContent
     .filter((item) => item.type === "article" && item.featured)
+    .sort((a, b) => {
+      if (a.order !== b.order) {
+        return a.order - b.order;
+      }
+      return new Date(b.date) - new Date(a.date);
+    })
     .slice(0, 3);
-  const videos = allContent.filter((item) => item.type === "video");
-  const audios = allContent.filter((item) => item.type === "audio");
+  const videos = allContent
+    .filter((item) => item.type === "video")
+    .sort((a, b) => {
+      if (a.order !== b.order) {
+        return a.order - b.order;
+      }
+      return new Date(b.date) - new Date(a.date);
+    });
+  const audios = allContent
+    .filter((item) => item.type === "audio")
+    .sort((a, b) => {
+      if (a.order !== b.order) {
+        return a.order - b.order;
+      }
+      return new Date(b.date) - new Date(a.date);
+    });
 
   const featuredVideo = videos.length > 0 ? videos[0] : null;
   const featuredAudio = audios.length > 0 ? audios[0] : null;
@@ -80,10 +101,12 @@ const HeroSection = ({ onContentClick }) => {
               onClick={() => onContentClick(current)}
             >
               <div className="hero-main-image-wrapper">
-                <img
-                  src={current.image}
+                <ResponsiveImage
+                  image={current.image}
+                  fallbackUrl={current.imageFallback}
                   alt={current.title}
                   className="hero-main-image"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 60vw"
                 />
                 <div className="hero-main-gradient" />
               </div>
@@ -135,10 +158,12 @@ const HeroSection = ({ onContentClick }) => {
               onClick={() => onContentClick(featuredVideo)}
             >
               <div className="hero-side-image-wrapper">
-                <img
-                  src={featuredVideo.image}
+                <ResponsiveImage
+                  image={featuredVideo.image}
+                  fallbackUrl={featuredVideo.imageFallback}
                   alt={featuredVideo.title}
                   className="hero-side-image"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
                 />
                 <div className="hero-side-media-badge">
                   <Video size={24} />
@@ -170,10 +195,12 @@ const HeroSection = ({ onContentClick }) => {
               onClick={() => onContentClick(featuredAudio)}
             >
               <div className="hero-side-image-wrapper">
-                <img
-                  src={featuredAudio.image}
+                <ResponsiveImage
+                  image={featuredAudio.image}
+                  fallbackUrl={featuredAudio.imageFallback}
                   alt={featuredAudio.title}
                   className="hero-side-image"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
                 />
                 <div className="hero-side-media-badge">
                   <Headphones size={24} />

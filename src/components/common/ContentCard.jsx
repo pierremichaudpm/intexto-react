@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Video, Headphones } from "lucide-react";
 import cmsService from "../../services/cmsService";
+import ResponsiveImage from "./ResponsiveImage";
 
 const categoryColors = {
   actualite: "#0f0600",
@@ -17,7 +18,8 @@ const categoryLabels = {
 };
 
 const ContentCard = ({ content, onClick, delay = 0 }) => {
-  const { type, title, category, image, excerpt, author, date } = content;
+  const { type, title, category, image, imageFallback, excerpt, author, date } =
+    content;
 
   return (
     <motion.article
@@ -30,10 +32,12 @@ const ContentCard = ({ content, onClick, delay = 0 }) => {
       onClick={() => onClick(content)}
     >
       <div className="content-card-image-wrapper">
-        <img
-          src={image}
+        <ResponsiveImage
+          image={image}
+          fallbackUrl={imageFallback}
           alt={title}
           className="content-card-image"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           loading="lazy"
         />
         {type === "video" && (

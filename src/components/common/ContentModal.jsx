@@ -15,6 +15,7 @@ import cmsService from "../../services/cmsService";
 import SEOHead from "../seo/SEOHead";
 import StructuredData from "../seo/StructuredData";
 import Header from "../layout/Header";
+import ResponsiveImage from "./ResponsiveImage";
 
 const categoryColors = {
   actualite: "#0f0600",
@@ -41,8 +42,8 @@ const ContentModal = ({ content, isOpen, onClose }) => {
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Initialize Plyr when modal opens with media
@@ -88,8 +89,17 @@ const ContentModal = ({ content, isOpen, onClose }) => {
 
   if (!content) return null;
 
-  const { type, title, category, image, excerpt, author, date, mediaUrl } =
-    content;
+  const {
+    type,
+    title,
+    category,
+    image,
+    imageFallback,
+    excerpt,
+    author,
+    date,
+    mediaUrl,
+  } = content;
 
   // Get related stories from curated lineup
   const getRelatedStories = () => {
@@ -170,11 +180,17 @@ const ContentModal = ({ content, isOpen, onClose }) => {
             {isMobile && (
               <div className="modal-header-wrapper">
                 <Header hideSearch={true} />
-                <button className="modal-close modal-close-mobile" onClick={onClose}>
-                  <X size={24} />
-                </button>
               </div>
             )}
+
+            {/* Close button - always render, CSS handles visibility */}
+            <button
+              className="modal-close modal-close-mobile"
+              onClick={onClose}
+            >
+              <X size={24} />
+            </button>
+
             <motion.div
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -182,16 +198,19 @@ const ContentModal = ({ content, isOpen, onClose }) => {
               transition={{ type: "spring", damping: 25 }}
               className="modal-content"
             >
-              {!isMobile && (
-                <button className="modal-close" onClick={onClose}>
-                  <X size={24} />
-                </button>
-              )}
+              <button
+                className="modal-close modal-close-desktop"
+                onClick={onClose}
+              >
+                <X size={24} />
+              </button>
 
-              <img
-                src={image}
+              <ResponsiveImage
+                image={image}
+                fallbackUrl={imageFallback}
                 alt={title}
                 className="modal-image"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
                 loading="eager"
               />
 
@@ -276,7 +295,7 @@ const ContentModal = ({ content, isOpen, onClose }) => {
                       {relatedStories.map((story) => (
                         <div
                           key={story.id}
-                          className={`modal-related-item ${story.type === 'video' || story.type === 'audio' ? 'modal-related-item-media' : ''}`}
+                          className={`modal-related-item ${story.type === "video" || story.type === "audio" ? "modal-related-item-media" : ""}`}
                           data-type={story.type}
                           onClick={() => {
                             onClose();
@@ -284,22 +303,38 @@ const ContentModal = ({ content, isOpen, onClose }) => {
                           }}
                         >
                           <div className="modal-related-image-wrapper">
-                            <img
-                              src={story.image}
+                            <ResponsiveImage
+                              image={story.image}
+                              fallbackUrl={story.imageFallback}
                               alt={story.title}
                               className="modal-related-image"
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                               loading="lazy"
                             />
-                            {story.type === 'video' && (
+                            {story.type === "video" && (
                               <div className="modal-related-media-badge">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
                                   <polygon points="5 3 19 12 5 21 5 3"></polygon>
                                 </svg>
                               </div>
                             )}
-                            {story.type === 'audio' && (
+                            {story.type === "audio" && (
                               <div className="modal-related-media-badge">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
                                   <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
                                   <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
                                 </svg>
