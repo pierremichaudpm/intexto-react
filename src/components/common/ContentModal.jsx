@@ -67,7 +67,14 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
       return;
     }
 
-    if (content.type === "video" && videoRef.current && content.mediaUrl) {
+    const mediaUrl =
+      content.type === "video"
+        ? content.videoUrl
+        : content.type === "audio"
+          ? content.audioUrl
+          : null;
+
+    if (content.type === "video" && videoRef.current && mediaUrl) {
       playerRef.current = new Plyr(videoRef.current, {
         controls: [
           "play-large",
@@ -80,11 +87,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
           "fullscreen",
         ],
       });
-    } else if (
-      content.type === "audio" &&
-      audioRef.current &&
-      content.mediaUrl
-    ) {
+    } else if (content.type === "audio" && audioRef.current && mediaUrl) {
       playerRef.current = new Plyr(audioRef.current, {
         controls: ["play", "progress", "current-time", "mute", "volume"],
       });
