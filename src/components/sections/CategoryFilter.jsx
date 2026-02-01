@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const categories = [
   { id: "all", label: "Tout" },
@@ -7,11 +8,11 @@ const categories = [
   { id: "culture", label: "Culture" },
   { id: "economie", label: "Économie" },
   { id: "immigration", label: "Immigration" },
-  { id: "sports", label: "Sports" },
+  { id: "sport", label: "Sport" },
   { id: "sante", label: "Santé" },
   { id: "opinion", label: "Opinion" },
-  { id: "emploi", label: "Emploi" },
-  { id: "communaute", label: "Communauté" },
+  { id: "voyage", label: "Voyage" },
+  { id: "societe", label: "Société" },
 ];
 
 const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
@@ -23,17 +24,32 @@ const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
           alt="Intexto"
           className="category-filter-logo"
         />
-        {categories.map((category) => (
-          <motion.button
-            key={category.id}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`category-btn ${activeCategory === category.id ? "active" : ""}`}
-            onClick={() => onCategoryChange(category.id)}
-          >
-            {category.label}
-          </motion.button>
-        ))}
+        {categories.map((category) => {
+          const isActive = activeCategory === category.id;
+          const color =
+            category.id === "all" ? "#dd4f4f" : getCategoryColor(category.id);
+
+          return (
+            <motion.button
+              key={category.id}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`category-btn ${isActive ? "active" : ""}`}
+              style={
+                isActive
+                  ? {
+                      backgroundColor: color,
+                      borderColor: color,
+                      color: "white",
+                    }
+                  : undefined
+              }
+              onClick={() => onCategoryChange(category.id)}
+            >
+              {category.label}
+            </motion.button>
+          );
+        })}
       </div>
     </div>
   );

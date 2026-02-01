@@ -5,7 +5,7 @@ import {
   ChevronRight,
   ArrowRight,
   Video,
-  Headphones,
+  Mic,
 } from "lucide-react";
 import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
@@ -163,7 +163,7 @@ const HeroSection = ({ onContentClick }) => {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
                 />
                 <div className="hero-side-media-badge">
-                  <Video size={24} />
+                  <Video size={30} />
                 </div>
               </div>
               <div className="hero-side-body">
@@ -200,7 +200,7 @@ const HeroSection = ({ onContentClick }) => {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
                 />
                 <div className="hero-side-media-badge">
-                  <Headphones size={24} />
+                  <Mic size={30} />
                 </div>
               </div>
               <div className="hero-side-body">

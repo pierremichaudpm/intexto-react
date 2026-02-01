@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, Search, FileText, Video, Headphones } from "lucide-react";
+import { X, Search, FileText, Video, Mic } from "lucide-react";
 import { useContent } from "../../context/ContentContext";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 import cmsService from "../../services/cmsService";
@@ -50,7 +50,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
       case "video":
         return <Video size={16} />;
       case "audio":
-        return <Headphones size={16} />;
+        return <Mic size={16} />;
       default:
         return <FileText size={16} />;
     }

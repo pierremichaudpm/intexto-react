@@ -1,44 +1,24 @@
 import { motion } from "framer-motion";
-import { Video, Mic } from "lucide-react";
+import { Video, Headphones } from "lucide-react";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "./ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const ContentCard = ({ content, onClick, delay = 0 }) => {
-  const {
-    type,
-    title,
-    category,
-    image,
-    imageFallback,
-    excerpt,
-    author,
-    date,
-    duration,
-  } = content;
-
-  // Format duration for display
-  const formatDuration = (dur) => {
-    if (!dur) return type === "video" ? "12:34" : "24:15";
-    return dur;
-  };
+  const { type, title, category, image, imageFallback, excerpt, author, date } =
+    content;
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] }}
-      whileHover={{ y: -6 }}
+      transition={{ duration: 0.5, delay }}
+      whileHover={{ y: -8 }}
       className="content-card"
       data-type={type}
       onClick={() => onClick(content)}
     >
-      <div
-        className="content-card-image-wrapper"
-        data-duration={
-          type !== "article" ? formatDuration(duration) : undefined
-        }
-      >
+      <div className="content-card-image-wrapper">
         <ResponsiveImage
           image={image}
           fallbackUrl={imageFallback}
@@ -49,12 +29,12 @@ const ContentCard = ({ content, onClick, delay = 0 }) => {
         />
         {type === "video" && (
           <div className="content-card-media-icon">
-            <Video size={30} />
+            <Video size={24} />
           </div>
         )}
         {type === "audio" && (
           <div className="content-card-media-icon">
-            <Mic size={30} />
+            <Headphones size={24} />
           </div>
         )}
       </div>
@@ -62,10 +42,7 @@ const ContentCard = ({ content, onClick, delay = 0 }) => {
       <div className="content-card-body">
         <span
           className="content-card-category"
-          style={{
-            backgroundColor:
-              type === "article" ? getCategoryColor(category) : undefined,
-          }}
+          style={{ backgroundColor: getCategoryColor(category) }}
         >
           {getCategoryLabel(category)}
         </span>

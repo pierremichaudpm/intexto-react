@@ -1,52 +1,148 @@
-import { Facebook, Twitter, Instagram } from 'lucide-react';
+import { useState } from "react";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Mail,
+  ArrowRight,
+  Check,
+} from "lucide-react";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (email) {
+      // Store in localStorage
+      const subscribers = JSON.parse(
+        localStorage.getItem("intexto_newsletter") || "[]",
+      );
+      subscribers.push({
+        email: email,
+        date: new Date().toISOString(),
+      });
+      localStorage.setItem("intexto_newsletter", JSON.stringify(subscribers));
+
+      setIsSubscribed(true);
+      setTimeout(() => {
+        setIsSubscribed(false);
+        setEmail("");
+      }, 3000);
+    }
+  };
+
   return (
-    <footer className="main-footer">
-      <div className="footer-container">
-        <div className="footer-grid">
-          <div className="footer-col">
-            <img src="/Images/intextologo.png" alt="Intexto" className="footer-logo" />
-            <p>Journal haïtien moderne - Informations, analyses et perspectives.</p>
+    <>
+      {/* Newsletter Section */}
+      <section className="newsletter-section">
+        <div className="newsletter-container">
+          <div className="newsletter-icon">
+            <Mail size={48} />
           </div>
+          <h2 className="newsletter-title">Restez informé</h2>
+          <p className="newsletter-subtitle">
+            Recevez les dernières actualités de la communauté dans votre boîte
+            mail. Inscription gratuite&nbsp;!
+          </p>
+          <form className="newsletter-form" onSubmit={handleSubmit}>
+            <input
+              type="email"
+              className="newsletter-input"
+              placeholder="Votre adresse email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className={`newsletter-btn ${isSubscribed ? "subscribed" : ""}`}
+              disabled={isSubscribed}
+            >
+              {isSubscribed ? (
+                <>
+                  <Check size={20} />
+                  <span>Inscrit !</span>
+                </>
+              ) : (
+                <>
+                  <span>S'abonner</span>
+                  <ArrowRight size={18} />
+                </>
+              )}
+            </button>
+          </form>
+          <p className="newsletter-privacy">
+            En vous inscrivant, vous acceptez notre{" "}
+            <a href="#">politique de confidentialité</a>. Désinscription
+            possible à tout moment.
+          </p>
+        </div>
+      </section>
 
-          <div className="footer-col">
-            <h3>Navigation</h3>
-            <ul>
-              <li><a href="#">Actualité</a></li>
-              <li><a href="#">Politique</a></li>
-              <li><a href="#">Voyage</a></li>
-              <li><a href="#">Culture</a></li>
-            </ul>
-          </div>
+      {/* Main Footer */}
+      <footer className="main-footer">
+        <div className="footer-container">
+          <div className="footer-grid">
+            <div className="footer-col">
+              <img
+                src="/Images/intextologo.png"
+                alt="Intexto"
+                className="footer-logo"
+              />
+              <p>
+                Journal haïtien moderne - Informations, analyses et
+                perspectives.
+              </p>
+            </div>
 
-          <div className="footer-col">
-            <h3>Suivez-nous</h3>
-            <div className="social-links">
-              <a href="#" aria-label="Facebook">
-                <Facebook size={24} />
-              </a>
-              <a href="#" aria-label="Twitter">
-                <Twitter size={24} />
-              </a>
-              <a href="#" aria-label="Instagram">
-                <Instagram size={24} />
-              </a>
+            <div className="footer-col">
+              <h3>Navigation</h3>
+              <ul>
+                <li>
+                  <a href="#">Actualité</a>
+                </li>
+                <li>
+                  <a href="#">Politique</a>
+                </li>
+                <li>
+                  <a href="#">Voyage</a>
+                </li>
+                <li>
+                  <a href="#">Culture</a>
+                </li>
+              </ul>
+            </div>
+
+            <div className="footer-col">
+              <h3>Suivez-nous</h3>
+              <div className="social-links">
+                <a href="#" aria-label="Facebook">
+                  <Facebook size={24} />
+                </a>
+                <a href="#" aria-label="Twitter">
+                  <Twitter size={24} />
+                </a>
+                <a href="#" aria-label="Instagram">
+                  <Instagram size={24} />
+                </a>
+              </div>
+            </div>
+
+            <div className="footer-col">
+              <h3>Contact</h3>
+              <p>info@intexto.ca</p>
+              <p>Montréal, Québec</p>
             </div>
           </div>
 
-          <div className="footer-col">
-            <h3>Contact</h3>
-            <p>info@intexto.ca</p>
-            <p>Montréal, Québec</p>
+          <div className="footer-bottom">
+            <p>&copy; 2026 Intexto. Tous droits réservés.</p>
           </div>
         </div>
-
-        <div className="footer-bottom">
-          <p>&copy; 2026 Intexto. Tous droits réservés.</p>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 };
 
