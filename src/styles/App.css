@@ -1622,7 +1622,7 @@ body {
 }
 
 .plyr--audio {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
     padding: 20px !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
     border-radius: 12px !important;
