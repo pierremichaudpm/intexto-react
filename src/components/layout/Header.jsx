@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Search, Menu, X } from "lucide-react";
 import {
-  Search,
-  Facebook,
-  Instagram,
-  MessageCircle,
-  Menu,
-  X,
-} from "lucide-react";
+  FaFacebookF,
+  FaInstagram,
+  FaXTwitter,
+  FaWhatsapp,
+} from "react-icons/fa6";
 
 const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -94,7 +93,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="Facebook"
                 >
-                  <Facebook size={18} />
+                  <FaFacebookF size={16} />
                 </a>
                 <a
                   href="https://www.instagram.com/intexto"
@@ -103,9 +102,8 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="Instagram"
                 >
-                  <Instagram size={18} />
+                  <FaInstagram size={18} />
                 </a>
-                {/* X (Twitter) icon */}
                 <a
                   href="https://x.com/intexto"
                   target="_blank"
@@ -113,24 +111,16 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="X (Twitter)"
                 >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
+                  <FaXTwitter size={16} />
                 </a>
-                {/* WhatsApp */}
                 <a
                   href="https://wa.me/15141234567"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="header-social-btn whatsapp"
+                  className="header-social-btn"
                   title="WhatsApp"
                 >
-                  <MessageCircle size={18} />
+                  <FaWhatsapp size={18} />
                 </a>
               </div>
 
@@ -231,7 +221,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   initial="closed"
                   animate="open"
                 >
-                  <Facebook size={22} />
+                  <FaFacebookF size={20} />
                 </motion.a>
                 <motion.a
                   href="https://www.instagram.com/intexto"
@@ -243,7 +233,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   initial="closed"
                   animate="open"
                 >
-                  <Instagram size={22} />
+                  <FaInstagram size={22} />
                 </motion.a>
                 <motion.a
                   href="https://x.com/intexto"
@@ -255,14 +245,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   initial="closed"
                   animate="open"
                 >
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
+                  <FaXTwitter size={20} />
                 </motion.a>
                 <motion.a
                   href="https://wa.me/15141234567"
@@ -274,7 +257,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   initial="closed"
                   animate="open"
                 >
-                  <MessageCircle size={22} />
+                  <FaWhatsapp size={22} />
                 </motion.a>
               </div>
             </div>
