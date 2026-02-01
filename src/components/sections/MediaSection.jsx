@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ArrowRight, Plus } from "lucide-react";
 import ContentCard from "../common/ContentCard";
 
 const MediaSection = ({ videos, audios, onContentClick }) => {
@@ -32,7 +31,6 @@ const MediaSection = ({ videos, audios, onContentClick }) => {
         {hasMore && !showAll && (
           <div className="media-load-more">
             <button className="load-more-btn" onClick={() => setShowAll(true)}>
-              <Plus size={18} />
               Plus de contenu
             </button>
           </div>
