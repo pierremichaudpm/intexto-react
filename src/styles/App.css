@@ -1599,6 +1599,12 @@ body {
     background: #000;
 }
 
+.modal-media-hero {
+    margin: 0;
+    padding: 10px;
+    border-radius: 0;
+}
+
 .modal-media-player video,
 .modal-media-player audio {
     width: 100%;
