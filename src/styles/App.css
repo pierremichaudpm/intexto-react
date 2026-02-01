@@ -1639,20 +1639,6 @@ p {
     overflow: hidden;
 }
 
-.magazine-widget::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(
-        90deg,
-        var(--color-primary),
-        var(--color-secondary)
-    );
-}
-
 .magazine-widget-header {
     display: flex;
     align-items: center;
