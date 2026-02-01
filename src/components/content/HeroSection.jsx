@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft,
@@ -15,6 +15,12 @@ import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 const HeroSection = ({ onContentClick }) => {
   const { content } = useContent();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const carouselRef = useRef(null);
+
+  // Minimum swipe distance
+  const minSwipeDistance = 50;
 
   const allContent = content;
   const articles = allContent
@@ -73,6 +79,29 @@ const HeroSection = ({ onContentClick }) => {
     });
   };
 
+  // Swipe handlers
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      paginate(1);
+    } else if (isRightSwipe) {
+      paginate(-1);
+    }
+  };
+
   if (articles.length === 0) return null;
 
   const current = articles[currentIndex];
@@ -81,7 +110,13 @@ const HeroSection = ({ onContentClick }) => {
     <section className="hero-section-new">
       <div className="hero-container-new">
         {/* Main Carousel */}
-        <div className="hero-main-carousel">
+        <div
+          className="hero-main-carousel"
+          ref={carouselRef}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           <AnimatePresence initial={false}>
             <motion.div
               key={currentIndex}
@@ -163,7 +198,7 @@ const HeroSection = ({ onContentClick }) => {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
                 />
                 <div className="hero-side-media-badge">
-                  <Video size={30} />
+                  <Video size={40} />
                 </div>
               </div>
               <div className="hero-side-body">
@@ -200,7 +235,7 @@ const HeroSection = ({ onContentClick }) => {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
                 />
                 <div className="hero-side-media-badge">
-                  <Mic size={30} />
+                  <Mic size={40} />
                 </div>
               </div>
               <div className="hero-side-body">
