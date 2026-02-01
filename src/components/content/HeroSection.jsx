@@ -26,10 +26,10 @@ const categoryLabels = {
 };
 
 const HeroSection = ({ onContentClick }) => {
-  const { getFilteredContent } = useContent();
+  const { content } = useContent();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const allContent = getFilteredContent();
+  const allContent = content;
   const articles = allContent
     .filter((item) => item.type === "article" && item.featured)
     .sort((a, b) => {
