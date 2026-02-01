@@ -1,7 +1,67 @@
-import { motion } from "framer-motion";
-import { Search, Facebook, Instagram, MessageCircle } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Search,
+  Facebook,
+  Instagram,
+  MessageCircle,
+  Menu,
+  X,
+} from "lucide-react";
 
 const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const handleSearchClick = () => {
+    setMobileMenuOpen(false);
+    onSearchClick();
+  };
+
+  // Door opening animation variants
+  const menuVariants = {
+    closed: {
+      rotateY: -90,
+      opacity: 0,
+      transformOrigin: "left center",
+    },
+    open: {
+      rotateY: 0,
+      opacity: 1,
+      transformOrigin: "left center",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      },
+    },
+    exit: {
+      rotateY: -90,
+      opacity: 0,
+      transformOrigin: "left center",
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, x: -20 },
+    open: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: i * 0.1,
+        type: "spring",
+        stiffness: 300,
+        damping: 24,
+      },
+    }),
+  };
+
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -22,62 +82,205 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
         <div className="header-ad-slot">{adBanner}</div>
 
         {!hideSearch && (
-          <div className="header-actions">
-            {/* Social media links */}
-            <div className="header-social-links">
-              <a
-                href="https://www.facebook.com/intexto"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="header-social-btn"
-                title="Facebook"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href="https://www.instagram.com/intexto"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="header-social-btn"
-                title="Instagram"
-              >
-                <Instagram size={18} />
-              </a>
-              {/* X (Twitter) icon */}
-              <a
-                href="https://x.com/intexto"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="header-social-btn"
-                title="X (Twitter)"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
+          <>
+            {/* Desktop actions */}
+            <div className="header-actions header-actions-desktop">
+              {/* Social media links */}
+              <div className="header-social-links">
+                <a
+                  href="https://www.facebook.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="header-social-btn"
+                  title="Facebook"
                 >
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
-              {/* WhatsApp */}
-              <a
-                href="https://wa.me/15141234567"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="header-social-btn whatsapp"
-                title="WhatsApp"
-              >
-                <MessageCircle size={18} />
-              </a>
+                  <Facebook size={18} />
+                </a>
+                <a
+                  href="https://www.instagram.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="header-social-btn"
+                  title="Instagram"
+                >
+                  <Instagram size={18} />
+                </a>
+                {/* X (Twitter) icon */}
+                <a
+                  href="https://x.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="header-social-btn"
+                  title="X (Twitter)"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+                {/* WhatsApp */}
+                <a
+                  href="https://wa.me/15141234567"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="header-social-btn whatsapp"
+                  title="WhatsApp"
+                >
+                  <MessageCircle size={18} />
+                </a>
+              </div>
+
+              <button className="search-btn" onClick={onSearchClick}>
+                <Search size={20} />
+              </button>
             </div>
 
-            <button className="search-btn" onClick={onSearchClick}>
-              <Search size={20} />
-            </button>
-          </div>
+            {/* Mobile burger menu */}
+            <div className="header-actions-mobile">
+              <button
+                className="mobile-burger-btn"
+                onClick={toggleMobileMenu}
+                aria-label="Menu"
+              >
+                <AnimatePresence mode="wait">
+                  {mobileMenuOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X size={24} />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu size={24} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </button>
+            </div>
+          </>
         )}
       </div>
+
+      {/* Mobile menu panel - door effect */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            className="mobile-menu-panel"
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="exit"
+          >
+            <div className="mobile-menu-content">
+              {/* Search button */}
+              <motion.button
+                className="mobile-menu-item mobile-menu-search"
+                onClick={handleSearchClick}
+                custom={0}
+                variants={itemVariants}
+                initial="closed"
+                animate="open"
+              >
+                <Search size={20} />
+                <span>Rechercher</span>
+              </motion.button>
+
+              {/* Divider */}
+              <motion.div
+                className="mobile-menu-divider"
+                custom={1}
+                variants={itemVariants}
+                initial="closed"
+                animate="open"
+              />
+
+              {/* Social links label */}
+              <motion.span
+                className="mobile-menu-label"
+                custom={2}
+                variants={itemVariants}
+                initial="closed"
+                animate="open"
+              >
+                Suivez-nous
+              </motion.span>
+
+              {/* Social media links */}
+              <div className="mobile-menu-social">
+                <motion.a
+                  href="https://www.facebook.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-social-btn facebook"
+                  custom={3}
+                  variants={itemVariants}
+                  initial="closed"
+                  animate="open"
+                >
+                  <Facebook size={22} />
+                </motion.a>
+                <motion.a
+                  href="https://www.instagram.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-social-btn instagram"
+                  custom={4}
+                  variants={itemVariants}
+                  initial="closed"
+                  animate="open"
+                >
+                  <Instagram size={22} />
+                </motion.a>
+                <motion.a
+                  href="https://x.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-social-btn twitter"
+                  custom={5}
+                  variants={itemVariants}
+                  initial="closed"
+                  animate="open"
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </motion.a>
+                <motion.a
+                  href="https://wa.me/15141234567"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-social-btn whatsapp"
+                  custom={6}
+                  variants={itemVariants}
+                  initial="closed"
+                  animate="open"
+                >
+                  <MessageCircle size={22} />
+                </motion.a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };
