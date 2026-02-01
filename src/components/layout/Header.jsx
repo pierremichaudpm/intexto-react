@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
+import { Search, Facebook, Instagram } from "lucide-react";
 
 const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
   return (
@@ -23,6 +23,45 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
 
         {!hideSearch && (
           <div className="header-actions">
+            {/* Social media links */}
+            <div className="header-social-links">
+              <a
+                href="https://www.facebook.com/intexto"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="header-social-btn"
+                title="Facebook"
+              >
+                <Facebook size={18} />
+              </a>
+              <a
+                href="https://www.instagram.com/intexto"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="header-social-btn"
+                title="Instagram"
+              >
+                <Instagram size={18} />
+              </a>
+              {/* X (Twitter) icon */}
+              <a
+                href="https://x.com/intexto"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="header-social-btn"
+                title="X (Twitter)"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+            </div>
+
             <button className="search-btn" onClick={onSearchClick}>
               <Search size={20} />
             </button>

@@ -1,35 +1,59 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
-import { useContent } from '../../context/ContentContext';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { X, Search, FileText, Video, Headphones } from "lucide-react";
+import { useContent } from "../../context/ContentContext";
+import { getCategoryColor, getCategoryLabel } from "../../config/categories";
+import cmsService from "../../services/cmsService";
 
 const SearchOverlay = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const { content, searchQuery, setSearchQuery } = useContent();
   const [results, setResults] = useState([]);
 
   useEffect(() => {
     if (searchQuery.length >= 2) {
-      const filtered = content.filter(item =>
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.author.toLowerCase().includes(searchQuery.toLowerCase())
+      const filtered = content.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (item.content &&
+            item.content.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          item.author.toLowerCase().includes(searchQuery.toLowerCase()),
       );
-      setResults(filtered.slice(0, 5));
+      setResults(filtered.slice(0, 8));
     } else {
       setResults([]);
     }
   }, [searchQuery, content]);
 
   const handleResultClick = (item) => {
-    // This will be handled by parent component
-    onClose();
+    // Navigate to the content URL
+    const typeRoute =
+      item.type === "video"
+        ? "video"
+        : item.type === "audio"
+          ? "audio"
+          : "article";
+    navigate(`/${typeRoute}/${item.slug}`);
+    handleClose();
   };
 
   const handleClose = () => {
-    setSearchQuery('');
+    setSearchQuery("");
     setResults([]);
     onClose();
+  };
+
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case "video":
+        return <Video size={16} />;
+      case "audio":
+        return <Headphones size={16} />;
+      default:
+        return <FileText size={16} />;
+    }
   };
 
   return (
@@ -40,16 +64,20 @@ const SearchOverlay = ({ isOpen, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="search-overlay"
+          onClick={(e) => e.target === e.currentTarget && handleClose()}
         >
           <div className="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Rechercher des articles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              autoFocus
-            />
+            <div className="search-input-wrapper">
+              <Search size={24} className="search-input-icon" />
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Rechercher des articles, vidéos, podcasts..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+              />
+            </div>
             <button className="close-search" onClick={handleClose}>
               <X size={32} />
             </button>
@@ -57,7 +85,16 @@ const SearchOverlay = ({ isOpen, onClose }) => {
 
           <div className="search-results">
             {searchQuery.length >= 2 && results.length === 0 && (
-              <p className="search-no-results">Aucun résultat trouvé</p>
+              <div className="search-no-results">
+                <Search size={48} />
+                <p>Aucun résultat trouvé pour "{searchQuery}"</p>
+              </div>
+            )}
+
+            {searchQuery.length > 0 && searchQuery.length < 2 && (
+              <div className="search-hint">
+                <p>Tapez au moins 2 caractères pour rechercher</p>
+              </div>
             )}
 
             {results.map((item) => (
@@ -68,10 +105,39 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                 className="search-result-item"
                 onClick={() => handleResultClick(item)}
               >
-                <h4>{item.title}</h4>
-                <p>{item.excerpt.substring(0, 100)}...</p>
+                <div className="search-result-image">
+                  {item.imageFallback ? (
+                    <img src={item.imageFallback} alt={item.title} />
+                  ) : (
+                    <div className="search-result-placeholder">
+                      {getTypeIcon(item.type)}
+                    </div>
+                  )}
+                  <span className="search-result-type">
+                    {getTypeIcon(item.type)}
+                  </span>
+                </div>
+                <div className="search-result-content">
+                  <span
+                    className="search-result-category"
+                    style={{ backgroundColor: getCategoryColor(item.category) }}
+                  >
+                    {getCategoryLabel(item.category)}
+                  </span>
+                  <h4>{item.title}</h4>
+                  <p className="search-result-meta">
+                    {item.author} • {cmsService.formatDate(item.date)}
+                  </p>
+                </div>
               </motion.div>
             ))}
+
+            {results.length > 0 && (
+              <p className="search-results-count">
+                {results.length} résultat{results.length > 1 ? "s" : ""} trouvé
+                {results.length > 1 ? "s" : ""}
+              </p>
+            )}
           </div>
         </motion.div>
       )}

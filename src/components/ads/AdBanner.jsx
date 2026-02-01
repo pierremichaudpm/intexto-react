@@ -10,7 +10,7 @@ const AdBanner = ({ type = "top" }) => {
     >
       <div className="promo-content">
         <p style={{ fontSize: "1.2rem", color: "#dd4f4f", fontWeight: "700" }}>
-          EMPLACEMENT PUBLICITAIRE {type === "top" ? "970×90" : "300×250"}
+          EMPLACEMENT PUBLICITAIRE {type === "top" ? "728×90" : "300×250"}
         </p>
       </div>
     </motion.div>
