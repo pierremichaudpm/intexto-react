@@ -1,12 +1,6 @@
 import { useState } from "react";
-import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Mail,
-  ArrowRight,
-  Check,
-} from "lucide-react";
+import { Mail, ArrowRight, Check } from "lucide-react";
+import { SiFacebook, SiInstagram, SiX, SiWhatsapp } from "react-icons/si";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -87,45 +81,50 @@ const Footer = () => {
           <div className="footer-grid">
             <div className="footer-col">
               <img
-                src="/Images/intextologo.png"
+                src="/Images/intextologo2.png"
                 alt="Intexto"
                 className="footer-logo"
               />
-              <p>
-                Journal haïtien moderne - Informations, analyses et
-                perspectives.
-              </p>
-            </div>
-
-            <div className="footer-col">
-              <h3>Navigation</h3>
-              <ul>
-                <li>
-                  <a href="#">Actualité</a>
-                </li>
-                <li>
-                  <a href="#">Politique</a>
-                </li>
-                <li>
-                  <a href="#">Voyage</a>
-                </li>
-                <li>
-                  <a href="#">Culture</a>
-                </li>
-              </ul>
             </div>
 
             <div className="footer-col">
               <h3>Suivez-nous</h3>
               <div className="social-links">
-                <a href="#" aria-label="Facebook">
-                  <Facebook size={24} />
+                <a
+                  href="https://www.facebook.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="facebook"
+                >
+                  <SiFacebook size={18} />
                 </a>
-                <a href="#" aria-label="Twitter">
-                  <Twitter size={24} />
+                <a
+                  href="https://www.instagram.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="instagram"
+                >
+                  <SiInstagram size={18} />
                 </a>
-                <a href="#" aria-label="Instagram">
-                  <Instagram size={24} />
+                <a
+                  href="https://x.com/intexto"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X"
+                  className="twitter"
+                >
+                  <SiX size={16} />
+                </a>
+                <a
+                  href="https://wa.me/15141234567"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="whatsapp"
+                >
+                  <SiWhatsapp size={18} />
                 </a>
               </div>
             </div>
