@@ -29,6 +29,10 @@ const HeroSection = ({ onContentClick }) => {
   const videos = allContent
     .filter((item) => item.type === "video")
     .sort((a, b) => {
+      // Featured items first
+      if (a.featured !== b.featured) {
+        return a.featured ? -1 : 1;
+      }
       if (a.order !== b.order) {
         return a.order - b.order;
       }
@@ -37,6 +41,10 @@ const HeroSection = ({ onContentClick }) => {
   const audios = allContent
     .filter((item) => item.type === "audio")
     .sort((a, b) => {
+      // Featured items first
+      if (a.featured !== b.featured) {
+        return a.featured ? -1 : 1;
+      }
       if (a.order !== b.order) {
         return a.order - b.order;
       }
