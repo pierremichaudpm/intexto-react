@@ -843,13 +843,14 @@ body {
 .main-content-wrapper {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2rem 4rem;
+    padding: 0 2rem 2rem;
 }
 
 .main-content-grid {
     display: grid;
     grid-template-columns: 1fr 300px;
     gap: 2rem;
+    align-items: start;
 }
 
 .content-section {
