@@ -512,8 +512,17 @@ class CMSService {
   formatDate(dateString) {
     const date = new Date(dateString);
     const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // Reset time to midnight for accurate day comparison
+    const dateDay = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+    );
+    const nowDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const diffTime = nowDay - dateDay;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) return "Aujourd'hui";
     if (diffDays === 1) return "Hier";
