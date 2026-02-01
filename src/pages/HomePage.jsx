@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useContent } from "../context/ContentContext";
 import HeroSection from "../components/content/HeroSection";
@@ -11,14 +12,9 @@ import AdBox from "../components/ads/AdBox";
 import MagazineWidget from "../components/widgets/MagazineWidget";
 import SEOHead from "../components/seo/SEOHead";
 
-const typeFilters = [
-  { id: "all", label: "Tous" },
-  { id: "article", label: "Articles" },
-  { id: "video", label: "Vidéos" },
-  { id: "audio", label: "Audio" },
-];
-
 const HomePage = () => {
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const { filter, setFilter, getFilteredContent, loading, content } =
     useContent();
   const [selectedContent, setSelectedContent] = useState(null);
@@ -31,10 +27,15 @@ const HomePage = () => {
   const allVideos = content.filter((item) => item.type === "video");
   const allAudios = content.filter((item) => item.type === "audio");
 
-  const handleTypeFilter = (typeId) => {
-    setFilter((prev) => ({ ...prev, type: typeId }));
-    setDisplayCount(6);
-  };
+  // Handle direct URL access - open modal if slug is in URL
+  useEffect(() => {
+    if (slug && content.length > 0) {
+      const contentItem = content.find((item) => item.slug === slug);
+      if (contentItem) {
+        setSelectedContent(contentItem);
+      }
+    }
+  }, [slug, content]);
 
   const handleCategoryFilter = (categoryId) => {
     setFilter((prev) => ({ ...prev, category: categoryId }));
@@ -45,8 +46,22 @@ const HomePage = () => {
     setDisplayCount((prev) => prev + 9);
   };
 
-  const handleContentClick = (content) => {
-    setSelectedContent(content);
+  const handleContentClick = (contentItem) => {
+    setSelectedContent(contentItem);
+    // Update URL without page reload
+    navigate(`/${contentItem.type}/${contentItem.slug}`, { replace: false });
+  };
+
+  const handleModalClose = () => {
+    setSelectedContent(null);
+    // Return to home URL
+    navigate("/", { replace: false });
+  };
+
+  const handleContentChange = (newContent) => {
+    setSelectedContent(newContent);
+    // Update URL for new content
+    navigate(`/${newContent.type}/${newContent.slug}`, { replace: false });
   };
 
   if (loading) {
@@ -82,10 +97,10 @@ const HomePage = () => {
           {/* Content Grid */}
           <div className="content-section">
             <div className="content-grid">
-              {displayedContent.map((content, index) => (
+              {displayedContent.map((contentItem, index) => (
                 <ContentCard
-                  key={content.id}
-                  content={content}
+                  key={contentItem.id}
+                  content={contentItem}
                   onClick={handleContentClick}
                   delay={index * 0.05}
                 />
@@ -139,8 +154,8 @@ const HomePage = () => {
       <ContentModal
         content={selectedContent}
         isOpen={!!selectedContent}
-        onClose={() => setSelectedContent(null)}
-        onContentChange={(newContent) => setSelectedContent(newContent)}
+        onClose={handleModalClose}
+        onContentChange={handleContentChange}
       />
     </>
   );
