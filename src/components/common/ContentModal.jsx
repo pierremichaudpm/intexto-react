@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
-import ReactMarkdown from "react-markdown";
+
 import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
 import SEOHead from "../seo/SEOHead";
@@ -287,9 +287,10 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                   </div>
                 </div>
 
-                <div className="modal-text">
-                  <ReactMarkdown>{content.content}</ReactMarkdown>
-                </div>
+                <div
+                  className="modal-text"
+                  dangerouslySetInnerHTML={{ __html: content.content }}
+                />
 
                 {/* Related Stories */}
                 {relatedStories.length > 0 && (
