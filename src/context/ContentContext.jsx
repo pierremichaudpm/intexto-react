@@ -52,24 +52,34 @@ export const ContentProvider = ({ children }) => {
     throw new Error("Delete content requires admin authentication");
   };
 
-  // Get filtered content
+  // Get filtered content (articles only for main lineup)
   const getFilteredContent = () => {
-    let filtered = [...content];
+    // Start with articles only (videos and audios have dedicated sections)
+    let filtered = content.filter((item) => item.type === "article");
 
     // Apply category filter
     if (filter.category !== "all") {
       filtered = strapiService.filterByCategory(filtered, filter.category);
     }
 
-    // Apply type filter
-    if (filter.type !== "all") {
-      filtered = strapiService.filterByType(filtered, filter.type);
-    }
-
     // Apply search
     if (searchQuery) {
       filtered = strapiService.searchContent(filtered, searchQuery);
     }
+
+    // Sort by order first, then by date
+    filtered.sort((a, b) => {
+      // If both have order values, sort by order
+      if (
+        a.order !== undefined &&
+        b.order !== undefined &&
+        a.order !== b.order
+      ) {
+        return a.order - b.order;
+      }
+      // Otherwise sort by date (newest first)
+      return new Date(b.date) - new Date(a.date);
+    });
 
     return filtered;
   };

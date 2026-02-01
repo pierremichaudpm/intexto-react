@@ -117,32 +117,12 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
   const mediaUrl =
     type === "video" ? videoUrl : type === "audio" ? audioUrl : null;
 
-  // Get related stories from curated lineup
+  // Get suggested stories - last 5 by date, excluding current item
   const getRelatedStories = () => {
-    // Get featured items in order (curated lineup of 10)
-    const featuredLineup = allContent
-      .filter((item) => item.featured)
-      .sort((a, b) => new Date(b.date) - new Date(a.date)); // Or use manual order field if you add one
-
-    // Find current article position in lineup
-    const currentIndex = featuredLineup.findIndex(
-      (item) => item.id === content.id,
-    );
-
-    if (currentIndex !== -1) {
-      // Get next 5 items from the curated lineup (wrapping around if needed)
-      const related = [];
-      for (let i = 1; i <= 5; i++) {
-        const nextIndex = (currentIndex + i) % featuredLineup.length;
-        if (featuredLineup[nextIndex]) {
-          related.push(featuredLineup[nextIndex]);
-        }
-      }
-      return related;
-    }
-
-    // If not in featured lineup, just show first 5 featured items
-    return featuredLineup.slice(0, 5);
+    return allContent
+      .filter((item) => item.id !== content.id) // Exclude current item
+      .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date, newest first
+      .slice(0, 5); // Take last 5
   };
 
   const relatedStories = getRelatedStories();

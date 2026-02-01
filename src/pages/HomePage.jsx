@@ -22,7 +22,7 @@ const HomePage = () => {
   const { filter, setFilter, getFilteredContent, loading, content } =
     useContent();
   const [selectedContent, setSelectedContent] = useState(null);
-  const [displayCount, setDisplayCount] = useState(9);
+  const [displayCount, setDisplayCount] = useState(6);
 
   const filteredContent = getFilteredContent();
   const displayedContent = filteredContent.slice(0, displayCount);
@@ -33,12 +33,12 @@ const HomePage = () => {
 
   const handleTypeFilter = (typeId) => {
     setFilter((prev) => ({ ...prev, type: typeId }));
-    setDisplayCount(9);
+    setDisplayCount(6);
   };
 
   const handleCategoryFilter = (categoryId) => {
     setFilter((prev) => ({ ...prev, category: categoryId }));
-    setDisplayCount(9);
+    setDisplayCount(6);
   };
 
   const handleLoadMore = () => {
