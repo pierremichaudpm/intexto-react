@@ -1631,9 +1631,9 @@ body {
 
 .modal-audio-hero {
     margin: 20px 0 !important;
-    padding-left: 20px !important;
     border-radius: 12px !important;
     overflow: hidden !important;
+    background: #fff !important;
 }
 
 .modal-audio-hero .plyr--audio {
