@@ -14,7 +14,7 @@ const AdBox = ({ position = "sidebar" }) => {
       className={`promo-box promo-box-${position}`}
     >
       <div className="promo-box-content">
-        <p style={{ fontSize: "1.2rem", color: "#dd4f4f", fontWeight: "700" }}>
+        <p style={{ fontSize: "1.2rem", color: "#e85555", fontWeight: "700" }}>
           EMPLACEMENT PUBLICITAIRE {adSizes[position] || "300×600"}
         </p>
       </div>

@@ -27,7 +27,7 @@ const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
         {categories.map((category) => {
           const isActive = activeCategory === category.id;
           const color =
-            category.id === "all" ? "#dd4f4f" : getCategoryColor(category.id);
+            category.id === "all" ? "#074999" : getCategoryColor(category.id);
 
           return (
             <motion.button
