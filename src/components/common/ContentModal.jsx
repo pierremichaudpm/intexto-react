@@ -36,6 +36,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const playerRef = useRef(null);
+  const modalContentRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
   // Check if mobile
@@ -45,6 +46,13 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Scroll to top when content changes
+  useEffect(() => {
+    if (modalContentRef.current && content) {
+      modalContentRef.current.scrollTop = 0;
+    }
+  }, [content]);
 
   // Initialize Plyr when modal opens with media
   useEffect(() => {
@@ -202,6 +210,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
               exit={{ y: 50, opacity: 0 }}
               transition={{ type: "spring", damping: 25 }}
               className="modal-content"
+              ref={modalContentRef}
             >
               <button
                 className="modal-close modal-close-desktop"
