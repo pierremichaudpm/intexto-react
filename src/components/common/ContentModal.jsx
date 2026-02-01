@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
-
+import ReactMarkdown from "react-markdown";
 import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
 import SEOHead from "../seo/SEOHead";
@@ -288,9 +288,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                 </div>
 
                 <div className="modal-text">
-                  {content.content?.split("\n\n").map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
+                  <ReactMarkdown>{content.content}</ReactMarkdown>
                 </div>
 
                 {/* Related Stories */}
