@@ -89,24 +89,29 @@ const MagazineWidget = () => {
     setCurrentIssue((prev) => (prev < issues.length - 1 ? prev + 1 : 0));
   };
 
+  // Fix Cloudinary PDF URL - change /image/upload/ to /raw/upload/
+  const fixCloudinaryPdfUrl = (url) => {
+    if (!url) return null;
+    if (url.includes("cloudinary") && url.includes("/image/upload/")) {
+      return url.replace("/image/upload/", "/raw/upload/");
+    }
+    return url;
+  };
+
   const handleDownload = () => {
     if (!currentMagazine.pdfUrl) {
       alert("PDF non disponible");
       return;
     }
-    // Create a link and trigger download
-    const link = document.createElement("a");
-    link.href = currentMagazine.pdfUrl;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    // For Cloudinary PDFs, add download parameter
-    if (currentMagazine.pdfUrl.includes("cloudinary")) {
-      link.href = currentMagazine.pdfUrl.replace(
-        "/upload/",
-        "/upload/fl_attachment/",
+    // Fix URL and add download flag
+    let downloadUrl = fixCloudinaryPdfUrl(currentMagazine.pdfUrl);
+    if (downloadUrl.includes("cloudinary")) {
+      downloadUrl = downloadUrl.replace(
+        "/raw/upload/",
+        "/raw/upload/fl_attachment/",
       );
     }
-    link.click();
+    window.open(downloadUrl, "_blank", "noopener,noreferrer");
   };
 
   const handlePreview = () => {
@@ -114,8 +119,9 @@ const MagazineWidget = () => {
       alert("PDF non disponible");
       return;
     }
-    // Open PDF in new tab for preview
-    window.open(currentMagazine.pdfUrl, "_blank", "noopener,noreferrer");
+    // Fix URL for preview
+    const previewUrl = fixCloudinaryPdfUrl(currentMagazine.pdfUrl);
+    window.open(previewUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
