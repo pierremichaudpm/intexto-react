@@ -967,20 +967,18 @@ body {
 
 /* MEDIA SECTIONS (Video & Audio) */
 .media-section {
-    max-width: 1400px;
-    margin: 3rem auto;
-    padding: 0 2rem;
+    background: linear-gradient(145deg, #f8f9fc 0%, #ffffff 100%);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin: 3rem 0;
+    padding: 2rem 0;
     clear: both;
 }
 
 .media-section-container {
-    background: linear-gradient(145deg, #f8f9fc 0%, #ffffff 100%);
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.06),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
 .media-section-header {
