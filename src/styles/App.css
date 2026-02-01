@@ -1640,9 +1640,10 @@ body {
 }
 
 .plyr--audio .plyr__controls {
-    background: rgba(0, 0, 0, 0.3) !important;
-    border-radius: 8px !important;
+    background: transparent !important;
+    border-radius: 0 !important;
     padding: 15px !important;
+    border: none !important;
 }
 
 .plyr--audio .plyr__control {
