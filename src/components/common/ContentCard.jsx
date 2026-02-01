@@ -1,10 +1,11 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { Video, Mic } from "lucide-react";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "./ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
-const ContentCard = ({ content, onClick, delay = 0 }) => {
+const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
   const {
     type,
     title,
@@ -82,6 +83,6 @@ const ContentCard = ({ content, onClick, delay = 0 }) => {
       </div>
     </motion.article>
   );
-};
+});
 
 export default ContentCard;

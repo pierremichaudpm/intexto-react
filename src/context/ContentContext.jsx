@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import strapiService from "../services/strapiService";
 
 const ContentContext = createContext();
@@ -52,8 +59,8 @@ export const ContentProvider = ({ children }) => {
     throw new Error("Delete content requires admin authentication");
   };
 
-  // Get filtered content (articles only for main lineup)
-  const getFilteredContent = () => {
+  // Get filtered content (articles only for main lineup) - memoized
+  const getFilteredContent = useCallback(() => {
     // Start with articles only (videos and audios have dedicated sections)
     let filtered = content.filter((item) => item.type === "article");
 
@@ -89,17 +96,20 @@ export const ContentProvider = ({ children }) => {
     });
 
     return filtered;
-  };
+  }, [content, filter.category, searchQuery]);
 
-  // Get featured content
-  const getFeaturedContent = () => {
+  // Get featured content - memoized
+  const getFeaturedContent = useCallback(() => {
     return content.filter((item) => item.featured).slice(0, 5);
-  };
+  }, [content]);
 
-  // Get content by ID
-  const getContentById = (id) => {
-    return content.find((item) => item.id === id);
-  };
+  // Get content by ID - memoized
+  const getContentById = useCallback(
+    (id) => {
+      return content.find((item) => item.id === id);
+    },
+    [content],
+  );
 
   const value = {
     content,

@@ -12,8 +12,6 @@
   "dependencies": {
     "@strapi/blocks-react-renderer": "^1.0.2",
     "framer-motion": "^12.29.2",
-    "html2canvas": "^1.4.1",
-    "jspdf": "^4.0.0",
     "lucide-react": "^0.563.0",
     "plyr": "^3.8.4",
     "plyr-react": "^6.0.0",

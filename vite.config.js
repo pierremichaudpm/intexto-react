@@ -12,7 +12,6 @@ export default defineConfig({
           motion: ["framer-motion"],
           icons: ["lucide-react"],
           video: ["plyr"],
-          pdf: ["jspdf", "html2canvas"],
         },
       },
     },

@@ -1,4 +1,11 @@
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  lazy,
+  Suspense,
+} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useContent } from "../context/ContentContext";
@@ -6,11 +13,13 @@ import HeroSection from "../components/content/HeroSection";
 import CategoryFilter from "../components/sections/CategoryFilter";
 import MediaSection from "../components/sections/MediaSection";
 import ContentCard from "../components/common/ContentCard";
-import ContentModal from "../components/common/ContentModal";
 import AdBanner from "../components/ads/AdBanner";
 import AdBox from "../components/ads/AdBox";
 import MagazineWidget from "../components/widgets/MagazineWidget";
 import SEOHead from "../components/seo/SEOHead";
+
+// Lazy load heavy modal component
+const ContentModal = lazy(() => import("../components/common/ContentModal"));
 
 const HomePage = () => {
   const { slug } = useParams();
@@ -23,9 +32,15 @@ const HomePage = () => {
   const filteredContent = getFilteredContent();
   const displayedContent = filteredContent.slice(0, displayCount);
 
-  // Get all videos and audios for dedicated sections
-  const allVideos = content.filter((item) => item.type === "video");
-  const allAudios = content.filter((item) => item.type === "audio");
+  // Get all videos and audios for dedicated sections (memoized)
+  const allVideos = useMemo(
+    () => content.filter((item) => item.type === "video"),
+    [content],
+  );
+  const allAudios = useMemo(
+    () => content.filter((item) => item.type === "audio"),
+    [content],
+  );
 
   // Scroll to top on page load
   useEffect(() => {
@@ -42,32 +57,38 @@ const HomePage = () => {
     }
   }, [slug, content]);
 
-  const handleCategoryFilter = (categoryId) => {
-    setFilter((prev) => ({ ...prev, category: categoryId }));
-    setDisplayCount(6);
-  };
+  const handleCategoryFilter = useCallback(
+    (categoryId) => {
+      setFilter((prev) => ({ ...prev, category: categoryId }));
+      setDisplayCount(6);
+    },
+    [setFilter],
+  );
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
     setDisplayCount((prev) => prev + 9);
-  };
+  }, []);
 
-  const handleContentClick = (contentItem) => {
-    setSelectedContent(contentItem);
-    // Update URL without page reload
-    navigate(`/${contentItem.type}/${contentItem.slug}`, { replace: false });
-  };
+  const handleContentClick = useCallback(
+    (contentItem) => {
+      setSelectedContent(contentItem);
+      navigate(`/${contentItem.type}/${contentItem.slug}`, { replace: false });
+    },
+    [navigate],
+  );
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     setSelectedContent(null);
-    // Return to home URL
     navigate("/", { replace: false });
-  };
+  }, [navigate]);
 
-  const handleContentChange = (newContent) => {
-    setSelectedContent(newContent);
-    // Update URL for new content
-    navigate(`/${newContent.type}/${newContent.slug}`, { replace: false });
-  };
+  const handleContentChange = useCallback(
+    (newContent) => {
+      setSelectedContent(newContent);
+      navigate(`/${newContent.type}/${newContent.slug}`, { replace: false });
+    },
+    [navigate],
+  );
 
   if (loading) {
     return (
@@ -148,13 +169,17 @@ const HomePage = () => {
         onContentClick={handleContentClick}
       />
 
-      {/* Content Modal */}
-      <ContentModal
-        content={selectedContent}
-        isOpen={!!selectedContent}
-        onClose={handleModalClose}
-        onContentChange={handleContentChange}
-      />
+      {/* Content Modal - lazy loaded */}
+      {selectedContent && (
+        <Suspense fallback={null}>
+          <ContentModal
+            content={selectedContent}
+            isOpen={!!selectedContent}
+            onClose={handleModalClose}
+            onContentChange={handleContentChange}
+          />
+        </Suspense>
+      )}
     </>
   );
 };
