@@ -1603,6 +1603,7 @@ body {
     margin: 0;
     padding: 10px;
     border-radius: 0;
+    background: #000;
 }
 
 .modal-media-player video,
