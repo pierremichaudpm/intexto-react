@@ -3150,8 +3150,12 @@ p {
     }
 
     .hero-container-new {
-        padding: 0 2rem;
+        padding: 0 calc(1rem + 3px);
         gap: 1.5rem;
+    }
+
+    .main-content-wrapper {
+        padding: 0 calc(1rem + 3px) 2rem;
     }
 
     .hero-main-carousel {
@@ -3393,11 +3397,11 @@ p {
     /* Media sections on mobile */
     .media-section {
         margin: 2rem auto;
-        padding: 0 1rem;
+        padding: 0 calc(1rem + 3px);
     }
 
     .media-section-container {
-        padding: 1.5rem 1rem;
+        padding: 1.5rem calc(1rem + 3px);
     }
 
     .media-section-title {
@@ -3410,7 +3414,7 @@ p {
 
     /* Footer mobile */
     .main-footer {
-        padding: 1.5rem 1rem 1rem;
+        padding: 1.5rem calc(1rem + 3px) 1rem;
     }
 
     .footer-grid {
