@@ -1634,14 +1634,19 @@ body {
 }
 
 .modal-audio-hero {
-    margin: 20px 0 !important;
+    margin: 0 2rem !important;
+    padding: 0 !important;
     border-radius: 12px !important;
     overflow: hidden !important;
-    background: #fff !important;
+    background: transparent !important;
+    width: calc(100% - 4rem) !important;
 }
 
 .modal-audio-hero .plyr--audio {
     border-radius: 12px !important;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+    margin: 0 !important;
+    width: 100% !important;
 }
 
 .plyr--audio .plyr__controls {
