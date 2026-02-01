@@ -1003,57 +1003,6 @@ body {
     border: 2px solid #1a1a1a;
 }
 
-.content-card[data-type="audio"] .content-card-image-wrapper {
-    height: 160px;
-}
-
-.content-card[data-type="video"] .content-card-image-wrapper {
-    height: 160px;
-}
-
-/* MEDIA SECTION - Override for compact cards */
-.media-section
-    .media-grid
-    .content-card[data-type="video"]
-    .content-card-image-wrapper,
-.media-section
-    .media-grid
-    .content-card[data-type="audio"]
-    .content-card-image-wrapper {
-    height: 160px;
-}
-
-.media-section .media-grid .content-card {
-    border-radius: 8px;
-}
-
-.media-section .media-grid .content-card .content-card-body {
-    padding: 0.75rem;
-}
-
-.media-section .media-grid .content-card .content-card-title {
-    font-size: 0.9rem;
-    line-height: 1.3;
-    margin-bottom: 0.25rem;
-}
-
-.media-section .media-grid .content-card .content-card-excerpt {
-    font-size: 0.8rem;
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
-}
-
-.media-section .media-grid .content-card .content-card-footer {
-    padding-top: 0.3rem;
-    font-size: 0.65rem;
-}
-
-.media-section .media-grid .content-card .content-card-category {
-    font-size: 0.6rem;
-    padding: 0.15rem 0.4rem;
-    margin-bottom: 0.3rem;
-}
-
 .content-card[data-type="audio"] .content-card-body {
     background: transparent;
 }
