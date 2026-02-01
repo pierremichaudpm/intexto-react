@@ -67,17 +67,24 @@ export const ContentProvider = ({ children }) => {
       filtered = strapiService.searchContent(filtered, searchQuery);
     }
 
-    // Sort by order first, then by date
+    // Sort by order first (1, 2, 3...), then items with order 0 or no order by date
     filtered.sort((a, b) => {
-      // If both have order values, sort by order
-      if (
-        a.order !== undefined &&
-        b.order !== undefined &&
-        a.order !== b.order
-      ) {
+      const aHasOrder = a.order && a.order > 0;
+      const bHasOrder = b.order && b.order > 0;
+
+      // Both have order > 0: sort by order ascending
+      if (aHasOrder && bHasOrder) {
         return a.order - b.order;
       }
-      // Otherwise sort by date (newest first)
+      // Only a has order: a comes first
+      if (aHasOrder && !bHasOrder) {
+        return -1;
+      }
+      // Only b has order: b comes first
+      if (!aHasOrder && bHasOrder) {
+        return 1;
+      }
+      // Neither has order (or order is 0): sort by date newest first
       return new Date(b.date) - new Date(a.date);
     });
 
