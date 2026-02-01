@@ -299,3 +299,4 @@ class StrapiService {
 }
 
 export default new StrapiService();
+// Build trigger Sun Feb  1 06:36:17 EST 2026
