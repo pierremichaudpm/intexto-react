@@ -1623,6 +1623,38 @@ body {
 
 .plyr--audio {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-audio-hero {
+    margin: 20px 0;
+}
+
+.modal-audio-hero .plyr--audio {
+    border-radius: 12px;
+}
+
+.plyr--audio .plyr__controls {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.plyr--audio .plyr__control {
+    color: #fff;
+}
+
+.plyr--audio .plyr__control:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.plyr--audio .plyr__progress__buffer {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.plyr--audio .plyr__progress input[type="range"] {
+    color: #fff;
 }
 
 .modal-text {
