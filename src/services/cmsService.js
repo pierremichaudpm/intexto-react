@@ -524,9 +524,18 @@ class CMSService {
     const diffTime = nowDay - dateDay;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
+    // Handle future dates or negative values - show full date
+    if (diffDays < 0) {
+      return date.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    }
+
     if (diffDays === 0) return "Aujourd'hui";
     if (diffDays === 1) return "Hier";
-    if (diffDays < 7) return `Il y a ${diffDays} jours`;
+    if (diffDays > 0 && diffDays < 7) return `Il y a ${diffDays} jours`;
 
     return date.toLocaleDateString("fr-FR", {
       year: "numeric",
