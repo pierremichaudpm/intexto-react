@@ -25,25 +25,37 @@ const MagazineWidget = () => {
 
         if (data.data && data.data.length > 0) {
           const transformed = data.data.map((item) => {
-            const coverUrl = item.coverImage?.url;
-            const pdfUrl = item.pdfFile?.url;
-            const isAbsoluteCover = coverUrl?.startsWith("http");
-            const isAbsolutePdf = pdfUrl?.startsWith("http");
+            // Get the best quality cover image (prefer large format, fallback to original)
+            let coverUrl = null;
+            if (item.coverImage) {
+              // Use large format if available for better quality
+              if (item.coverImage.formats?.large?.url) {
+                coverUrl = item.coverImage.formats.large.url;
+              } else if (item.coverImage.url) {
+                coverUrl = item.coverImage.url;
+              }
+              // Ensure absolute URL
+              if (coverUrl && !coverUrl.startsWith("http")) {
+                coverUrl = `${API_URL}${coverUrl}`;
+              }
+            }
+
+            // Get PDF URL
+            let pdfUrl = null;
+            if (item.pdfFile?.url) {
+              pdfUrl = item.pdfFile.url;
+              // Ensure absolute URL
+              if (!pdfUrl.startsWith("http")) {
+                pdfUrl = `${API_URL}${pdfUrl}`;
+              }
+            }
 
             return {
               id: item.documentId,
               title: item.title,
               edition: item.edition,
-              coverImage: coverUrl
-                ? isAbsoluteCover
-                  ? coverUrl
-                  : `${API_URL}${coverUrl}`
-                : null,
-              pdfUrl: pdfUrl
-                ? isAbsolutePdf
-                  ? pdfUrl
-                  : `${API_URL}${pdfUrl}`
-                : null,
+              coverImage: coverUrl,
+              pdfUrl: pdfUrl,
               pages: item.pages || 0,
             };
           });
@@ -78,13 +90,32 @@ const MagazineWidget = () => {
   };
 
   const handleDownload = () => {
-    // Trigger PDF download
-    window.open(currentMagazine.pdfUrl, "_blank");
+    if (!currentMagazine.pdfUrl) {
+      alert("PDF non disponible");
+      return;
+    }
+    // Create a link and trigger download
+    const link = document.createElement("a");
+    link.href = currentMagazine.pdfUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    // For Cloudinary PDFs, add download parameter
+    if (currentMagazine.pdfUrl.includes("cloudinary")) {
+      link.href = currentMagazine.pdfUrl.replace(
+        "/upload/",
+        "/upload/fl_attachment/",
+      );
+    }
+    link.click();
   };
 
   const handlePreview = () => {
+    if (!currentMagazine.pdfUrl) {
+      alert("PDF non disponible");
+      return;
+    }
     // Open PDF in new tab for preview
-    window.open(currentMagazine.pdfUrl, "_blank");
+    window.open(currentMagazine.pdfUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -107,6 +138,7 @@ const MagazineWidget = () => {
               src={currentMagazine.coverImage}
               alt={`${currentMagazine.title} - ${currentMagazine.edition}`}
               className="magazine-cover-image"
+              loading="lazy"
             />
           ) : (
             <div className="magazine-cover-placeholder">
@@ -164,19 +196,21 @@ const MagazineWidget = () => {
 
       <div className="magazine-actions">
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           className="magazine-btn magazine-btn-preview"
           onClick={handlePreview}
+          disabled={!currentMagazine.pdfUrl}
         >
           <Eye size={18} />
           Feuilleter
         </motion.button>
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           className="magazine-btn magazine-btn-download"
           onClick={handleDownload}
+          disabled={!currentMagazine.pdfUrl}
         >
           <Download size={18} />
           Télécharger PDF
