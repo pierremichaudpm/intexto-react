@@ -31,7 +31,7 @@ const categoryLabels = {
   culture: "Culture",
 };
 
-const ContentModal = ({ content, isOpen, onClose }) => {
+const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
   const { content: allContent } = useContent();
   const videoRef = useRef(null);
   const audioRef = useRef(null);
@@ -312,8 +312,9 @@ const ContentModal = ({ content, isOpen, onClose }) => {
                           className={`modal-related-item ${story.type === "video" || story.type === "audio" ? "modal-related-item-media" : ""}`}
                           data-type={story.type}
                           onClick={() => {
-                            onClose();
-                            setTimeout(() => window.location.reload(), 100);
+                            if (onContentChange) {
+                              onContentChange(story);
+                            }
                           }}
                         >
                           <div className="modal-related-image-wrapper">

@@ -140,6 +140,7 @@ const HomePage = () => {
         content={selectedContent}
         isOpen={!!selectedContent}
         onClose={() => setSelectedContent(null)}
+        onContentChange={(newContent) => setSelectedContent(newContent)}
       />
     </>
   );
