@@ -1662,9 +1662,8 @@ body {
     aspect-ratio: 3/4;
     overflow: hidden;
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.25),
-        0 10px 20px rgba(0, 0, 0, 0.15),
-        0 0 0 1px rgba(0, 0, 0, 0.1);
+        0 10px 25px rgba(0, 0, 0, 0.12),
+        0 5px 10px rgba(0, 0, 0, 0.08);
     transform: perspective(1000px) rotateY(-2deg);
     transition:
         transform 0.4s ease,
@@ -1674,9 +1673,8 @@ body {
 .magazine-cover:hover {
     transform: perspective(1000px) rotateY(0deg) translateY(-4px);
     box-shadow:
-        0 30px 60px rgba(0, 0, 0, 0.3),
-        0 15px 30px rgba(0, 0, 0, 0.2),
-        0 0 0 1px rgba(0, 0, 0, 0.1);
+        0 15px 30px rgba(0, 0, 0, 0.15),
+        0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .magazine-cover-image {
