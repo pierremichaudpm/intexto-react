@@ -979,6 +979,7 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
+    padding-right: 350px;
 }
 
 .media-section-header {
