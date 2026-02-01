@@ -1,18 +1,18 @@
-// Category configuration - refined color palette with Haitian heritage influence
+// Category configuration - colors and labels for all categories
 export const categoryColors = {
-  actualite: "#1C1917", // Deep charcoal
-  politique: "#8B1538", // Burgundy (primary)
-  economie: "#166534", // Forest green
-  societe: "#7C3AED", // Purple
-  culture: "#1A7FA8", // Teal blue
-  sport: "#B45309", // Amber
-  tech: "#0F766E", // Teal
-  sante: "#DC2626", // Red
-  environnement: "#15803D", // Green
-  voyage: "#C4932A", // Gold (secondary)
-  international: "#2563EB", // Blue
-  opinion: "#6B21A8", // Deep purple
-  immigration: "#0D9488", // Cyan
+  actualite: "#0f0600",
+  politique: "#dd4f4f",
+  economie: "#2ecc71",
+  societe: "#9b59b6",
+  culture: "#008bff",
+  sport: "#e67e22",
+  tech: "#1abc9c",
+  sante: "#e74c3c",
+  environnement: "#27ae60",
+  voyage: "#dd9933",
+  international: "#3498db",
+  opinion: "#8e44ad",
+  immigration: "#16a085",
 };
 
 export const categoryLabels = {
