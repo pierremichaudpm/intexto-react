@@ -1,21 +1,22 @@
-import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Plus } from "lucide-react";
 import ContentCard from "../common/ContentCard";
 
 const MediaSection = ({ videos, audios, onContentClick }) => {
+  const [showAll, setShowAll] = useState(false);
   const allMedia = [...(videos || []), ...(audios || [])];
 
   if (allMedia.length === 0) return null;
 
-  const displayMedia = allMedia.slice(0, 6);
+  const initialCount = 3;
+  const displayMedia = showAll ? allMedia : allMedia.slice(0, initialCount);
+  const hasMore = allMedia.length > initialCount;
 
   return (
     <section className="media-section">
       <div className="media-section-container">
         <div className="media-section-header">
           <h2 className="media-section-title">Audio et Vidéo</h2>
-          <a href="#media" className="media-section-more">
-            Voir tout <ArrowRight size={18} />
-          </a>
         </div>
 
         <div className="media-grid">
@@ -27,6 +28,15 @@ const MediaSection = ({ videos, audios, onContentClick }) => {
             />
           ))}
         </div>
+
+        {hasMore && !showAll && (
+          <div className="media-load-more">
+            <button className="load-more-btn" onClick={() => setShowAll(true)}>
+              <Plus size={18} />
+              Plus de contenu
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
