@@ -12,6 +12,10 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
+# Build argument for Strapi URL
+ARG VITE_STRAPI_URL
+ENV VITE_STRAPI_URL=$VITE_STRAPI_URL
+
 # Build the app
 RUN npm run build
 
