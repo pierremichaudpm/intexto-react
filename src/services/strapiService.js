@@ -109,12 +109,21 @@ class StrapiService {
 
   /**
    * Transform Strapi image object to include all formats
+   * Handles both local uploads and Cloudinary URLs
    */
   transformImage(imageData) {
     if (!imageData) return null;
 
+    // Check if URL is already absolute (Cloudinary or external)
+    const isAbsoluteUrl =
+      imageData.url?.startsWith("http://") ||
+      imageData.url?.startsWith("https://");
+    const fullUrl = isAbsoluteUrl
+      ? imageData.url
+      : `${this.apiUrl}${imageData.url}`;
+
     return {
-      url: imageData.url,
+      url: fullUrl,
       formats: imageData.formats || {},
       alternativeText: imageData.alternativeText || "",
       width: imageData.width,
@@ -126,6 +135,16 @@ class StrapiService {
    * Transform Strapi article to app format
    */
   transformArticle(item) {
+    // Handle image URL (check if absolute or relative)
+    const imageUrl = item.image?.url;
+    const isAbsoluteUrl =
+      imageUrl?.startsWith("http://") || imageUrl?.startsWith("https://");
+    const fullImageUrl = imageUrl
+      ? isAbsoluteUrl
+        ? imageUrl
+        : `${this.apiUrl}${imageUrl}`
+      : this.getPlaceholderImage("article");
+
     return {
       id: item.documentId,
       title: item.title,
@@ -137,9 +156,7 @@ class StrapiService {
       date: item.publishedAt || item.createdAt,
       featured: item.featured || false,
       image: item.image ? this.transformImage(item.image) : null,
-      imageFallback: item.image?.url
-        ? `${this.apiUrl}${item.image.url}`
-        : this.getPlaceholderImage("article"),
+      imageFallback: fullImageUrl,
       readTime: item.readTime || "5 min",
       tags: item.tags || [],
       order: item.order ?? 999,
@@ -151,9 +168,26 @@ class StrapiService {
    */
   transformVideo(item) {
     // Prioritize videoFile (uploaded) over videoUrl (external like YouTube)
-    const mediaUrl = item.videoFile?.url
-      ? `${this.apiUrl}${item.videoFile.url}`
+    const videoFileUrl = item.videoFile?.url;
+    const isVideoAbsolute =
+      videoFileUrl?.startsWith("http://") ||
+      videoFileUrl?.startsWith("https://");
+    const mediaUrl = videoFileUrl
+      ? isVideoAbsolute
+        ? videoFileUrl
+        : `${this.apiUrl}${videoFileUrl}`
       : item.videoUrl;
+
+    // Handle thumbnail URL
+    const thumbnailUrl = item.thumbnail?.url;
+    const isThumbnailAbsolute =
+      thumbnailUrl?.startsWith("http://") ||
+      thumbnailUrl?.startsWith("https://");
+    const fullThumbnailUrl = thumbnailUrl
+      ? isThumbnailAbsolute
+        ? thumbnailUrl
+        : `${this.apiUrl}${thumbnailUrl}`
+      : this.getPlaceholderImage("video");
 
     return {
       id: item.documentId,
@@ -166,9 +200,7 @@ class StrapiService {
       date: item.publishedAt || item.createdAt,
       featured: item.featured || false,
       image: item.thumbnail ? this.transformImage(item.thumbnail) : null,
-      imageFallback: item.thumbnail?.url
-        ? `${this.apiUrl}${item.thumbnail.url}`
-        : this.getPlaceholderImage("video"),
+      imageFallback: fullThumbnailUrl,
       videoUrl: mediaUrl,
       duration: item.duration || "10 min",
       tags: item.tags || [],
@@ -181,9 +213,25 @@ class StrapiService {
    */
   transformAudio(item) {
     // Prioritize audioFile (uploaded) over audioUrl (external like SoundCloud)
-    const mediaUrl = item.audioFile?.url
-      ? `${this.apiUrl}${item.audioFile.url}`
+    const audioFileUrl = item.audioFile?.url;
+    const isAudioAbsolute =
+      audioFileUrl?.startsWith("http://") ||
+      audioFileUrl?.startsWith("https://");
+    const mediaUrl = audioFileUrl
+      ? isAudioAbsolute
+        ? audioFileUrl
+        : `${this.apiUrl}${audioFileUrl}`
       : item.audioUrl;
+
+    // Handle cover image URL
+    const coverUrl = item.coverImage?.url;
+    const isCoverAbsolute =
+      coverUrl?.startsWith("http://") || coverUrl?.startsWith("https://");
+    const fullCoverUrl = coverUrl
+      ? isCoverAbsolute
+        ? coverUrl
+        : `${this.apiUrl}${coverUrl}`
+      : this.getPlaceholderImage("audio");
 
     return {
       id: item.documentId,
@@ -196,9 +244,7 @@ class StrapiService {
       date: item.publishedAt || item.createdAt,
       featured: item.featured || false,
       image: item.coverImage ? this.transformImage(item.coverImage) : null,
-      imageFallback: item.coverImage?.url
-        ? `${this.apiUrl}${item.coverImage.url}`
-        : this.getPlaceholderImage("audio"),
+      imageFallback: fullCoverUrl,
       audioUrl: mediaUrl,
       duration: item.duration || "30 min",
       tags: item.tags || [],
