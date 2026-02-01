@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Menu, X } from "lucide-react";
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaXTwitter,
-  FaWhatsapp,
-} from "react-icons/fa6";
+import { SiFacebook, SiInstagram, SiX, SiWhatsapp } from "react-icons/si";
 
 const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -93,7 +88,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="Facebook"
                 >
-                  <FaFacebookF size={16} />
+                  <SiFacebook size={18} />
                 </a>
                 <a
                   href="https://www.instagram.com/intexto"
@@ -102,7 +97,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="Instagram"
                 >
-                  <FaInstagram size={18} />
+                  <SiInstagram size={18} />
                 </a>
                 <a
                   href="https://x.com/intexto"
@@ -111,7 +106,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="X (Twitter)"
                 >
-                  <FaXTwitter size={16} />
+                  <SiX size={16} />
                 </a>
                 <a
                   href="https://wa.me/15141234567"
@@ -120,7 +115,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="WhatsApp"
                 >
-                  <FaWhatsapp size={18} />
+                  <SiWhatsapp size={18} />
                 </a>
               </div>
 
@@ -221,7 +216,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   initial="closed"
                   animate="open"
                 >
-                  <FaFacebookF size={20} />
+                  <SiFacebook size={20} />
                 </motion.a>
                 <motion.a
                   href="https://www.instagram.com/intexto"
@@ -233,7 +228,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   initial="closed"
                   animate="open"
                 >
-                  <FaInstagram size={22} />
+                  <SiInstagram size={22} />
                 </motion.a>
                 <motion.a
                   href="https://x.com/intexto"
@@ -245,7 +240,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   initial="closed"
                   animate="open"
                 >
-                  <FaXTwitter size={20} />
+                  <SiX size={20} />
                 </motion.a>
                 <motion.a
                   href="https://wa.me/15141234567"
@@ -257,7 +252,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   initial="closed"
                   animate="open"
                 >
-                  <FaWhatsapp size={22} />
+                  <SiWhatsapp size={22} />
                 </motion.a>
               </div>
             </div>
