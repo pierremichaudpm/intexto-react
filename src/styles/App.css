@@ -2280,9 +2280,16 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .content-section {
+        margin-right: 0;
+    }
+
     .content-sidebar {
         position: relative;
         top: 0;
+        right: 0;
+        width: 100%;
+        margin-top: 2rem;
     }
 
     .hero-carousel-nav-left {

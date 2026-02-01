@@ -39,10 +39,19 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
       // Use querySelector to find modal-content and scroll it
       const modalContent = document.querySelector(".modal-content");
       if (modalContent) {
-        modalContent.scrollTop = 0;
+        modalContent.scrollTo({ top: 0, behavior: "instant" });
+      }
+      // Also scroll the overlay for mobile where overlay might be scrollable
+      const modalOverlay = document.querySelector(".modal-overlay");
+      if (modalOverlay) {
+        modalOverlay.scrollTo({ top: 0, behavior: "instant" });
+      }
+      // Fallback: scroll window for mobile full-screen modals
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "instant" });
       }
     }
-  }, [content, isOpen]);
+  }, [content, isOpen, isMobile]);
 
   // Initialize Plyr when modal opens with media
   useEffect(() => {
