@@ -1,29 +1,71 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Download, Eye, ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
+import {
+  Download,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  BookOpen,
+} from "lucide-react";
+
+const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
 const MagazineWidget = () => {
   const [currentIssue, setCurrentIssue] = useState(0);
+  const [issues, setIssues] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sample magazine issues - replace with real data
-  const issues = [
-    {
-      id: 1,
-      title: "Intexto Magazine",
-      edition: "Édition Janvier 2026",
-      coverImage: "/Images/magazine-cover-jan.jpg", // You'll need to add actual cover images
-      pdfUrl: "/pdfs/intexto-janvier-2026.pdf",
-      pages: 24,
-    },
-    {
-      id: 2,
-      title: "Intexto Magazine",
-      edition: "Édition Décembre 2025",
-      coverImage: "/Images/magazine-cover-dec.jpg",
-      pdfUrl: "/pdfs/intexto-decembre-2025.pdf",
-      pages: 28,
-    },
-  ];
+  useEffect(() => {
+    const fetchMagazines = async () => {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/magazines?populate=*&sort=order:asc,publishedDate:desc`,
+        );
+        const data = await response.json();
+
+        if (data.data && data.data.length > 0) {
+          const transformed = data.data.map((item) => {
+            const coverUrl = item.coverImage?.url;
+            const pdfUrl = item.pdfFile?.url;
+            const isAbsoluteCover = coverUrl?.startsWith("http");
+            const isAbsolutePdf = pdfUrl?.startsWith("http");
+
+            return {
+              id: item.documentId,
+              title: item.title,
+              edition: item.edition,
+              coverImage: coverUrl
+                ? isAbsoluteCover
+                  ? coverUrl
+                  : `${API_URL}${coverUrl}`
+                : null,
+              pdfUrl: pdfUrl
+                ? isAbsolutePdf
+                  ? pdfUrl
+                  : `${API_URL}${pdfUrl}`
+                : null,
+              pages: item.pages || 0,
+            };
+          });
+          setIssues(transformed);
+        }
+      } catch (error) {
+        console.error("Error fetching magazines:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMagazines();
+  }, []);
+
+  if (loading) {
+    return null;
+  }
+
+  if (issues.length === 0) {
+    return null;
+  }
 
   const currentMagazine = issues[currentIssue];
 
@@ -60,15 +102,24 @@ const MagazineWidget = () => {
           transition={{ duration: 0.5 }}
           className="magazine-cover"
         >
-          {/* Fallback if no cover image */}
-          <div className="magazine-cover-placeholder">
-            <BookOpen size={64} />
-            <div className="magazine-cover-text">
-              <h4>{currentMagazine.title}</h4>
-              <p>{currentMagazine.edition}</p>
-              <span className="magazine-pages">{currentMagazine.pages} pages</span>
+          {currentMagazine.coverImage ? (
+            <img
+              src={currentMagazine.coverImage}
+              alt={`${currentMagazine.title} - ${currentMagazine.edition}`}
+              className="magazine-cover-image"
+            />
+          ) : (
+            <div className="magazine-cover-placeholder">
+              <BookOpen size={64} />
+              <div className="magazine-cover-text">
+                <h4>{currentMagazine.title}</h4>
+                <p>{currentMagazine.edition}</p>
+                <span className="magazine-pages">
+                  {currentMagazine.pages} pages
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Navigation arrows */}
           {issues.length > 1 && (
