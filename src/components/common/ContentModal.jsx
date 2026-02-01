@@ -98,8 +98,13 @@ const ContentModal = ({ content, isOpen, onClose }) => {
     excerpt,
     author,
     date,
-    mediaUrl,
+    videoUrl,
+    audioUrl,
   } = content;
+
+  // Use videoUrl or audioUrl depending on content type
+  const mediaUrl =
+    type === "video" ? videoUrl : type === "audio" ? audioUrl : null;
 
   // Get related stories from curated lineup
   const getRelatedStories = () => {
