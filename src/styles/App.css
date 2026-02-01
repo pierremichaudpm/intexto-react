@@ -3174,12 +3174,17 @@ p {
     }
 
     .hero-side-image-wrapper {
-        height: 160px;
+        height: 190px;
     }
 
     .hero-side-body {
         height: auto;
-        padding: 0.75rem;
+        padding: 1rem;
+    }
+
+    .hero-side-title {
+        font-size: 0.95rem;
+        line-height: 1.3;
     }
 
     .hero-main-content {
