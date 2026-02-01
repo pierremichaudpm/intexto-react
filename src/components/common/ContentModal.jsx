@@ -210,14 +210,39 @@ const ContentModal = ({ content, isOpen, onClose }) => {
                 <X size={24} />
               </button>
 
-              <ResponsiveImage
-                image={image}
-                fallbackUrl={imageFallback}
-                alt={title}
-                className="modal-image"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
-                loading="eager"
-              />
+              {/* Show video/audio player instead of image for media content */}
+              {type === "video" && mediaUrl ? (
+                <div className="modal-media-player modal-media-hero">
+                  <video ref={videoRef} controls playsInline>
+                    <source src={mediaUrl} type="video/mp4" />
+                  </video>
+                </div>
+              ) : type === "audio" && mediaUrl ? (
+                <>
+                  <ResponsiveImage
+                    image={image}
+                    fallbackUrl={imageFallback}
+                    alt={title}
+                    className="modal-image"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
+                    loading="eager"
+                  />
+                  <div className="modal-media-player modal-audio-hero">
+                    <audio ref={audioRef} controls>
+                      <source src={mediaUrl} type="audio/mp3" />
+                    </audio>
+                  </div>
+                </>
+              ) : (
+                <ResponsiveImage
+                  image={image}
+                  fallbackUrl={imageFallback}
+                  alt={title}
+                  className="modal-image"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
+                  loading="eager"
+                />
+              )}
 
               <div className="modal-body">
                 <span
@@ -273,22 +298,6 @@ const ContentModal = ({ content, isOpen, onClose }) => {
                     </button>
                   </div>
                 </div>
-
-                {type === "video" && mediaUrl && (
-                  <div className="modal-media-player">
-                    <video ref={videoRef} controls playsInline>
-                      <source src={mediaUrl} type="video/mp4" />
-                    </video>
-                  </div>
-                )}
-
-                {type === "audio" && mediaUrl && (
-                  <div className="modal-media-player">
-                    <audio ref={audioRef} controls>
-                      <source src={mediaUrl} type="audio/mp3" />
-                    </audio>
-                  </div>
-                )}
 
                 <div className="modal-text">{content.content}</div>
 
