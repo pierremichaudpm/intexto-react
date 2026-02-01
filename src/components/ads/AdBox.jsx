@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const AdBox = ({ position = "sidebar" }) => {
   const adSizes = {
-    sidebar: "300×600",
+    sidebar: "300×250",
     "sidebar-half": "300×250",
   };
 

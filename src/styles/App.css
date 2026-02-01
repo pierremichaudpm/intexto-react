@@ -1075,6 +1075,10 @@ body {
     top: 0;
     right: 2rem;
     width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 2rem;
 }
 
 .content-grid {
@@ -1281,7 +1285,7 @@ body {
 }
 
 .promo-box-content {
-    height: 600px;
+    height: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1289,10 +1293,6 @@ body {
     background: #fff;
     border: 4px solid #dd4f4f;
     border-radius: 12px;
-}
-
-.promo-box-sidebar-half .promo-box-content {
-    height: 250px;
 }
 
 .promo-box-size {
@@ -1612,7 +1612,6 @@ body {
         0 10px 40px rgba(0, 0, 0, 0.12),
         0 4px 12px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    margin-bottom: 2rem;
     border: 1px solid rgba(0, 0, 0, 0.06);
     position: relative;
     overflow: hidden;
