@@ -27,6 +27,11 @@ const HomePage = () => {
   const allVideos = content.filter((item) => item.type === "video");
   const allAudios = content.filter((item) => item.type === "audio");
 
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Handle direct URL access - open modal if slug is in URL
   useEffect(() => {
     if (slug && content.length > 0) {
