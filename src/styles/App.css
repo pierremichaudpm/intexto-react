@@ -160,6 +160,10 @@ body {
     transform: translateY(-2px);
 }
 
+.header-social-btn.whatsapp:hover {
+    background: #25d366;
+}
+
 .search-btn,
 .mobile-menu-toggle {
     background: none;
