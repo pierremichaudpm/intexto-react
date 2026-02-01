@@ -217,8 +217,13 @@ p {
     background: #000;
 }
 
-.header-social-btn.whatsapp,
+.header-social-btn.linkedin,
 .header-social-links a:nth-child(4) {
+    background: #0a66c2;
+}
+
+.header-social-btn.whatsapp,
+.header-social-links a:nth-child(5) {
     background: #25d366;
 }
 
@@ -346,6 +351,10 @@ p {
 
 .mobile-social-btn.twitter {
     background: #000;
+}
+
+.mobile-social-btn.linkedin {
+    background: #0a66c2;
 }
 
 .mobile-social-btn.whatsapp {
@@ -703,6 +712,7 @@ p {
     width: fit-content;
     border: 1px solid rgba(255, 255, 255, 0.15);
     max-width: max-content;
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 .hero-side-title {
@@ -1238,6 +1248,7 @@ p {
 
 .content-card[data-type="video"] .content-card-category {
     border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 /* AUDIO CARDS - Distinct black styling */
@@ -1281,6 +1292,7 @@ p {
 
 .content-card[data-type="audio"] .content-card-category {
     border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 /* Media cards - duration badge */
@@ -2962,6 +2974,10 @@ p {
     background: #000;
 }
 
+.social-links a.linkedin {
+    background: #0a66c2;
+}
+
 .social-links a.whatsapp {
     background: #25d366;
 }
@@ -3115,27 +3131,31 @@ p {
 
     /* Hero mobile */
     .hero-section-new {
-        padding: 0;
+        padding: 1rem 0 1.5rem;
     }
 
     .hero-container-new {
-        padding: 0 1rem;
+        padding: 0 2rem;
+        gap: 1.5rem;
     }
 
     .hero-main-carousel {
         height: 350px;
+        border-radius: 12px;
     }
 
     .hero-side-articles {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
     .hero-side-card {
         height: auto;
+        border-radius: 12px;
     }
 
     .hero-side-image-wrapper {
-        height: 190px;
+        height: 160px;
     }
 
     .hero-side-body {
@@ -3143,17 +3163,41 @@ p {
         padding: 0.75rem;
     }
 
+    .hero-main-content {
+        padding: 1.5rem;
+    }
+
     .hero-main-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+    }
+
+    .hero-main-category {
+        padding: 0.35rem 0.9rem;
+        font-size: 0.7rem;
     }
 
     .hero-side-title {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         line-height: 1.2;
     }
 
     .hero-side-meta {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
+    }
+
+    .hero-side-category {
+        font-size: 0.6rem;
+        padding: 0.25rem 0.6rem;
+    }
+
+    .hero-side-media-badge {
+        width: 45px;
+        height: 45px;
+    }
+
+    .hero-side-media-badge svg {
+        width: 22px;
+        height: 22px;
     }
 
     .hero-side-more-link {
@@ -3163,16 +3207,40 @@ p {
 
     .hero-carousel-nav-left,
     .hero-carousel-nav-right {
-        width: 40px;
-        height: 40px;
+        width: 28px;
+        height: 28px;
     }
 
     .hero-carousel-nav-left {
-        left: 0.5rem;
+        left: 0.25rem;
     }
 
     .hero-carousel-nav-right {
-        right: 0.5rem;
+        right: 0.25rem;
+    }
+
+    .hero-nav-btn {
+        width: 28px;
+        height: 28px;
+        top: calc(50% - 15px);
+    }
+
+    .hero-nav-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .hero-nav-left {
+        left: 0.25rem;
+    }
+
+    .hero-nav-right {
+        right: 0.25rem;
+    }
+
+    .hero-carousel-nav-left,
+    .hero-carousel-nav-right {
+        top: calc(50% - 15px);
     }
 
     .content-grid {

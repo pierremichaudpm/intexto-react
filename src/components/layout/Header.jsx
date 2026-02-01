@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Menu, X } from "lucide-react";
-import { SiFacebook, SiInstagram, SiX, SiWhatsapp } from "react-icons/si";
+import {
+  SiFacebook,
+  SiInstagram,
+  SiX,
+  SiWhatsapp,
+  SiLinkedin,
+} from "react-icons/si";
 
 const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -82,7 +88,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
               {/* Social media links */}
               <div className="header-social-links">
                 <a
-                  href="https://www.facebook.com/intexto"
+                  href="https://www.facebook.com/jnnuma/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="header-social-btn"
@@ -91,7 +97,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   <SiFacebook size={18} />
                 </a>
                 <a
-                  href="https://www.instagram.com/intexto"
+                  href="https://www.instagram.com/jnnuma/reels/?hl=en"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="header-social-btn"
@@ -100,7 +106,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   <SiInstagram size={18} />
                 </a>
                 <a
-                  href="https://x.com/intexto"
+                  href="https://x.com/jeannuma"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="header-social-btn"
@@ -109,7 +115,16 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   <SiX size={16} />
                 </a>
                 <a
-                  href="https://wa.me/15141234567"
+                  href="https://www.linkedin.com/in/jean-numa-goudou-a27ab130/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="header-social-btn"
+                  title="LinkedIn"
+                >
+                  <SiLinkedin size={18} />
+                </a>
+                <a
+                  href="https://wa.me/14383951256"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="header-social-btn"
@@ -207,7 +222,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
               {/* Social media links */}
               <div className="mobile-menu-social">
                 <motion.a
-                  href="https://www.facebook.com/intexto"
+                  href="https://www.facebook.com/jnnuma/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mobile-social-btn facebook"
@@ -219,7 +234,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   <SiFacebook size={20} />
                 </motion.a>
                 <motion.a
-                  href="https://www.instagram.com/intexto"
+                  href="https://www.instagram.com/jnnuma/reels/?hl=en"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mobile-social-btn instagram"
@@ -231,7 +246,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   <SiInstagram size={22} />
                 </motion.a>
                 <motion.a
-                  href="https://x.com/intexto"
+                  href="https://x.com/jeannuma"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mobile-social-btn twitter"
@@ -243,11 +258,23 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   <SiX size={20} />
                 </motion.a>
                 <motion.a
-                  href="https://wa.me/15141234567"
+                  href="https://www.linkedin.com/in/jean-numa-goudou-a27ab130/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mobile-social-btn linkedin"
+                  custom={6}
+                  variants={itemVariants}
+                  initial="closed"
+                  animate="open"
+                >
+                  <SiLinkedin size={20} />
+                </motion.a>
+                <motion.a
+                  href="https://wa.me/14383951256"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mobile-social-btn whatsapp"
-                  custom={6}
+                  custom={7}
                   variants={itemVariants}
                   initial="closed"
                   animate="open"

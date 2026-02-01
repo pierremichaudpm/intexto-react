@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Mail, ArrowRight, Check } from "lucide-react";
-import { SiFacebook, SiInstagram, SiX, SiWhatsapp } from "react-icons/si";
+import {
+  SiFacebook,
+  SiInstagram,
+  SiX,
+  SiWhatsapp,
+  SiLinkedin,
+} from "react-icons/si";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -91,7 +97,7 @@ const Footer = () => {
               <h3>Suivez-nous</h3>
               <div className="social-links">
                 <a
-                  href="https://www.facebook.com/intexto"
+                  href="https://www.facebook.com/jnnuma/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
@@ -100,7 +106,7 @@ const Footer = () => {
                   <SiFacebook size={18} />
                 </a>
                 <a
-                  href="https://www.instagram.com/intexto"
+                  href="https://www.instagram.com/jnnuma/reels/?hl=en"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -109,7 +115,7 @@ const Footer = () => {
                   <SiInstagram size={18} />
                 </a>
                 <a
-                  href="https://x.com/intexto"
+                  href="https://x.com/jeannuma"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="X"
@@ -118,7 +124,16 @@ const Footer = () => {
                   <SiX size={16} />
                 </a>
                 <a
-                  href="https://wa.me/15141234567"
+                  href="https://www.linkedin.com/in/jean-numa-goudou-a27ab130/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="linkedin"
+                >
+                  <SiLinkedin size={18} />
+                </a>
+                <a
+                  href="https://wa.me/14383951256"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="WhatsApp"
