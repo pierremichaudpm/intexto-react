@@ -127,13 +127,6 @@ const HomePage = () => {
                   onClick={handleLoadMore}
                 >
                   Charger plus d'articles
-                  <motion.span
-                    animate={{ y: [0, 3, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
-                    style={{ display: "inline-block", marginLeft: "8px" }}
-                  >
-                    ↓
-                  </motion.span>
                 </motion.button>
               </div>
             )}
