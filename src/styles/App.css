@@ -970,6 +970,7 @@ body {
 .content-card[data-type="video"] {
     background: #000000;
     border: 2px solid #1a1a1a;
+    max-height: 380px;
 }
 
 .content-card[data-type="video"] .content-card-body {
@@ -1000,14 +1001,15 @@ body {
 .content-card[data-type="audio"] {
     background: #000000;
     border: 2px solid #1a1a1a;
+    max-height: 380px;
 }
 
 .content-card[data-type="audio"] .content-card-image-wrapper {
-    height: 200px;
+    height: 160px;
 }
 
 .content-card[data-type="video"] .content-card-image-wrapper {
-    height: 200px;
+    height: 160px;
 }
 
 .content-card[data-type="audio"] .content-card-body {
@@ -1790,6 +1792,29 @@ body {
 
 .modal-text a:hover {
     color: var(--color-cyan);
+}
+
+.modal-text img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.modal-text figure {
+    max-width: 100%;
+    margin: 1.5rem 0;
+}
+
+.modal-text figure img {
+    margin: 0;
+}
+
+.modal-text figcaption {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    text-align: center;
+    margin-top: 0.5rem;
 }
 
 /* MODAL RELATED STORIES */
