@@ -1,13 +1,7 @@
-import { useContent } from '../../context/ContentContext';
-import { Trash2, Star } from 'lucide-react';
-import cmsService from '../../services/cmsService';
-
-const categoryLabels = {
-  actualite: 'Actualité',
-  politique: 'Politique',
-  voyage: 'Voyage',
-  culture: 'Culture'
-};
+import { useContent } from "../../context/ContentContext";
+import { Trash2, Star } from "lucide-react";
+import cmsService from "../../services/cmsService";
+import { getCategoryLabel } from "../../config/categories";
 
 const ContentList = () => {
   const { content, deleteContent } = useContent();
@@ -17,7 +11,7 @@ const ContentList = () => {
       try {
         await deleteContent(id);
       } catch (error) {
-        alert('❌ Erreur lors de la suppression');
+        alert("❌ Erreur lors de la suppression");
       }
     }
   };
@@ -37,7 +31,8 @@ const ContentList = () => {
           <div className="content-item-info">
             <h4>{item.title}</h4>
             <div className="content-item-meta">
-              {categoryLabels[item.category]} • {item.type} • {cmsService.formatDate(item.date)}
+              {getCategoryLabel(item.category)} • {item.type} •{" "}
+              {cmsService.formatDate(item.date)}
               {item.featured && (
                 <span className="featured-badge">
                   <Star size={14} fill="currentColor" /> À la une

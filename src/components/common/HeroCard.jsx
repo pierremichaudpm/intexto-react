@@ -1,20 +1,7 @@
 import { motion } from "framer-motion";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "./ResponsiveImage";
-
-const categoryColors = {
-  actualite: "#0f0600",
-  politique: "#dd4f4f",
-  voyage: "#dd9933",
-  culture: "#008bff",
-};
-
-const categoryLabels = {
-  actualite: "Actualité",
-  politique: "Politique",
-  voyage: "Voyage",
-  culture: "Culture",
-};
+import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const HeroCard = ({ content, size = "medium", onClick }) => {
   const { title, category, image, imageFallback, author, date } = content;
@@ -41,9 +28,9 @@ const HeroCard = ({ content, size = "medium", onClick }) => {
       <div className="hero-card-overlay">
         <span
           className="hero-card-category"
-          style={{ backgroundColor: categoryColors[category] }}
+          style={{ backgroundColor: getCategoryColor(category) }}
         >
-          {categoryLabels[category]}
+          {getCategoryLabel(category)}
         </span>
 
         <h2 className="hero-card-title">{title}</h2>

@@ -2,20 +2,7 @@ import { motion } from "framer-motion";
 import { Video, Headphones } from "lucide-react";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "./ResponsiveImage";
-
-const categoryColors = {
-  actualite: "#0f0600",
-  politique: "#dd4f4f",
-  voyage: "#dd9933",
-  culture: "#008bff",
-};
-
-const categoryLabels = {
-  actualite: "Actualité",
-  politique: "Politique",
-  voyage: "Voyage",
-  culture: "Culture",
-};
+import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const ContentCard = ({ content, onClick, delay = 0 }) => {
   const { type, title, category, image, imageFallback, excerpt, author, date } =
@@ -55,9 +42,9 @@ const ContentCard = ({ content, onClick, delay = 0 }) => {
       <div className="content-card-body">
         <span
           className="content-card-category"
-          style={{ backgroundColor: categoryColors[category] }}
+          style={{ backgroundColor: getCategoryColor(category) }}
         >
-          {categoryLabels[category]}
+          {getCategoryLabel(category)}
         </span>
 
         <h3 className="content-card-title">{title}</h3>

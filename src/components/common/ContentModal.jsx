@@ -16,20 +16,7 @@ import SEOHead from "../seo/SEOHead";
 import StructuredData from "../seo/StructuredData";
 import Header from "../layout/Header";
 import ResponsiveImage from "./ResponsiveImage";
-
-const categoryColors = {
-  actualite: "#0f0600",
-  politique: "#dd4f4f",
-  voyage: "#dd9933",
-  culture: "#008bff",
-};
-
-const categoryLabels = {
-  actualite: "Actualité",
-  politique: "Politique",
-  voyage: "Voyage",
-  culture: "Culture",
-};
+import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
   const { content: allContent } = useContent();
@@ -238,9 +225,9 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
               <div className="modal-body">
                 <span
                   className="content-card-category"
-                  style={{ backgroundColor: categoryColors[category] }}
+                  style={{ backgroundColor: getCategoryColor(category) }}
                 >
-                  {categoryLabels[category]}
+                  {getCategoryLabel(category)}
                 </span>
 
                 <h1 className="modal-title">{title}</h1>
@@ -351,10 +338,12 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                             <span
                               className="modal-related-category"
                               style={{
-                                backgroundColor: categoryColors[story.category],
+                                backgroundColor: getCategoryColor(
+                                  story.category,
+                                ),
                               }}
                             >
-                              {categoryLabels[story.category]}
+                              {getCategoryLabel(story.category)}
                             </span>
                             <h4 className="modal-related-title-text">
                               {story.title}

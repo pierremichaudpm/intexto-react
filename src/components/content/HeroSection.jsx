@@ -10,20 +10,7 @@ import {
 import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "../common/ResponsiveImage";
-
-const categoryColors = {
-  actualite: "#0f0600",
-  politique: "#dd4f4f",
-  voyage: "#dd9933",
-  culture: "#008bff",
-};
-
-const categoryLabels = {
-  actualite: "Actualité",
-  politique: "Politique",
-  voyage: "Voyage",
-  culture: "Culture",
-};
+import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const HeroSection = ({ onContentClick }) => {
   const { content } = useContent();
@@ -114,9 +101,11 @@ const HeroSection = ({ onContentClick }) => {
               <div className="hero-main-content">
                 <span
                   className="hero-main-category"
-                  style={{ backgroundColor: categoryColors[current.category] }}
+                  style={{
+                    backgroundColor: getCategoryColor(current.category),
+                  }}
                 >
-                  {categoryLabels[current.category]}
+                  {getCategoryLabel(current.category)}
                 </span>
                 <h2 className="hero-main-title">{current.title}</h2>
               </div>
@@ -173,10 +162,10 @@ const HeroSection = ({ onContentClick }) => {
                 <span
                   className="hero-side-category"
                   style={{
-                    backgroundColor: categoryColors[featuredVideo.category],
+                    backgroundColor: getCategoryColor(featuredVideo.category),
                   }}
                 >
-                  {categoryLabels[featuredVideo.category]}
+                  {getCategoryLabel(featuredVideo.category)}
                 </span>
                 <h3 className="hero-side-title">{featuredVideo.title}</h3>
                 <div className="hero-side-meta">
@@ -210,10 +199,10 @@ const HeroSection = ({ onContentClick }) => {
                 <span
                   className="hero-side-category"
                   style={{
-                    backgroundColor: categoryColors[featuredAudio.category],
+                    backgroundColor: getCategoryColor(featuredAudio.category),
                   }}
                 >
-                  {categoryLabels[featuredAudio.category]}
+                  {getCategoryLabel(featuredAudio.category)}
                 </span>
                 <h3 className="hero-side-title">{featuredAudio.title}</h3>
                 <div className="hero-side-meta">
