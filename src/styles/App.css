@@ -844,24 +844,29 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem 2rem;
+    position: relative;
 }
 
 .main-content-grid {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 2rem;
-    align-items: start;
+    display: block;
 }
 
 .content-section {
-    min-width: 0;
+    margin-right: 332px;
+}
+
+.content-sidebar {
+    position: absolute;
+    top: 0;
+    right: 2rem;
+    width: 300px;
 }
 
 .content-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
 }
 
 /* CONTENT CARD */
@@ -1063,14 +1068,6 @@ body {
 
 .content-card-date {
     font-size: 0.85rem;
-}
-
-/* SIDEBAR */
-.content-sidebar {
-    position: sticky;
-    top: 100px;
-    height: fit-content;
-    align-self: start;
 }
 
 /* PROMO BOX */
