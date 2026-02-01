@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Plyr from "plyr";
 import "plyr/dist/plyr.css";
-import { BlocksRenderer } from "@strapi/blocks-react-renderer";
+
 import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
 import SEOHead from "../seo/SEOHead";
@@ -288,13 +288,9 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                 </div>
 
                 <div className="modal-text">
-                  {Array.isArray(content.content) ? (
-                    <BlocksRenderer content={content.content} />
-                  ) : (
-                    content.content
-                      ?.split("\n\n")
-                      .map((paragraph, index) => <p key={index}>{paragraph}</p>)
-                  )}
+                  {content.content?.split("\n\n").map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))}
                 </div>
 
                 {/* Related Stories */}
