@@ -150,6 +150,11 @@ class StrapiService {
    * Transform Strapi video to app format
    */
   transformVideo(item) {
+    // Prioritize videoFile (uploaded) over videoUrl (external like YouTube)
+    const mediaUrl = item.videoFile?.url
+      ? `${this.apiUrl}${item.videoFile.url}`
+      : item.videoUrl;
+
     return {
       id: item.documentId,
       title: item.title,
@@ -164,7 +169,7 @@ class StrapiService {
       imageFallback: item.thumbnail?.url
         ? `${this.apiUrl}${item.thumbnail.url}`
         : this.getPlaceholderImage("video"),
-      videoUrl: item.videoUrl,
+      videoUrl: mediaUrl,
       duration: item.duration || "10 min",
       tags: item.tags || [],
       order: item.order ?? 999,
@@ -175,6 +180,11 @@ class StrapiService {
    * Transform Strapi audio to app format
    */
   transformAudio(item) {
+    // Prioritize audioFile (uploaded) over audioUrl (external like SoundCloud)
+    const mediaUrl = item.audioFile?.url
+      ? `${this.apiUrl}${item.audioFile.url}`
+      : item.audioUrl;
+
     return {
       id: item.documentId,
       title: item.title,
@@ -189,7 +199,7 @@ class StrapiService {
       imageFallback: item.coverImage?.url
         ? `${this.apiUrl}${item.coverImage.url}`
         : this.getPlaceholderImage("audio"),
-      audioUrl: item.audioUrl,
+      audioUrl: mediaUrl,
       duration: item.duration || "30 min",
       tags: item.tags || [],
       order: item.order ?? 999,
