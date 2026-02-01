@@ -1897,7 +1897,7 @@ p {
 
 .magazine-btn-preview:hover {
     background: #e9ecef;
-    border-color: var(--color-cyan);
+    border-color: #074999;
 }
 
 .magazine-btn-download {
