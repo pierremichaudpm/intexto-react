@@ -3238,28 +3238,43 @@ p {
         right: 0.25rem;
     }
 
+    /* Hide arrows on mobile - swipe is available */
     .hero-nav-btn {
-        width: 28px;
-        height: 28px;
-        top: calc(50% - 15px);
+        display: none;
     }
 
-    .hero-nav-btn svg {
-        width: 14px;
-        height: 14px;
-    }
-
-    .hero-nav-left {
-        left: 0.25rem;
-    }
-
+    .hero-nav-left,
     .hero-nav-right {
-        right: 0.25rem;
+        display: none;
     }
 
     .hero-carousel-nav-left,
     .hero-carousel-nav-right {
         top: calc(50% - 15px);
+    }
+
+    /* Subtle line indicators on mobile */
+    .hero-dots {
+        bottom: 1rem;
+        gap: 6px;
+    }
+
+    .hero-dot {
+        width: 20px;
+        height: 2px;
+        border-radius: 1px;
+        background: rgba(255, 255, 255, 0.35);
+    }
+
+    .hero-dot.active {
+        width: 28px;
+        height: 2px;
+        border-radius: 1px;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-dot:hover {
+        background: rgba(255, 255, 255, 0.6);
     }
 
     .content-grid {
