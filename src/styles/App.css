@@ -1005,9 +1005,10 @@ p {
     flex-wrap: nowrap;
     overflow-x: auto;
     padding: 1rem;
-    background: rgba(0, 0, 0, 0.02);
+    background: white;
     border-radius: 12px;
     -webkit-overflow-scrolling: touch;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .category-filter-logo {
