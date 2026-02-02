@@ -1485,6 +1485,8 @@ p {
     height: 44px;
     background: none;
     border: none;
+    box-shadow: none;
+    outline: none;
     cursor: pointer;
     display: flex;
     align-items: center;
