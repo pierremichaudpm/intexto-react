@@ -140,6 +140,7 @@ const HeroSection = ({ onContentClick }) => {
                   alt={current.title}
                   className="hero-main-image"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 60vw"
+                  priority={currentIndex === 0}
                 />
                 <div className="hero-main-gradient" />
               </div>

@@ -22,7 +22,11 @@ const ResponsiveImage = ({
   sizes = "100vw",
   loading = "lazy",
   fallbackUrl = null,
+  priority = false,
 }) => {
+  // Use eager loading for priority images (above the fold / LCP)
+  const imgLoading = priority ? "eager" : loading;
+  const fetchPriority = priority ? "high" : undefined;
   // If no image object, use fallback
   if (!image && !fallbackUrl) {
     return null;
@@ -31,7 +35,13 @@ const ResponsiveImage = ({
   // If image is just a string URL (legacy support)
   if (typeof image === "string") {
     return (
-      <img src={image} alt={alt} className={className} loading={loading} />
+      <img
+        src={image}
+        alt={alt}
+        className={className}
+        loading={imgLoading}
+        fetchPriority={fetchPriority}
+      />
     );
   }
 
@@ -43,7 +53,8 @@ const ResponsiveImage = ({
         src={src}
         alt={alt || image?.alternativeText || ""}
         className={className}
-        loading={loading}
+        loading={imgLoading}
+        fetchPriority={fetchPriority}
       />
     );
   }
@@ -97,7 +108,8 @@ const ResponsiveImage = ({
       sizes={sizes}
       alt={alt || image.alternativeText || ""}
       className={className}
-      loading={loading}
+      loading={imgLoading}
+      fetchPriority={fetchPriority}
       width={image.width}
       height={image.height}
     />

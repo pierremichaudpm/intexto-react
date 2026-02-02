@@ -40,14 +40,37 @@ const StructuredData = ({ content }) => {
   };
 
   // Add video-specific properties
-  if (type === "video" && content.mediaUrl) {
-    articleSchema.contentUrl = content.mediaUrl;
+  if (type === "video") {
     articleSchema.uploadDate = date;
+    articleSchema.thumbnailUrl = image;
+    if (content.mediaUrl) {
+      articleSchema.contentUrl = content.mediaUrl;
+    }
+    if (content.duration) {
+      // Convert duration like "12:34" to ISO 8601 format "PT12M34S"
+      const parts = content.duration.split(":");
+      if (parts.length === 2) {
+        articleSchema.duration = `PT${parts[0]}M${parts[1]}S`;
+      } else if (parts.length === 3) {
+        articleSchema.duration = `PT${parts[0]}H${parts[1]}M${parts[2]}S`;
+      }
+    }
   }
 
   // Add audio-specific properties
-  if (type === "audio" && content.mediaUrl) {
-    articleSchema.contentUrl = content.mediaUrl;
+  if (type === "audio") {
+    articleSchema.uploadDate = date;
+    if (content.mediaUrl) {
+      articleSchema.contentUrl = content.mediaUrl;
+    }
+    if (content.duration) {
+      const parts = content.duration.split(":");
+      if (parts.length === 2) {
+        articleSchema.duration = `PT${parts[0]}M${parts[1]}S`;
+      } else if (parts.length === 3) {
+        articleSchema.duration = `PT${parts[0]}H${parts[1]}M${parts[2]}S`;
+      }
+    }
   }
 
   // Organization schema for the site
@@ -60,9 +83,10 @@ const StructuredData = ({ content }) => {
     description:
       "Journal haïtien à Montréal - Actualités, politique, culture et événements de la communauté haïtienne",
     sameAs: [
-      "https://www.facebook.com/intexto",
-      "https://twitter.com/intexto",
+      "https://www.facebook.com/jnnuma/",
+      "https://x.com/jeannuma",
       "https://www.instagram.com/intexto",
+      "https://www.youtube.com/@intexto",
     ],
   };
 
