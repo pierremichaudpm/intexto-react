@@ -3340,7 +3340,7 @@ p {
     .modal-close-mobile {
         display: flex !important;
         position: fixed !important;
-        top: 1rem !important;
+        top: 1.25rem !important;
         right: 1rem !important;
         z-index: 3200 !important;
         background: none !important;
