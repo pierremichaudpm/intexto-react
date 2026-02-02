@@ -11,8 +11,8 @@ const categories = [
   { id: "sport", label: "Sport" },
   { id: "sante", label: "Santé" },
   { id: "opinion", label: "Opinion" },
-  { id: "voyage", label: "Voyage" },
   { id: "societe", label: "Société" },
+  { id: "apropos", label: "À propos" },
 ];
 
 const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
@@ -27,7 +27,9 @@ const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
         {categories.map((category) => {
           const isActive = activeCategory === category.id;
           const color =
-            category.id === "all" ? "#074999" : getCategoryColor(category.id);
+            category.id === "all" || category.id === "apropos"
+              ? "#074999"
+              : getCategoryColor(category.id);
 
           return (
             <motion.button
