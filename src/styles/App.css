@@ -3395,7 +3395,6 @@ p {
         margin: 0.5rem 0 1.5rem;
         max-width: 100%;
         overflow: visible;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .category-filter-container {
@@ -3405,7 +3404,8 @@ p {
         padding: 0.6rem 1rem 0.6rem 0;
         -webkit-overflow-scrolling: touch;
         border-radius: 0;
-        background: white;
+        background: transparent;
+        box-shadow: none;
         margin-left: 0;
     }
 
