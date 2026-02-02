@@ -15,7 +15,7 @@
 
 :root {
     /* Primary colors */
-    --color-primary: #e85555;
+    --color-primary: #fc1a1d;
     --color-primary-light: #f06b6b;
     --color-primary-dark: #d44545;
     --color-secondary: #dd9933;
@@ -250,7 +250,7 @@ p {
     border: none;
     padding: 0.5rem;
     cursor: pointer;
-    color: #074999;
+    color: #004ea0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1491,7 +1491,7 @@ p {
     align-items: center;
     justify-content: center;
     z-index: 10;
-    color: #074999;
+    color: #004ea0;
     transition: var(--transition);
 }
 
@@ -1502,7 +1502,7 @@ p {
 }
 
 .modal-close-desktop:hover {
-    background: #074999;
+    background: #004ea0;
     color: white;
     transform: scale(1.05);
 }
@@ -1755,7 +1755,7 @@ p {
     gap: 0.75rem;
     margin-bottom: 1.5rem;
     color: var(--color-text);
-    border-bottom: 2px solid #074999;
+    border-bottom: 2px solid #004ea0;
     padding-bottom: 0.75rem;
 }
 
@@ -1943,11 +1943,11 @@ p {
 
 .magazine-btn-preview:hover {
     background: #e9ecef;
-    border-color: #074999;
+    border-color: #004ea0;
 }
 
 .magazine-btn-download {
-    background: #074999;
+    background: #004ea0;
     color: white;
 }
 
@@ -3339,7 +3339,7 @@ p {
         right: 1rem !important;
         z-index: 3200 !important;
         background: none !important;
-        color: #074999 !important;
+        color: #004ea0 !important;
         width: 44px !important;
         height: 44px !important;
         padding: 0 !important;

@@ -28,7 +28,7 @@ const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
           const isActive = activeCategory === category.id;
           const color =
             category.id === "all" || category.id === "apropos"
-              ? "#074999"
+              ? "#004ea0"
               : getCategoryColor(category.id);
 
           return (
