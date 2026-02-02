@@ -1485,7 +1485,6 @@ p {
     height: 44px;
     background: none;
     border: none;
-    border-radius: 0;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -1496,9 +1495,9 @@ p {
 }
 
 .modal-close-desktop svg {
-    width: 36px;
-    height: 36px;
-    stroke-width: 2.5;
+    width: 40px;
+    height: 40px;
+    stroke-width: 3.5;
 }
 
 .modal-close-desktop:hover {
@@ -3363,9 +3362,9 @@ p {
     }
 
     .modal-close-mobile svg {
-        width: 32px;
-        height: 32px;
-        stroke-width: 2.5;
+        width: 40px;
+        height: 40px;
+        stroke-width: 3.5;
     }
 
     .modal-content {
