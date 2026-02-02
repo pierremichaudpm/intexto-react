@@ -108,6 +108,9 @@ const HeroSection = ({ onContentClick }) => {
 
   return (
     <section className="hero-section-new">
+      <h1 className="sr-only">
+        Intexto - Journal Nouvèl Ayisyen | Actualités Haïtiennes à Montréal
+      </h1>
       <div className="hero-container-new">
         {/* Main Carousel */}
         <div

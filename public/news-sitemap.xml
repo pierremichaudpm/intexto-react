@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+
+  <!--
+    News Sitemap for Google News
+    This file should be dynamically generated with recent articles (last 48 hours)
+    For now, this is a placeholder structure.
+
+    Each article should follow this format:
+    <url>
+      <loc>https://intexto.ca/article/article-slug</loc>
+      <news:news>
+        <news:publication>
+          <news:name>Intexto</news:name>
+          <news:language>fr</news:language>
+        </news:publication>
+        <news:publication_date>2026-02-02T12:00:00+00:00</news:publication_date>
+        <news:title>Article Title Here</news:title>
+      </news:news>
+    </url>
+  -->
+
+</urlset>

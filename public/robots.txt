@@ -1,0 +1,12 @@
+# Robots.txt for Intexto
+# https://intexto.ca
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://intexto.ca/sitemap.xml
+Sitemap: https://intexto.ca/news-sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
