@@ -1476,11 +1476,9 @@ p {
 }
 
 .modal-close-desktop {
-    position: sticky;
+    position: absolute;
     top: 1rem;
-    float: right;
-    margin-right: 1rem;
-    margin-top: -3rem;
+    right: 1rem;
     width: 44px;
     height: 44px;
     background: none;
