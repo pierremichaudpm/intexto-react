@@ -1,7 +1,7 @@
 // Category configuration - colors and labels for all categories
 export const categoryColors = {
   actualite: "#000000",
-  politique: "#e85555",
+  politique: "#a52a2a",
   economie: "#2ecc71",
   societe: "#9b59b6",
   culture: "#008bff",
