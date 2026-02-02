@@ -1481,24 +1481,29 @@ p {
     float: right;
     margin-right: 1rem;
     margin-top: -3rem;
-    width: 40px;
-    height: 40px;
-    background: white;
+    width: 44px;
+    height: 44px;
+    background: none;
     border: none;
-    border-radius: 50%;
+    border-radius: 0;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10;
-    box-shadow: var(--shadow-md);
-    color: var(--color-text);
+    color: #074999;
     transition: var(--transition);
 }
 
+.modal-close-desktop svg {
+    width: 36px;
+    height: 36px;
+    stroke-width: 2.5;
+}
+
 .modal-close-desktop:hover {
-    background: var(--color-primary);
-    color: white;
+    color: #053a7a;
+    transform: scale(1.1);
 }
 
 .modal-close-mobile {
@@ -3337,13 +3342,13 @@ p {
         top: 1rem !important;
         right: 1rem !important;
         z-index: 3200 !important;
-        background: rgba(220, 79, 79, 0.95) !important;
-        color: white !important;
+        background: none !important;
+        color: #074999 !important;
         width: 44px !important;
         height: 44px !important;
         padding: 0 !important;
         border: none !important;
-        border-radius: 50% !important;
+        border-radius: 0 !important;
         align-items: center !important;
         justify-content: center !important;
         cursor: pointer !important;
@@ -3353,13 +3358,14 @@ p {
 
     .modal-close-mobile:hover,
     .modal-close-mobile:active {
-        background: rgba(200, 60, 60, 1);
-        transform: scale(0.95);
+        color: #053a7a !important;
+        transform: scale(1.1);
     }
 
     .modal-close-mobile svg {
-        width: 22px;
-        height: 22px;
+        width: 32px;
+        height: 32px;
+        stroke-width: 2.5;
     }
 
     .modal-content {
