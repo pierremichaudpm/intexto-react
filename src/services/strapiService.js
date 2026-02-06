@@ -28,22 +28,52 @@ class StrapiService {
         ...audios.map((a) => ({ ...a, type: "audio" })),
       ];
 
-      // Sort by order (ascending), then by published date (newest first)
+      // Sort by date (newest first)
       return allContent.sort((a, b) => {
-        // If both have order values, sort by order
-        if (
-          a.order !== undefined &&
-          b.order !== undefined &&
-          a.order !== b.order
-        ) {
-          return a.order - b.order;
-        }
-        // Otherwise sort by date (newest first)
         return new Date(b.publishedAt) - new Date(a.publishedAt);
       });
     } catch (error) {
       console.error("Error loading content from Strapi:", error);
       return [];
+    }
+  }
+
+  /**
+   * Fetch all lineups with their ordered content items populated
+   */
+  async fetchLineups() {
+    try {
+      const response = await fetch(
+        `${this.apiUrl}/api/lineups?populate[articles][populate][article][populate]=*&populate[videos][populate][video][populate]=*&populate[audios][populate][audio][populate]=*`,
+      );
+      const data = await response.json();
+      const lineups = {};
+      data.data.forEach((lineup) => {
+        const slug = lineup.slug;
+        lineups[slug] = {
+          name: lineup.name,
+          slug: slug,
+          articles: (lineup.articles || [])
+            .map((item) =>
+              item.article ? this.transformArticle(item.article) : null,
+            )
+            .filter(Boolean),
+          videos: (lineup.videos || [])
+            .map((item) =>
+              item.video ? this.transformVideo(item.video) : null,
+            )
+            .filter(Boolean),
+          audios: (lineup.audios || [])
+            .map((item) =>
+              item.audio ? this.transformAudio(item.audio) : null,
+            )
+            .filter(Boolean),
+        };
+      });
+      return lineups;
+    } catch (error) {
+      console.error("Error fetching lineups:", error);
+      return {};
     }
   }
 
@@ -159,7 +189,6 @@ class StrapiService {
       imageFallback: fullImageUrl,
       readTime: item.readTime || "5 min",
       tags: item.tags || [],
-      order: item.order ?? 999,
     };
   }
 
@@ -204,7 +233,6 @@ class StrapiService {
       videoUrl: mediaUrl,
       duration: item.duration || "10 min",
       tags: item.tags || [],
-      order: item.order ?? 999,
     };
   }
 
@@ -248,7 +276,6 @@ class StrapiService {
       audioUrl: mediaUrl,
       duration: item.duration || "30 min",
       tags: item.tags || [],
-      order: item.order ?? 999,
     };
   }
 

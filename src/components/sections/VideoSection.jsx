@@ -4,22 +4,10 @@ import ContentCard from "../common/ContentCard";
 const VideoSection = ({ videos, onContentClick }) => {
   if (!videos || videos.length === 0) return null;
 
-  // Sort by orderMediaMixed, then by date
-  const sortedVideos = [...videos].sort((a, b) => {
-    const aHasOrder = a.orderMediaMixed && a.orderMediaMixed > 0;
-    const bHasOrder = b.orderMediaMixed && b.orderMediaMixed > 0;
-
-    if (aHasOrder && bHasOrder) {
-      return a.orderMediaMixed - b.orderMediaMixed;
-    }
-    if (aHasOrder && !bHasOrder) {
-      return -1;
-    }
-    if (!aHasOrder && bHasOrder) {
-      return 1;
-    }
-    return new Date(b.publishedDate) - new Date(a.publishedDate);
-  });
+  // Sort by date (newest first) - lineup ordering is handled by the parent
+  const sortedVideos = [...videos].sort(
+    (a, b) => new Date(b.date) - new Date(a.date),
+  );
 
   const displayVideos = sortedVideos.slice(0, 6);
 

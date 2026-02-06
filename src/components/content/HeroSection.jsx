@@ -13,7 +13,7 @@ import ResponsiveImage from "../common/ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const HeroSection = ({ onContentClick }) => {
-  const { content } = useContent();
+  const { content, getLineup } = useContent();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
@@ -22,58 +22,31 @@ const HeroSection = ({ onContentClick }) => {
   // Minimum swipe distance
   const minSwipeDistance = 50;
 
-  const allContent = content;
-  const articles = allContent
-    .filter((item) => item.type === "article" && item.featured)
-    .sort((a, b) => {
-      const aHasOrder = a.orderHeroCarousel && a.orderHeroCarousel > 0;
-      const bHasOrder = b.orderHeroCarousel && b.orderHeroCarousel > 0;
+  // Use lineups if available, otherwise fall back to default sorting
+  const heroCarouselLineup = getLineup("hero-carousel");
+  const heroVideoLineup = getLineup("hero-video");
+  const heroAudioLineup = getLineup("hero-audio");
 
-      if (aHasOrder && bHasOrder) {
-        return a.orderHeroCarousel - b.orderHeroCarousel;
-      }
-      if (aHasOrder && !bHasOrder) return -1;
-      if (!aHasOrder && bHasOrder) return 1;
-      return new Date(b.publishedDate) - new Date(a.publishedDate);
-    })
-    .slice(0, 3);
-  const videos = allContent
-    .filter((item) => item.type === "video")
-    .sort((a, b) => {
-      // Featured items first
-      if (a.featured !== b.featured) {
-        return a.featured ? -1 : 1;
-      }
-      const aHasOrder = a.orderHeroVideo && a.orderHeroVideo > 0;
-      const bHasOrder = b.orderHeroVideo && b.orderHeroVideo > 0;
+  const articles =
+    heroCarouselLineup && heroCarouselLineup.articles.length > 0
+      ? heroCarouselLineup.articles.slice(0, 3)
+      : content
+          .filter((item) => item.type === "article" && item.featured)
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, 3);
+  const featuredVideo =
+    heroVideoLineup && heroVideoLineup.videos.length > 0
+      ? heroVideoLineup.videos[0]
+      : content
+          .filter((item) => item.type === "video")
+          .sort((a, b) => new Date(b.date) - new Date(a.date))[0] || null;
 
-      if (aHasOrder && bHasOrder) {
-        return a.orderHeroVideo - b.orderHeroVideo;
-      }
-      if (aHasOrder && !bHasOrder) return -1;
-      if (!aHasOrder && bHasOrder) return 1;
-      return new Date(b.publishedDate) - new Date(a.publishedDate);
-    });
-  const audios = allContent
-    .filter((item) => item.type === "audio")
-    .sort((a, b) => {
-      // Featured items first
-      if (a.featured !== b.featured) {
-        return a.featured ? -1 : 1;
-      }
-      const aHasOrder = a.orderHeroAudio && a.orderHeroAudio > 0;
-      const bHasOrder = b.orderHeroAudio && b.orderHeroAudio > 0;
-
-      if (aHasOrder && bHasOrder) {
-        return a.orderHeroAudio - b.orderHeroAudio;
-      }
-      if (aHasOrder && !bHasOrder) return -1;
-      if (!aHasOrder && bHasOrder) return 1;
-      return new Date(b.publishedDate) - new Date(a.publishedDate);
-    });
-
-  const featuredVideo = videos.length > 0 ? videos[0] : null;
-  const featuredAudio = audios.length > 0 ? audios[0] : null;
+  const featuredAudio =
+    heroAudioLineup && heroAudioLineup.audios.length > 0
+      ? heroAudioLineup.audios[0]
+      : content
+          .filter((item) => item.type === "audio")
+          .sort((a, b) => new Date(b.date) - new Date(a.date))[0] || null;
 
   useEffect(() => {
     if (articles.length === 0) return;

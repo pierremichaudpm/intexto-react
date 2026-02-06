@@ -20,11 +20,12 @@ export const useContent = () => {
 
 export const ContentProvider = ({ children }) => {
   const [content, setContent] = useState([]);
+  const [lineups, setLineups] = useState({});
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ category: "all", type: "all" });
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Load content on mount
+  // Load content and lineups on mount
   useEffect(() => {
     loadContent();
   }, []);
@@ -32,8 +33,12 @@ export const ContentProvider = ({ children }) => {
   const loadContent = async () => {
     setLoading(true);
     try {
-      const data = await strapiService.loadContent();
+      const [data, lineupsData] = await Promise.all([
+        strapiService.loadContent(),
+        strapiService.fetchLineups(),
+      ]);
       setContent(data);
+      setLineups(lineupsData);
     } catch (error) {
       console.error("Error loading content:", error);
     } finally {
@@ -59,10 +64,35 @@ export const ContentProvider = ({ children }) => {
     throw new Error("Delete content requires admin authentication");
   };
 
-  // Get filtered content (articles only for main lineup) - memoized
+  // Get lineup by slug
+  const getLineup = useCallback(
+    (slug) => {
+      return lineups[slug] || null;
+    },
+    [lineups],
+  );
+
+  // Get filtered content (articles only for main feed) - memoized
   const getFilteredContent = useCallback(() => {
-    // Start with articles only (videos and audios have dedicated sections)
-    let filtered = content.filter((item) => item.type === "article");
+    // Use "articles" lineup if available, otherwise fall back to all articles
+    const articlesLineup = lineups["articles"];
+    let filtered;
+
+    if (articlesLineup && articlesLineup.articles.length > 0) {
+      // Lineup items come first (in lineup order), then remaining articles by date
+      const lineupIds = new Set(articlesLineup.articles.map((a) => a.id));
+      const remainingArticles = content
+        .filter((item) => item.type === "article" && !lineupIds.has(item.id))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+      filtered = [
+        ...articlesLineup.articles.map((a) => ({ ...a, type: "article" })),
+        ...remainingArticles,
+      ];
+    } else {
+      filtered = content
+        .filter((item) => item.type === "article")
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
 
     // Apply category filter
     if (filter.category !== "all") {
@@ -74,29 +104,8 @@ export const ContentProvider = ({ children }) => {
       filtered = strapiService.searchContent(filtered, searchQuery);
     }
 
-    // Sort by order first (1, 2, 3...), then items with order 0 or no order by date
-    filtered.sort((a, b) => {
-      const aHasOrder = a.order && a.order > 0;
-      const bHasOrder = b.order && b.order > 0;
-
-      // Both have order > 0: sort by order ascending
-      if (aHasOrder && bHasOrder) {
-        return a.order - b.order;
-      }
-      // Only a has order: a comes first
-      if (aHasOrder && !bHasOrder) {
-        return -1;
-      }
-      // Only b has order: b comes first
-      if (!aHasOrder && bHasOrder) {
-        return 1;
-      }
-      // Neither has order (or order is 0): sort by date newest first
-      return new Date(b.date) - new Date(a.date);
-    });
-
     return filtered;
-  }, [content, filter.category, searchQuery]);
+  }, [content, lineups, filter.category, searchQuery]);
 
   // Get featured content - memoized
   const getFeaturedContent = useCallback(() => {
@@ -113,6 +122,7 @@ export const ContentProvider = ({ children }) => {
 
   const value = {
     content,
+    lineups,
     loading,
     filter,
     setFilter,
@@ -124,6 +134,7 @@ export const ContentProvider = ({ children }) => {
     getFilteredContent,
     getFeaturedContent,
     getContentById,
+    getLineup,
     loadContent,
   };
 

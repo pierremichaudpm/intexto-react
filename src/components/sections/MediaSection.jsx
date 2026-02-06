@@ -1,9 +1,29 @@
 import { useState } from "react";
 import ContentCard from "../common/ContentCard";
+import { useContent } from "../../context/ContentContext";
 
 const MediaSection = ({ videos, audios, onContentClick }) => {
   const [showAll, setShowAll] = useState(false);
-  const allMedia = [...(videos || []), ...(audios || [])];
+  const { getLineup } = useContent();
+
+  // Use media-mixed lineup if available, otherwise fall back to combining all videos + audios
+  const mediaMixedLineup = getLineup("media-mixed");
+
+  let allMedia;
+  if (mediaMixedLineup) {
+    // Lineup items come first (in order), then remaining items by date
+    const lineupItems = [
+      ...mediaMixedLineup.videos.map((v) => ({ ...v, type: "video" })),
+      ...mediaMixedLineup.audios.map((a) => ({ ...a, type: "audio" })),
+    ];
+    const lineupIds = new Set(lineupItems.map((item) => item.id));
+    const remainingMedia = [...(videos || []), ...(audios || [])]
+      .filter((item) => !lineupIds.has(item.id))
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+    allMedia = [...lineupItems, ...remainingMedia];
+  } else {
+    allMedia = [...(videos || []), ...(audios || [])];
+  }
 
   if (allMedia.length === 0) return null;
 
