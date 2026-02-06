@@ -2297,15 +2297,26 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    padding: 0;
     overflow-y: auto;
+}
+
+.search-overlay-header {
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+
+.search-overlay-header .main-header {
+    position: relative;
+    animation: none;
 }
 
 .search-container {
     width: 100%;
     max-width: 800px;
     position: relative;
-    margin-top: 4vh;
+    margin-top: 2rem;
+    padding: 0 2rem;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -2368,6 +2379,7 @@ p {
     width: 100%;
     max-width: 800px;
     margin-top: 2rem;
+    padding: 0 2rem;
     color: #111;
 }
 

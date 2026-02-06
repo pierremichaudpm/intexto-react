@@ -5,6 +5,7 @@ import { X, Search, FileText, Video, Mic } from "lucide-react";
 import { useContent } from "../../context/ContentContext";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 import cmsService from "../../services/cmsService";
+import Header from "./Header";
 
 const SearchOverlay = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -66,6 +67,10 @@ const SearchOverlay = ({ isOpen, onClose }) => {
           className="search-overlay"
           onClick={(e) => e.target === e.currentTarget && handleClose()}
         >
+          <div className="search-overlay-header">
+            <Header hideSearch={true} />
+          </div>
+
           <div className="search-container">
             <div className="search-input-wrapper">
               <Search size={24} className="search-input-icon" />
