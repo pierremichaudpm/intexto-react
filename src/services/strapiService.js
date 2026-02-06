@@ -317,6 +317,39 @@ class StrapiService {
         item.category.toLowerCase().includes(lowerQuery),
     );
   }
+
+  /**
+   * Fetch a single draft content item by type and slug for preview
+   */
+  async fetchDraftContent(type, slug) {
+    const endpointMap = {
+      article: "articles",
+      video: "videos",
+      audio: "audios",
+    };
+    const endpoint = endpointMap[type];
+    if (!endpoint) return null;
+
+    try {
+      const response = await fetch(
+        `${this.apiUrl}/api/${endpoint}?filters[slug][$eq]=${encodeURIComponent(slug)}&status=draft&populate=*`,
+      );
+      const data = await response.json();
+      const item = data.data?.[0];
+      if (!item) return null;
+
+      const transformMap = {
+        article: (i) => ({ ...this.transformArticle(i), type: "article" }),
+        video: (i) => ({ ...this.transformVideo(i), type: "video" }),
+        audio: (i) => ({ ...this.transformAudio(i), type: "audio" }),
+      };
+
+      return transformMap[type](item);
+    } catch (error) {
+      console.error("Error fetching draft content:", error);
+      return null;
+    }
+  }
 }
 
 export default new StrapiService();

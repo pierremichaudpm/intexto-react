@@ -7,6 +7,7 @@ import SearchOverlay from "./components/layout/SearchOverlay";
 import PartnerStrip from "./components/partners/PartnerStrip";
 import GDPRBanner from "./components/common/GDPRBanner";
 import HomePage from "./pages/HomePage";
+import PreviewPage from "./pages/PreviewPage";
 import "./styles/App.css";
 
 function AppContent() {
@@ -39,7 +40,10 @@ function App() {
   return (
     <BrowserRouter>
       <ContentProvider>
-        <AppContent />
+        <Routes>
+          <Route path="/preview" element={<PreviewPage />} />
+          <Route path="*" element={<AppContent />} />
+        </Routes>
       </ContentProvider>
     </BrowserRouter>
   );
