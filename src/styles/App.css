@@ -403,6 +403,19 @@ p {
     display: none;
 }
 
+/* Desktop/Mobile visibility toggles */
+.sidebar-ad-mobile {
+    display: none;
+}
+
+.mobile-media-section {
+    display: none;
+}
+
+.desktop-media-section {
+    display: block;
+}
+
 /* PARTNER STRIP */
 .partner-strip {
     max-width: 728px;
@@ -3122,6 +3135,22 @@ p {
     .mobile-ad-slot {
         display: block;
         padding: 1rem;
+    }
+
+    .sidebar-ad-desktop {
+        display: none;
+    }
+
+    .sidebar-ad-mobile {
+        display: block;
+    }
+
+    .mobile-media-section {
+        display: block;
+    }
+
+    .desktop-media-section {
+        display: none;
     }
 
     .mobile-menu-toggle {

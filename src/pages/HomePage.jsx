@@ -27,7 +27,8 @@ const HomePage = () => {
   const { filter, setFilter, getFilteredContent, loading, content } =
     useContent();
   const [selectedContent, setSelectedContent] = useState(null);
-  const [displayCount, setDisplayCount] = useState(6);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [displayCount, setDisplayCount] = useState(isMobile ? 4 : 6);
 
   const filteredContent = getFilteredContent();
   const displayedContent = filteredContent.slice(0, displayCount);
@@ -41,6 +42,13 @@ const HomePage = () => {
     () => content.filter((item) => item.type === "audio"),
     [content],
   );
+
+  // Track mobile breakpoint
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // Scroll to top on page load
   useEffect(() => {
@@ -60,9 +68,9 @@ const HomePage = () => {
   const handleCategoryFilter = useCallback(
     (categoryId) => {
       setFilter((prev) => ({ ...prev, category: categoryId }));
-      setDisplayCount(6);
+      setDisplayCount(isMobile ? 4 : 6);
     },
-    [setFilter],
+    [setFilter, isMobile],
   );
 
   const handleLoadMore = useCallback(() => {
@@ -105,11 +113,6 @@ const HomePage = () => {
 
       {/* Hero Section */}
       <HeroSection onContentClick={handleContentClick} />
-
-      {/* Mobile Ad - Below Hero */}
-      <div className="mobile-ad-slot">
-        <PartnerStrip type="top" />
-      </div>
 
       {/* Category Filter */}
       <CategoryFilter
@@ -155,19 +158,41 @@ const HomePage = () => {
 
           {/* Sidebar with Ad and Magazine Widget */}
           <aside className="content-sidebar">
-            <PartnerCard position="sidebar" />
+            {/* Desktop: 300x250 card, Mobile: leaderboard strip */}
+            <div className="sidebar-ad-desktop">
+              <PartnerCard position="sidebar" />
+            </div>
+            <div className="sidebar-ad-mobile">
+              <PartnerStrip type="inline" />
+            </div>
+
+            {/* Mobile: Audio/Video before Magazine */}
+            <div className="mobile-media-section">
+              <MediaSection
+                videos={allVideos}
+                audios={allAudios}
+                onContentClick={handleContentClick}
+              />
+            </div>
+
             <MagazineWidget />
-            <PartnerCard position="sidebar-half" />
+
+            {/* Desktop only: second ad */}
+            <div className="sidebar-ad-desktop">
+              <PartnerCard position="sidebar-half" />
+            </div>
           </aside>
         </div>
       </main>
 
-      {/* Dedicated Media Section - Audio et Vidéo */}
-      <MediaSection
-        videos={allVideos}
-        audios={allAudios}
-        onContentClick={handleContentClick}
-      />
+      {/* Desktop: Dedicated Media Section - Audio et Vidéo */}
+      <div className="desktop-media-section">
+        <MediaSection
+          videos={allVideos}
+          audios={allAudios}
+          onContentClick={handleContentClick}
+        />
+      </div>
 
       {/* Content Modal - lazy loaded */}
       {selectedContent && (
