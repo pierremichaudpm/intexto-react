@@ -50,12 +50,12 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
         />
         {type === "video" && (
           <div className="content-card-media-icon">
-            <Video size={30} />
+            <Video size={22} />
           </div>
         )}
         {type === "audio" && (
           <div className="content-card-media-icon">
-            <Mic size={30} />
+            <Mic size={22} />
           </div>
         )}
       </div>

@@ -190,7 +190,7 @@ const HeroSection = ({ onContentClick }) => {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
                 />
                 <div className="hero-side-media-badge">
-                  <Video size={40} />
+                  <Video size={30} />
                 </div>
               </div>
               <div className="hero-side-body">
@@ -227,7 +227,7 @@ const HeroSection = ({ onContentClick }) => {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
                 />
                 <div className="hero-side-media-badge">
-                  <Mic size={40} />
+                  <Mic size={30} />
                 </div>
               </div>
               <div className="hero-side-body">
