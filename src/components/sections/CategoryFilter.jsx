@@ -11,7 +11,6 @@ const categories = [
   { id: "immigration", label: "Immigration" },
   { id: "sante", label: "Santé" },
   { id: "opinion", label: "Opinion" },
-  { id: "societe", label: "Société" },
   { id: "apropos", label: "À propos" },
 ];
 
