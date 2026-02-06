@@ -13,8 +13,8 @@ import HeroSection from "../components/content/HeroSection";
 import CategoryFilter from "../components/sections/CategoryFilter";
 import MediaSection from "../components/sections/MediaSection";
 import ContentCard from "../components/common/ContentCard";
-import AdBanner from "../components/ads/AdBanner";
-import AdBox from "../components/ads/AdBox";
+import PartnerStrip from "../components/partners/PartnerStrip";
+import PartnerCard from "../components/partners/PartnerCard";
 import MagazineWidget from "../components/widgets/MagazineWidget";
 import SEOHead from "../components/seo/SEOHead";
 
@@ -108,7 +108,7 @@ const HomePage = () => {
 
       {/* Mobile Ad - Below Hero */}
       <div className="mobile-ad-slot">
-        <AdBanner type="top" />
+        <PartnerStrip type="top" />
       </div>
 
       {/* Category Filter */}
@@ -155,9 +155,9 @@ const HomePage = () => {
 
           {/* Sidebar with Ad and Magazine Widget */}
           <aside className="content-sidebar">
-            <AdBox position="sidebar" />
+            <PartnerCard position="sidebar" />
             <MagazineWidget />
-            <AdBox position="sidebar-half" />
+            <PartnerCard position="sidebar-half" />
           </aside>
         </div>
       </main>

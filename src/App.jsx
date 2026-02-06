@@ -4,7 +4,7 @@ import { ContentProvider } from "./context/ContentContext";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import SearchOverlay from "./components/layout/SearchOverlay";
-import AdBanner from "./components/ads/AdBanner";
+import PartnerStrip from "./components/partners/PartnerStrip";
 import GDPRBanner from "./components/common/GDPRBanner";
 import HomePage from "./pages/HomePage";
 import "./styles/App.css";
@@ -16,7 +16,7 @@ function AppContent() {
     <div className="app">
       <Header
         onSearchClick={() => setSearchOpen(true)}
-        adBanner={<AdBanner type="top" />}
+        adBanner={<PartnerStrip type="top" />}
       />
 
       <Routes>
