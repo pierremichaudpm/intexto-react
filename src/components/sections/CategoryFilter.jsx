@@ -3,13 +3,12 @@ import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const categories = [
   { id: "all", label: "Tout" },
+  { id: "mois-histoire-noirs", label: "Mois de l'histoire des Noirs" },
   { id: "politique", label: "Politique" },
   { id: "actualite", label: "Actualité" },
   { id: "culture", label: "Culture" },
   { id: "economie", label: "Économie" },
   { id: "immigration", label: "Immigration" },
-  { id: "mois-histoire-noirs", label: "Mois de l'histoire des Noirs" },
-  { id: "sport", label: "Sport" },
   { id: "sante", label: "Santé" },
   { id: "opinion", label: "Opinion" },
   { id: "societe", label: "Société" },
