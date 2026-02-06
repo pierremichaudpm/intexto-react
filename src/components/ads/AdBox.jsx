@@ -216,9 +216,12 @@ const AdBox = ({ position = "sidebar" }) => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
       className={`promo-box promo-box-${position}`}
-      style={{ display: "flex", justifyContent: "center" }}
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <div ref={adRef} />
+      <div style={{ fontSize: "11px", color: "#999", marginTop: "4px" }}>
+        Publicité
+      </div>
     </motion.div>
   );
 };

@@ -126,9 +126,19 @@ const AdBanner = ({ type = "top" }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       className={`promo-banner promo-banner-${type}`}
-      style={{ display: "flex", justifyContent: "center" }}
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <div ref={adRef} />
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: "11px",
+          color: "#999",
+          marginTop: "4px",
+        }}
+      >
+        Publicité
+      </div>
     </motion.div>
   );
 };
