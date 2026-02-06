@@ -13,7 +13,7 @@ export const categoryColors = {
   international: "#3498db",
   opinion: "#8e44ad",
   immigration: "#16a085",
-  moisdelhistoiredesnoirs: "#8b4513",
+  moisdelhistoiredesnoirs: "#000000",
 };
 
 export const categoryLabels = {
