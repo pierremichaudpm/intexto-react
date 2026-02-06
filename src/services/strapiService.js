@@ -171,6 +171,7 @@ class StrapiService {
 
     return {
       id: item.documentId,
+      type: "article",
       title: item.title,
       slug: item.slug,
       excerpt: item.excerpt,
@@ -214,6 +215,7 @@ class StrapiService {
 
     return {
       id: item.documentId,
+      type: "video",
       title: item.title,
       slug: item.slug,
       excerpt: item.excerpt,
@@ -257,6 +259,7 @@ class StrapiService {
 
     return {
       id: item.documentId,
+      type: "audio",
       title: item.title,
       slug: item.slug,
       excerpt: item.excerpt,
