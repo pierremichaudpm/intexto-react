@@ -139,13 +139,12 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 728px;
+    min-width: 0;
 }
 
 .header-ad-slot .partner-strip {
     margin: 0;
-    padding: 0 1rem;
-    max-width: 100%;
+    padding: 0;
     width: 100%;
 }
 

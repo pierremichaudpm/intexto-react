@@ -1,4 +1,8 @@
+import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
+
+const STRIP_WIDTH = 728;
+const STRIP_HEIGHT = 90;
 
 const partnerStripHtml = `<!DOCTYPE html>
 <html lang="fr">
@@ -112,7 +116,21 @@ const partnerStripHtml = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const AdBanner = ({ type = "top" }) => {
+const PartnerStrip = ({ type = "top" }) => {
+  const wrapRef = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const measure = () => {
+      if (!wrapRef.current) return;
+      const w = wrapRef.current.offsetWidth;
+      setScale(w >= STRIP_WIDTH ? 1 : w / STRIP_WIDTH);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
@@ -121,13 +139,26 @@ const AdBanner = ({ type = "top" }) => {
       className={`partner-strip partner-strip-${type}`}
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <div style={{ width: "100%", maxWidth: 728, overflow: "hidden" }}>
+      <div
+        ref={wrapRef}
+        style={{
+          width: "100%",
+          maxWidth: STRIP_WIDTH,
+          height: STRIP_HEIGHT * scale,
+          overflow: "hidden",
+        }}
+      >
         <iframe
           srcDoc={partnerStripHtml}
           title="Vision Max Services"
-          width="728"
-          height="90"
-          style={{ border: "none", overflow: "hidden", display: "block" }}
+          width={STRIP_WIDTH}
+          height={STRIP_HEIGHT}
+          style={{
+            border: "none",
+            display: "block",
+            transformOrigin: "top left",
+            transform: `scale(${scale})`,
+          }}
           scrolling="no"
         />
       </div>
@@ -138,4 +169,4 @@ const AdBanner = ({ type = "top" }) => {
   );
 };
 
-export default AdBanner;
+export default PartnerStrip;
