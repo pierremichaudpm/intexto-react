@@ -3,7 +3,7 @@ import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const categories = [
   { id: "all", label: "Tout" },
-  { id: "mois-histoire-noirs", label: "Mois de l'histoire des Noirs" },
+  { id: "mois", label: "Mois de l'histoire des Noirs" },
   { id: "politique", label: "Politique" },
   { id: "actualite", label: "Actualité" },
   { id: "culture", label: "Culture" },

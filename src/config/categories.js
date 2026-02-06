@@ -13,7 +13,7 @@ export const categoryColors = {
   international: "#3498db",
   opinion: "#8e44ad",
   immigration: "#16a085",
-  "mois-histoire-noirs": "#8b4513",
+  mois: "#8b4513",
 };
 
 export const categoryLabels = {
@@ -30,7 +30,7 @@ export const categoryLabels = {
   international: "International",
   opinion: "Opinion",
   immigration: "Immigration",
-  "mois-histoire-noirs": "Mois de l'histoire des Noirs",
+  mois: "Mois de l'histoire des Noirs",
 };
 
 // Default color for unknown categories
