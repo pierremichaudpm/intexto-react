@@ -6,7 +6,10 @@ const AdBanner = ({ type = "top" }) => {
 
   useEffect(() => {
     if (!adRef.current) return;
-    const shadow = adRef.current.attachShadow({ mode: "open" });
+    let shadow = adRef.current.shadowRoot;
+    if (!shadow) {
+      shadow = adRef.current.attachShadow({ mode: "open" });
+    }
     shadow.innerHTML = `
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
       <style>

@@ -205,9 +205,12 @@ const AdBox = ({ position = "sidebar" }) => {
 
   useEffect(() => {
     if (!adRef.current) return;
-    const shadow = adRef.current.attachShadow({ mode: "open" });
-    shadow.innerHTML =
-      position === "sidebar" ? studioMichoHtml : visionMax300Html;
+    const html = position === "sidebar" ? studioMichoHtml : visionMax300Html;
+    let shadow = adRef.current.shadowRoot;
+    if (!shadow) {
+      shadow = adRef.current.attachShadow({ mode: "open" });
+    }
+    shadow.innerHTML = html;
   }, [position]);
 
   return (
