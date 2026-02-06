@@ -159,8 +159,15 @@ const partnerCardB = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const AdBox = ({ position = "sidebar" }) => {
-  const html = position === "sidebar" ? partnerCardA : partnerCardB;
+const AdBox = ({ position = "sidebar", ad }) => {
+  const html =
+    ad === "visionmax"
+      ? partnerCardB
+      : ad === "studiomicho"
+        ? partnerCardA
+        : position === "sidebar"
+          ? partnerCardA
+          : partnerCardB;
 
   return (
     <motion.div

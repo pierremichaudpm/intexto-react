@@ -404,16 +404,15 @@ p {
 }
 
 /* Desktop/Mobile visibility toggles */
-.sidebar-ad-mobile {
+.mobile-only {
     display: none;
 }
 
-.mobile-media-section {
-    display: none;
-}
-
-.desktop-media-section {
-    display: block;
+.mobile-hero-ad,
+.mobile-mid-ad {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
 }
 
 /* PARTNER STRIP */
@@ -3137,19 +3136,11 @@ p {
         padding: 1rem;
     }
 
-    .sidebar-ad-desktop {
-        display: none;
-    }
-
-    .sidebar-ad-mobile {
+    .mobile-only {
         display: block;
     }
 
-    .mobile-media-section {
-        display: block;
-    }
-
-    .desktop-media-section {
+    .desktop-only {
         display: none;
     }
 

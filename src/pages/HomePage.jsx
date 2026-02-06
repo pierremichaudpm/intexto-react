@@ -13,7 +13,6 @@ import HeroSection from "../components/content/HeroSection";
 import CategoryFilter from "../components/sections/CategoryFilter";
 import MediaSection from "../components/sections/MediaSection";
 import ContentCard from "../components/common/ContentCard";
-import PartnerStrip from "../components/partners/PartnerStrip";
 import PartnerCard from "../components/partners/PartnerCard";
 import MagazineWidget from "../components/widgets/MagazineWidget";
 import SEOHead from "../components/seo/SEOHead";
@@ -114,6 +113,11 @@ const HomePage = () => {
       {/* Hero Section */}
       <HeroSection onContentClick={handleContentClick} />
 
+      {/* Mobile only: VisionMax banner between hero and filters */}
+      <div className="mobile-only mobile-hero-ad">
+        <PartnerCard ad="visionmax" />
+      </div>
+
       {/* Category Filter */}
       <CategoryFilter
         activeCategory={filter.category}
@@ -154,39 +158,35 @@ const HomePage = () => {
                 </motion.button>
               </div>
             )}
-          </div>
 
-          {/* Sidebar with Ad and Magazine Widget */}
-          <aside className="content-sidebar">
-            {/* Desktop: 300x250 card, Mobile: leaderboard strip */}
-            <div className="sidebar-ad-desktop">
-              <PartnerCard position="sidebar" />
-            </div>
-            <div className="sidebar-ad-mobile">
-              <PartnerStrip type="inline" />
+            {/* Mobile only: StudioMicho banner between articles and media */}
+            <div className="mobile-only mobile-mid-ad">
+              <PartnerCard ad="studiomicho" />
             </div>
 
-            {/* Mobile: Audio/Video before Magazine */}
-            <div className="mobile-media-section">
+            {/* Mobile only: Audio/Video section before magazine */}
+            <div className="mobile-only">
               <MediaSection
                 videos={allVideos}
                 audios={allAudios}
                 onContentClick={handleContentClick}
               />
             </div>
+          </div>
 
+          {/* Sidebar with Ad and Magazine Widget */}
+          <aside className="content-sidebar">
+            <PartnerCard position="sidebar" />
             <MagazineWidget />
-
-            {/* Desktop only: second ad */}
-            <div className="sidebar-ad-desktop">
+            <div className="desktop-only">
               <PartnerCard position="sidebar-half" />
             </div>
           </aside>
         </div>
       </main>
 
-      {/* Desktop: Dedicated Media Section - Audio et Vidéo */}
-      <div className="desktop-media-section">
+      {/* Desktop only: Dedicated Media Section */}
+      <div className="desktop-only">
         <MediaSection
           videos={allVideos}
           audios={allAudios}
