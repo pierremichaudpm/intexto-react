@@ -4,7 +4,24 @@ import ContentCard from "../common/ContentCard";
 const VideoSection = ({ videos, onContentClick }) => {
   if (!videos || videos.length === 0) return null;
 
-  const displayVideos = videos.slice(0, 6);
+  // Sort by order field, then by date
+  const sortedVideos = [...videos].sort((a, b) => {
+    const aHasOrder = a.order && a.order > 0;
+    const bHasOrder = b.order && b.order > 0;
+
+    if (aHasOrder && bHasOrder) {
+      return a.order - b.order;
+    }
+    if (aHasOrder && !bHasOrder) {
+      return -1;
+    }
+    if (!aHasOrder && bHasOrder) {
+      return 1;
+    }
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  const displayVideos = sortedVideos.slice(0, 6);
 
   return (
     <section className="media-section video-section">

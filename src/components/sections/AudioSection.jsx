@@ -4,7 +4,24 @@ import ContentCard from "../common/ContentCard";
 const AudioSection = ({ audios, onContentClick }) => {
   if (!audios || audios.length === 0) return null;
 
-  const displayAudios = audios.slice(0, 6);
+  // Sort by order field, then by date
+  const sortedAudios = [...audios].sort((a, b) => {
+    const aHasOrder = a.order && a.order > 0;
+    const bHasOrder = b.order && b.order > 0;
+
+    if (aHasOrder && bHasOrder) {
+      return a.order - b.order;
+    }
+    if (aHasOrder && !bHasOrder) {
+      return -1;
+    }
+    if (!aHasOrder && bHasOrder) {
+      return 1;
+    }
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  const displayAudios = sortedAudios.slice(0, 6);
 
   return (
     <section className="media-section audio-section">
