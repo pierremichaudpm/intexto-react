@@ -1512,8 +1512,9 @@ p {
 
 .modal-image {
     width: calc(100% - 4rem);
-    height: 400px;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
+    object-position: center top;
     display: block;
     margin: 2rem 2rem 0 2rem;
     border-radius: 12px;
@@ -3373,7 +3374,7 @@ p {
     }
 
     .modal-image {
-        height: 250px;
+        aspect-ratio: 16 / 9;
         margin-top: 20px;
     }
 
