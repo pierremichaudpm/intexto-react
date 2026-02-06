@@ -176,7 +176,9 @@ const HomePage = () => {
 
           {/* Sidebar with Ad and Magazine Widget */}
           <aside className="content-sidebar">
-            <PartnerCard position="sidebar" />
+            <div className="desktop-only">
+              <PartnerCard position="sidebar" />
+            </div>
             <MagazineWidget />
             <div className="desktop-only">
               <PartnerCard position="sidebar-half" />
