@@ -8,6 +8,7 @@ const categories = [
   { id: "culture", label: "Culture" },
   { id: "economie", label: "Économie" },
   { id: "immigration", label: "Immigration" },
+  { id: "mois-histoire-noirs", label: "Mois de l'histoire des Noirs" },
   { id: "sport", label: "Sport" },
   { id: "sante", label: "Santé" },
   { id: "opinion", label: "Opinion" },
