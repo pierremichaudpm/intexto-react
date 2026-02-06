@@ -287,9 +287,13 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                   </div>
                 </div>
 
-                <div className="modal-text">
-                  <ReactMarkdown>{content.content}</ReactMarkdown>
-                </div>
+                {(content.content || content.description) && (
+                  <div className="modal-text">
+                    <ReactMarkdown>
+                      {content.content || content.description}
+                    </ReactMarkdown>
+                  </div>
+                )}
 
                 {/* Related Stories */}
                 {relatedStories.length > 0 && (
