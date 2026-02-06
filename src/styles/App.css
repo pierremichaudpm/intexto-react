@@ -408,13 +408,6 @@ p {
     display: none;
 }
 
-.mobile-hero-ad,
-.mobile-mid-ad {
-    display: flex;
-    justify-content: center;
-    padding: 1rem 0;
-}
-
 /* PARTNER STRIP */
 .partner-strip {
     max-width: 728px;
@@ -3151,6 +3144,13 @@ p {
 
     .mobile-only {
         display: block;
+    }
+
+    .mobile-hero-ad,
+    .mobile-mid-ad {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
     }
 
     .desktop-only {
