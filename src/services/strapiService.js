@@ -44,7 +44,7 @@ class StrapiService {
   async fetchLineups() {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/lineups?populate[articles][populate][article][populate]=*&populate[videos][populate][video][populate]=*&populate[audios][populate][audio][populate]=*`,
+        `${this.apiUrl}/api/lineups?populate[articles][populate]=*&populate[videos][populate]=*&populate[audios][populate]=*`,
       );
       const data = await response.json();
       const lineups = {};
@@ -54,19 +54,13 @@ class StrapiService {
           name: lineup.name,
           slug: slug,
           articles: (lineup.articles || [])
-            .map((item) =>
-              item.article ? this.transformArticle(item.article) : null,
-            )
+            .map((item) => this.transformArticle(item))
             .filter(Boolean),
           videos: (lineup.videos || [])
-            .map((item) =>
-              item.video ? this.transformVideo(item.video) : null,
-            )
+            .map((item) => this.transformVideo(item))
             .filter(Boolean),
           audios: (lineup.audios || [])
-            .map((item) =>
-              item.audio ? this.transformAudio(item.audio) : null,
-            )
+            .map((item) => this.transformAudio(item))
             .filter(Boolean),
         };
       });
