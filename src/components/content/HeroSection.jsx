@@ -26,10 +26,15 @@ const HeroSection = ({ onContentClick }) => {
   const articles = allContent
     .filter((item) => item.type === "article" && item.featured)
     .sort((a, b) => {
-      if (a.order !== b.order) {
-        return a.order - b.order;
+      const aHasOrder = a.orderHeroCarousel && a.orderHeroCarousel > 0;
+      const bHasOrder = b.orderHeroCarousel && b.orderHeroCarousel > 0;
+
+      if (aHasOrder && bHasOrder) {
+        return a.orderHeroCarousel - b.orderHeroCarousel;
       }
-      return new Date(b.date) - new Date(a.date);
+      if (aHasOrder && !bHasOrder) return -1;
+      if (!aHasOrder && bHasOrder) return 1;
+      return new Date(b.publishedDate) - new Date(a.publishedDate);
     })
     .slice(0, 3);
   const videos = allContent
@@ -39,10 +44,15 @@ const HeroSection = ({ onContentClick }) => {
       if (a.featured !== b.featured) {
         return a.featured ? -1 : 1;
       }
-      if (a.order !== b.order) {
-        return a.order - b.order;
+      const aHasOrder = a.orderHeroVideo && a.orderHeroVideo > 0;
+      const bHasOrder = b.orderHeroVideo && b.orderHeroVideo > 0;
+
+      if (aHasOrder && bHasOrder) {
+        return a.orderHeroVideo - b.orderHeroVideo;
       }
-      return new Date(b.date) - new Date(a.date);
+      if (aHasOrder && !bHasOrder) return -1;
+      if (!aHasOrder && bHasOrder) return 1;
+      return new Date(b.publishedDate) - new Date(a.publishedDate);
     });
   const audios = allContent
     .filter((item) => item.type === "audio")
@@ -51,10 +61,15 @@ const HeroSection = ({ onContentClick }) => {
       if (a.featured !== b.featured) {
         return a.featured ? -1 : 1;
       }
-      if (a.order !== b.order) {
-        return a.order - b.order;
+      const aHasOrder = a.orderHeroAudio && a.orderHeroAudio > 0;
+      const bHasOrder = b.orderHeroAudio && b.orderHeroAudio > 0;
+
+      if (aHasOrder && bHasOrder) {
+        return a.orderHeroAudio - b.orderHeroAudio;
       }
-      return new Date(b.date) - new Date(a.date);
+      if (aHasOrder && !bHasOrder) return -1;
+      if (!aHasOrder && bHasOrder) return 1;
+      return new Date(b.publishedDate) - new Date(a.publishedDate);
     });
 
   const featuredVideo = videos.length > 0 ? videos[0] : null;

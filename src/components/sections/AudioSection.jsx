@@ -4,13 +4,13 @@ import ContentCard from "../common/ContentCard";
 const AudioSection = ({ audios, onContentClick }) => {
   if (!audios || audios.length === 0) return null;
 
-  // Sort by order field, then by date
+  // Sort by orderMediaMixed, then by date
   const sortedAudios = [...audios].sort((a, b) => {
-    const aHasOrder = a.order && a.order > 0;
-    const bHasOrder = b.order && b.order > 0;
+    const aHasOrder = a.orderMediaMixed && a.orderMediaMixed > 0;
+    const bHasOrder = b.orderMediaMixed && b.orderMediaMixed > 0;
 
     if (aHasOrder && bHasOrder) {
-      return a.order - b.order;
+      return a.orderMediaMixed - b.orderMediaMixed;
     }
     if (aHasOrder && !bHasOrder) {
       return -1;
@@ -18,7 +18,7 @@ const AudioSection = ({ audios, onContentClick }) => {
     if (!aHasOrder && bHasOrder) {
       return 1;
     }
-    return new Date(b.date) - new Date(a.date);
+    return new Date(b.publishedDate) - new Date(a.publishedDate);
   });
 
   const displayAudios = sortedAudios.slice(0, 6);
