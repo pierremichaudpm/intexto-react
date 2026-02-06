@@ -18,7 +18,6 @@ const AdBanner = ({ type = "top" }) => {
           background: linear-gradient(135deg, #1a1a2e 0%, #2d2d3f 40%, #1a1a2e 100%);
           position: relative; overflow: hidden; cursor: pointer;
           display: flex; align-items: center;
-          border: 1px solid rgba(233, 30, 140, 0.3);
         }
         .pink-bar {
           position: absolute; top: 0; left: 0;
@@ -26,11 +25,6 @@ const AdBanner = ({ type = "top" }) => {
           background: linear-gradient(90deg, #E91E8C, #ff5eac, #E91E8C);
           background-size: 200% auto;
           animation: shimmer 3s linear infinite;
-        }
-        .bottom-line {
-          position: absolute; bottom: 0; left: 0;
-          width: 100%; height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(233,30,140,0.3), transparent);
         }
         @keyframes shimmer {
           0% { background-position: 0% center; }
@@ -100,7 +94,6 @@ const AdBanner = ({ type = "top" }) => {
       <a class="wrap" href="https://visionmaxservices.net/" target="_blank">
         <div class="banner">
           <div class="pink-bar"></div>
-          <div class="bottom-line"></div>
           <div class="glow"></div>
           <div class="logo-area">
             <img src="https://visionmaxservices.net/wp-content/uploads/2024/10/Nouveau-logo-sans-bg-e1728259683259.webp" alt="Vision Max Services">

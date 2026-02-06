@@ -1405,11 +1405,9 @@ p {
 
 /* PROMO BOX */
 .promo-box {
-    background: white;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--color-border);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
 }
 
 .promo-box-content {

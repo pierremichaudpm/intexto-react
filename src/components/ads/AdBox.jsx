@@ -105,7 +105,7 @@ const studioMichoHtml = `
       <div class="banner-content">
         <div class="brand">Studio Micho</div>
         <div class="divider-h"></div>
-        <div class="tagline-main">Produits num\\u00e9riques<br>\\u00e0 v\\u00e9locit\\u00e9 IA<span class="cursor"></span></div>
+        <div class="tagline-main">Produits num&#233;riques<br>&#224; v&#233;locit&#233; IA<span class="cursor"></span></div>
         <div class="services">
           <span class="service-tag">Sites</span>
           <span class="service-tag">Apps</span>
@@ -113,7 +113,7 @@ const studioMichoHtml = `
           <span class="service-tag">Marketing</span>
         </div>
         <div class="pitch">Livraison ultra-rapide</div>
-        <div class="cta-btn">Parlons-en <span class="cta-arrow">\\u2192</span></div>
+        <div class="cta-btn">Parlons-en <span class="cta-arrow">&#8594;</span></div>
       </div>
     </div>
   </a>
@@ -130,19 +130,12 @@ const visionMax300Html = `
       background: linear-gradient(135deg, #1a1a2e 0%, #2d2d3f 50%, #1a1a2e 100%);
       position: relative; overflow: hidden; cursor: pointer;
       display: flex; flex-direction: column;
-      border: 1px solid rgba(233, 30, 140, 0.25);
     }
     .pink-bar {
       position: absolute; top: 0; left: 0; width: 100%; height: 3px;
       background: linear-gradient(90deg, #E91E8C, #ff5eac, #E91E8C);
       background-size: 200% auto; animation: shimmer 3s linear infinite;
     }
-    .bottom-line {
-      position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(233,30,140,0.3), transparent);
-    }
-    .side-left { position: absolute; top: 0; left: 0; width: 1px; height: 100%; background: linear-gradient(180deg, transparent, rgba(233,30,140,0.2), transparent); }
-    .side-right { position: absolute; top: 0; right: 0; width: 1px; height: 100%; background: linear-gradient(180deg, transparent, rgba(233,30,140,0.2), transparent); }
     @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
     .glow { position: absolute; right: -30px; top: -30px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(233,30,140,0.08) 0%, transparent 70%); }
     .glow2 { position: absolute; left: -20px; bottom: -20px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%); }
@@ -180,9 +173,6 @@ const visionMax300Html = `
   <a class="wrap" href="https://visionmaxservices.net/" target="_blank">
     <div class="banner">
       <div class="pink-bar"></div>
-      <div class="bottom-line"></div>
-      <div class="side-left"></div>
-      <div class="side-right"></div>
       <div class="glow"></div>
       <div class="glow2"></div>
       <div class="content">
@@ -190,20 +180,20 @@ const visionMax300Html = `
           <img src="https://visionmaxservices.net/wp-content/uploads/2024/10/Nouveau-logo-sans-bg-e1728259683259.webp" alt="Vision Max Services">
         </div>
         <div class="divider"></div>
-        <div class="headline">Services d'immigration<br><span class="pink">certifi\\u00e9s</span></div>
+        <div class="headline">Services d'immigration<br><span class="pink">certifi&#233;s</span></div>
         <div class="tags">
           <span class="tag">Visa</span>
           <span class="tag">Asile</span>
           <span class="tag">Parrainage</span>
           <span class="tag">Travail</span>
-          <span class="tag">\\u00c9tudes</span>
+          <span class="tag">&#201;tudes</span>
         </div>
         <div class="bottom">
           <div class="exp">
             <div class="exp-num">20+</div>
             <div class="exp-lbl">ans exp.</div>
           </div>
-          <div class="cta">D\\u00e9couvrez <span class="arr">\\u2192</span></div>
+          <div class="cta">D&#233;couvrez <span class="arr">&#8594;</span></div>
         </div>
       </div>
     </div>
