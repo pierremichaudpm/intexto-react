@@ -206,7 +206,7 @@ const visionMax300Html = `<!DOCTYPE html>
 </html>`;
 
 const AdBox = ({ position = "sidebar" }) => {
-  const html = position === "sidebar" ? studioMichoHtml : visionMax300Html;
+  const html = position === "sidebar" ? visionMax300Html : studioMichoHtml;
 
   return (
     <motion.div
