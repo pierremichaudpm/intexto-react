@@ -31,7 +31,7 @@ const HeroSection = ({ onContentClick }) => {
     heroCarouselLineup && heroCarouselLineup.articles.length > 0
       ? heroCarouselLineup.articles.slice(0, 3)
       : content
-          .filter((item) => item.type === "article" && item.featured)
+          .filter((item) => item.type === "article")
           .sort((a, b) => new Date(b.date) - new Date(a.date))
           .slice(0, 3);
   const featuredVideo =

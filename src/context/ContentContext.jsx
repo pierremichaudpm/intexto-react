@@ -107,11 +107,6 @@ export const ContentProvider = ({ children }) => {
     return filtered;
   }, [content, lineups, filter.category, searchQuery]);
 
-  // Get featured content - memoized
-  const getFeaturedContent = useCallback(() => {
-    return content.filter((item) => item.featured).slice(0, 5);
-  }, [content]);
-
   // Get content by ID - memoized
   const getContentById = useCallback(
     (id) => {
@@ -132,7 +127,6 @@ export const ContentProvider = ({ children }) => {
     updateContent,
     deleteContent,
     getFilteredContent,
-    getFeaturedContent,
     getContentById,
     getLineup,
     loadContent,
