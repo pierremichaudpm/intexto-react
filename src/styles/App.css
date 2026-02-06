@@ -1512,7 +1512,7 @@ p {
 
 .modal-image {
     width: calc(100% - 4rem);
-    aspect-ratio: 16 / 9;
+    max-height: 480px;
     object-fit: cover;
     object-position: center top;
     display: block;
@@ -3374,7 +3374,7 @@ p {
     }
 
     .modal-image {
-        aspect-ratio: 16 / 9;
+        max-height: 300px;
         margin-top: 20px;
     }
 
