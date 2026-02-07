@@ -30,12 +30,12 @@ const StructuredData = ({ content }) => {
       name: "Intexto",
       logo: {
         "@type": "ImageObject",
-        url: "https://intexto.ca/Images/intextologo.png",
+        url: "https://www.intexto.ca/Images/intextologo.png",
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://intexto.ca/${type}/${content.id}`,
+      "@id": `https://www.intexto.ca/${type}/${content.id}`,
     },
   };
 
@@ -78,8 +78,8 @@ const StructuredData = ({ content }) => {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
     name: "Intexto",
-    url: "https://intexto.ca",
-    logo: "https://intexto.ca/Images/intextologo.png",
+    url: "https://www.intexto.ca",
+    logo: "https://www.intexto.ca/Images/intextologo.png",
     description:
       "Journal haïtien à Montréal - Actualités, politique, culture et événements de la communauté haïtienne",
     sameAs: [
@@ -99,13 +99,13 @@ const StructuredData = ({ content }) => {
         "@type": "ListItem",
         position: 1,
         name: "Accueil",
-        item: "https://intexto.ca",
+        item: "https://www.intexto.ca",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: category.charAt(0).toUpperCase() + category.slice(1),
-        item: `https://intexto.ca/categorie/${category}`,
+        item: `https://www.intexto.ca/categorie/${category}`,
       },
       {
         "@type": "ListItem",

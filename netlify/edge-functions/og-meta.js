@@ -6,11 +6,14 @@
  * Normal users get the standard SPA experience.
  */
 
-const STRAPI_URL = Deno.env.get("VITE_STRAPI_URL") || "https://intexto-strapi-production.up.railway.app";
-const SITE_URL = "https://intexto.ca";
+const STRAPI_URL =
+  Deno.env.get("VITE_STRAPI_URL") ||
+  "https://intexto-strapi-production.up.railway.app";
+const SITE_URL = "https://www.intexto.ca";
 const SITE_NAME = "Intexto";
-const DEFAULT_IMAGE = `${SITE_URL}/Images/intextologo.png`;
-const DEFAULT_DESCRIPTION = "Intexto est le journal de référence de la communauté haïtienne à Montréal. Actualités, politique, culture, et événements.";
+const DEFAULT_IMAGE = `${SITE_URL}/Images/og-image.png`;
+const DEFAULT_DESCRIPTION =
+  "Intexto est le journal de référence de la communauté haïtienne à Montréal. Actualités, politique, culture, et événements.";
 
 // Social media bot user-agent patterns
 const BOT_PATTERNS = [
@@ -82,9 +85,16 @@ function extractMeta(type, item) {
 
   // Resolve image URL
   let image = DEFAULT_IMAGE;
-  const imageField = type === "video" ? item.thumbnail : type === "audio" ? item.coverImage : item.image;
+  const imageField =
+    type === "video"
+      ? item.thumbnail
+      : type === "audio"
+        ? item.coverImage
+        : item.image;
   if (imageField?.url) {
-    image = imageField.url.startsWith("http") ? imageField.url : `${STRAPI_URL}${imageField.url}`;
+    image = imageField.url.startsWith("http")
+      ? imageField.url
+      : `${STRAPI_URL}${imageField.url}`;
   }
 
   const slug = item.slug;
