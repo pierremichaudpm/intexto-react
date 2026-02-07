@@ -130,8 +130,8 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
     }
   };
 
-  // Social sharing functions
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  // Social sharing functions - use canonical URL for proper sharing
+  const shareUrl = `https://intexto.ca/${type}/${content.slug}`;
   const shareTitle = title;
 
   const handleShare = (platform) => {
@@ -157,7 +157,8 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
           <SEOHead
             title={`${title} | Intexto`}
             description={excerpt}
-            image={image}
+            image={imageFallback || (image && image.url) || undefined}
+            url={`https://intexto.ca/${type}/${content.slug}`}
             type={type === "article" ? "article" : "website"}
             author={author}
             publishedTime={date}

@@ -9,3 +9,16 @@
 
 [build.environment]
   NODE_VERSION = "18"
+
+# Edge function for social media OG meta tags
+[[edge_functions]]
+  function = "og-meta"
+  path = "/article/*"
+
+[[edge_functions]]
+  function = "og-meta"
+  path = "/video/*"
+
+[[edge_functions]]
+  function = "og-meta"
+  path = "/audio/*"
