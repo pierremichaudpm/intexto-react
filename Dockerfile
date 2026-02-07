@@ -24,11 +24,13 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install serve globally
-RUN npm install -g serve
+# Install production dependencies (express)
+COPY package*.json ./
+RUN npm install --omit=dev --legacy-peer-deps
 
-# Copy built assets from builder
+# Copy built assets and server
 COPY --from=builder /app/dist ./dist
+COPY server.js ./
 
 # Start the app - Railway provides PORT env var
-CMD sh -c "serve -s dist -l ${PORT:-3000}"
+CMD ["node", "server.js"]
