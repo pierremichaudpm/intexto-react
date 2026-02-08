@@ -7,10 +7,12 @@ import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 import cmsService from "../../services/cmsService";
 import Header from "./Header";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../context/LanguageContext";
 
 const SearchOverlay = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { buildPath } = useLanguage();
   const { content, searchQuery, setSearchQuery } = useContent();
   const [results, setResults] = useState([]);
 
@@ -38,7 +40,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
         : item.type === "audio"
           ? "audio"
           : "article";
-    navigate(`/${typeRoute}/${item.slug}`);
+    navigate(buildPath(`/${typeRoute}/${item.slug}`));
     handleClose();
   };
 

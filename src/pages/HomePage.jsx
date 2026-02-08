@@ -10,6 +10,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useContent } from "../context/ContentContext";
+import { useLanguage } from "../context/LanguageContext";
 import HeroSection from "../components/content/HeroSection";
 import CategoryFilter from "../components/sections/CategoryFilter";
 import MediaSection from "../components/sections/MediaSection";
@@ -27,6 +28,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { filter, setFilter, getFilteredContent, loading, content } =
     useContent();
+  const { buildPath } = useLanguage();
   const [selectedContent, setSelectedContent] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [displayCount, setDisplayCount] = useState(isMobile ? 4 : 6);
@@ -81,20 +83,20 @@ const HomePage = () => {
   const handleContentClick = useCallback(
     (contentItem) => {
       setSelectedContent(contentItem);
-      navigate(`/${contentItem.type}/${contentItem.slug}`, { replace: false });
+      navigate(buildPath(`/${contentItem.type}/${contentItem.slug}`), { replace: false });
     },
     [navigate],
   );
 
   const handleModalClose = useCallback(() => {
     setSelectedContent(null);
-    navigate("/", { replace: false });
+    navigate(buildPath("/"), { replace: false });
   }, [navigate]);
 
   const handleContentChange = useCallback(
     (newContent) => {
       setSelectedContent(newContent);
-      navigate(`/${newContent.type}/${newContent.slug}`, { replace: false });
+      navigate(buildPath(`/${newContent.type}/${newContent.slug}`), { replace: false });
     },
     [navigate],
   );
