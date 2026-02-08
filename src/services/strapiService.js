@@ -12,6 +12,14 @@ class StrapiService {
   }
 
   /**
+   * Build locale query string. Omit for default locale so Strapi
+   * returns content regardless of locale tagging.
+   */
+  localeParam(locale) {
+    return locale && locale !== "fr" ? `locale=${locale}&` : "";
+  }
+
+  /**
    * Fetch all content (articles, videos, audios) with populated relations
    */
   async loadContent(locale = "fr") {
@@ -45,7 +53,7 @@ class StrapiService {
   async fetchLineups(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/lineups?locale=${locale}&populate[articles][populate]=*&populate[videos][populate]=*&populate[audios][populate]=*`,
+        `${this.apiUrl}/api/lineups?${this.localeParam(locale)}populate[articles][populate]=*&populate[videos][populate]=*&populate[audios][populate]=*`,
       );
       const data = await response.json();
       const lineups = {};
@@ -78,7 +86,7 @@ class StrapiService {
   async fetchArticles(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/articles?locale=${locale}&populate=*`,
+        `${this.apiUrl}/api/articles?${this.localeParam(locale)}populate=*`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformArticle(item));
@@ -94,7 +102,7 @@ class StrapiService {
   async fetchVideos(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/videos?locale=${locale}&populate=*`,
+        `${this.apiUrl}/api/videos?${this.localeParam(locale)}populate=*`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformVideo(item));
@@ -110,7 +118,7 @@ class StrapiService {
   async fetchAudios(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/audios?locale=${locale}&populate=*`,
+        `${this.apiUrl}/api/audios?${this.localeParam(locale)}populate=*`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformAudio(item));
@@ -126,7 +134,7 @@ class StrapiService {
   async fetchCategories(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/categories?locale=${locale}`,
+        `${this.apiUrl}/api/categories?${this.localeParam(locale)}populate=*`,
       );
       const data = await response.json();
       return data.data.map((cat) => ({
@@ -324,7 +332,7 @@ class StrapiService {
 
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/${endpoint}?locale=${locale}&filters[slug][$eq]=${encodeURIComponent(slug)}&status=draft&populate=*`,
+        `${this.apiUrl}/api/${endpoint}?${this.localeParam(locale)}filters[slug][$eq]=${encodeURIComponent(slug)}&status=draft&populate=*`,
       );
       const data = await response.json();
       const item = data.data?.[0];

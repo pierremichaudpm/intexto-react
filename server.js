@@ -65,7 +65,8 @@ async function fetchContent(type, slug, locale = "fr") {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
 
-    const url = `${STRAPI_URL}/api/${endpoint}?locale=${locale}&filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`;
+    const localeParam = locale && locale !== "fr" ? `locale=${locale}&` : "";
+    const url = `${STRAPI_URL}/api/${endpoint}?${localeParam}filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`;
     const response = await fetch(url, { signal: controller.signal });
     clearTimeout(timeout);
 
