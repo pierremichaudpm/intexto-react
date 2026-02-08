@@ -1,19 +1,15 @@
 import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { X, Search, FileText, Video, Mic } from "lucide-react";
 import { useContent } from "../../context/ContentContext";
-import { useLanguage } from "../../context/LanguageContext";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 import cmsService from "../../services/cmsService";
 import Header from "./Header";
 
 const SearchOverlay = ({ isOpen, onClose }) => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { content, searchQuery, setSearchQuery } = useContent();
-  const { buildPath } = useLanguage();
   const [results, setResults] = useState([]);
 
   useEffect(() => {
@@ -33,13 +29,14 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   }, [searchQuery, content]);
 
   const handleResultClick = (item) => {
+    // Navigate to the content URL
     const typeRoute =
       item.type === "video"
         ? "video"
         : item.type === "audio"
           ? "audio"
           : "article";
-    navigate(buildPath(`/${typeRoute}/${item.slug}`));
+    navigate(`/${typeRoute}/${item.slug}`);
     handleClose();
   };
 
@@ -80,7 +77,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
               <input
                 type="text"
                 id="search-input"
-                placeholder={t("search.placeholder")}
+                placeholder="Rechercher des articles, vidéos, podcasts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
@@ -95,13 +92,13 @@ const SearchOverlay = ({ isOpen, onClose }) => {
             {searchQuery.length >= 2 && results.length === 0 && (
               <div className="search-no-results">
                 <Search size={48} />
-                <p>{t("search.noResults", { query: searchQuery })}</p>
+                <p>Aucun résultat trouvé pour "{searchQuery}"</p>
               </div>
             )}
 
             {searchQuery.length > 0 && searchQuery.length < 2 && (
               <div className="search-hint">
-                <p>{t("search.minChars")}</p>
+                <p>Tapez au moins 2 caractères pour rechercher</p>
               </div>
             )}
 
@@ -142,7 +139,8 @@ const SearchOverlay = ({ isOpen, onClose }) => {
 
             {results.length > 0 && (
               <p className="search-results-count">
-                {t("search.resultsCount", { count: results.length })}
+                {results.length} résultat{results.length > 1 ? "s" : ""} trouvé
+                {results.length > 1 ? "s" : ""}
               </p>
             )}
           </div>

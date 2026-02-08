@@ -1,75 +1,46 @@
-import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
+import cmsService from "../../services/cmsService";
+import ResponsiveImage from "./ResponsiveImage";
+import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
-const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
-
-const HeroCard = ({ item, type, onClick, priority = false }) => {
-  const { t } = useTranslation();
-
-  const getCoverUrl = () => {
-    const cover = item.cover;
-    if (!cover) return null;
-    const formats = cover.formats;
-    const url = formats?.large?.url || formats?.medium?.url || cover.url;
-    if (!url) return null;
-    return url.startsWith("http") ? url : `${STRAPI_URL}${url}`;
-  };
-
-  const coverUrl = getCoverUrl();
-  const categoryName = item.category?.name || item.categorie?.name;
-
-  const getTypeLabel = () => {
-    switch (type) {
-      case "video":
-        return t("type.video");
-      case "audio":
-        return t("type.audio");
-      default:
-        return t("type.article");
-    }
-  };
+const HeroCard = ({ content, size = "medium", onClick }) => {
+  const { title, category, image, imageFallback, author, date } = content;
 
   return (
-    <div
-      className="hero-card"
-      onClick={() => onClick && onClick(item)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && onClick && onClick(item)}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      className={`hero-card hero-card-${size}`}
+      onClick={() => onClick(content)}
     >
-      <div className="hero-card__image-wrapper">
-        {coverUrl ? (
-          <img
-            src={coverUrl}
-            alt={item.title}
-            className="hero-card__image"
-            loading={priority ? "eager" : "lazy"}
-            fetchPriority={priority ? "high" : "auto"}
-          />
-        ) : (
-          <div className="hero-card__placeholder" />
-        )}
-        <div className="hero-card__overlay" />
+      <div className="hero-card-image-wrapper">
+        <ResponsiveImage
+          image={image}
+          fallbackUrl={imageFallback}
+          alt={title}
+          className="hero-card-image"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
+        />
       </div>
 
-      <div className="hero-card__content">
-        <div className="hero-card__badges">
-          {type !== "article" && (
-            <span className="hero-card__type-badge">{getTypeLabel()}</span>
-          )}
-          {categoryName && (
-            <span className="hero-card__category-badge">{categoryName}</span>
-          )}
+      <div className="hero-card-overlay">
+        <span
+          className="hero-card-category"
+          style={{ backgroundColor: getCategoryColor(category) }}
+        >
+          {getCategoryLabel(category)}
+        </span>
+
+        <h2 className="hero-card-title">{title}</h2>
+
+        <div className="hero-card-meta">
+          <span>{author}</span>
+          <span>{cmsService.formatDate(date)}</span>
         </div>
-        <h2 className="hero-card__title">{item.title}</h2>
-        {item.description && (
-          <p className="hero-card__description">
-            {item.description.length > 160
-              ? `${item.description.substring(0, 160)}...`
-              : item.description}
-          </p>
-        )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

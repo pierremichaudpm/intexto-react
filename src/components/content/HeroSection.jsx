@@ -1,38 +1,254 @@
-import { useTranslation } from "react-i18next";
-import HeroCard from "../common/HeroCard";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+  Video,
+  Mic,
+} from "lucide-react";
+import { useContent } from "../../context/ContentContext";
+import cmsService from "../../services/cmsService";
+import ResponsiveImage from "../common/ResponsiveImage";
+import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
-const HeroSection = ({ items, onItemClick }) => {
-  const { t } = useTranslation();
+const HeroSection = ({ onContentClick }) => {
+  const { content, getLineup } = useContent();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const carouselRef = useRef(null);
 
-  if (!items || items.length === 0) return null;
+  // Minimum swipe distance
+  const minSwipeDistance = 50;
 
-  const mainItem = items[0];
-  const sideItems = items.slice(1, 3);
+  // Use lineups if available, otherwise fall back to default sorting
+  const heroCarouselLineup = getLineup("hero-carousel");
+  const heroVideoLineup = getLineup("hero-video");
+  const heroAudioLineup = getLineup("hero-audio");
+
+  const articles =
+    heroCarouselLineup && heroCarouselLineup.articles.length > 0
+      ? heroCarouselLineup.articles.slice(0, 3)
+      : content
+          .filter((item) => item.type === "article")
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, 3);
+  const featuredVideo =
+    heroVideoLineup && heroVideoLineup.videos.length > 0
+      ? heroVideoLineup.videos[0]
+      : content
+          .filter((item) => item.type === "video")
+          .sort((a, b) => new Date(b.date) - new Date(a.date))[0] || null;
+
+  const featuredAudio =
+    heroAudioLineup && heroAudioLineup.audios.length > 0
+      ? heroAudioLineup.audios[0]
+      : content
+          .filter((item) => item.type === "audio")
+          .sort((a, b) => new Date(b.date) - new Date(a.date))[0] || null;
+
+  useEffect(() => {
+    if (articles.length === 0) return;
+
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % articles.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [articles.length]);
+
+  const paginate = (newDirection) => {
+    setCurrentIndex((prev) => {
+      const next = prev + newDirection;
+      if (next < 0) return articles.length - 1;
+      if (next >= articles.length) return 0;
+      return next;
+    });
+  };
+
+  // Swipe handlers
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      paginate(1);
+    } else if (isRightSwipe) {
+      paginate(-1);
+    }
+  };
+
+  if (articles.length === 0) return null;
+
+  const current = articles[currentIndex];
 
   return (
-    <section className="hero-section" aria-label={t("hero.headline")}>
-      <div className="hero-section__grid">
-        <div className="hero-section__main">
-          <HeroCard
-            item={mainItem.item}
-            type={mainItem.type}
-            onClick={onItemClick}
-            priority={true}
-          />
-        </div>
+    <section className="hero-section-new">
+      <h1 className="sr-only">
+        Intexto - Journal Nouvèl Ayisyen | Actualités Haïtiennes à Montréal
+      </h1>
+      <div className="hero-container-new">
+        {/* Main Carousel */}
+        <div
+          className="hero-main-carousel"
+          ref={carouselRef}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{
+                duration: 1.2,
+                ease: [0.4, 0, 0.2, 1],
+              }}
+              className="hero-main-slide"
+              onClick={() => onContentClick(current)}
+            >
+              <div className="hero-main-image-wrapper">
+                <ResponsiveImage
+                  image={current.image}
+                  fallbackUrl={current.imageFallback}
+                  alt={current.title}
+                  className="hero-main-image"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 60vw"
+                  priority={currentIndex === 0}
+                />
+                <div className="hero-main-gradient" />
+              </div>
 
-        {sideItems.length > 0 && (
-          <div className="hero-section__side">
-            {sideItems.map((entry) => (
-              <HeroCard
-                key={`${entry.type}-${entry.item.id}`}
-                item={entry.item}
-                type={entry.type}
-                onClick={onItemClick}
+              <div className="hero-main-content">
+                <span
+                  className="hero-main-category"
+                  style={{
+                    backgroundColor: getCategoryColor(current.category),
+                  }}
+                >
+                  {getCategoryLabel(current.category)}
+                </span>
+                <h2 className="hero-main-title">{current.title}</h2>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <button
+            className="hero-nav-btn hero-nav-left"
+            onClick={() => paginate(-1)}
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            className="hero-nav-btn hero-nav-right"
+            onClick={() => paginate(1)}
+          >
+            <ChevronRight size={16} />
+          </button>
+
+          {/* Dots */}
+          <div className="hero-dots">
+            {articles.map((_, index) => (
+              <button
+                key={index}
+                className={`hero-dot ${index === currentIndex ? "active" : ""}`}
+                onClick={() => setCurrentIndex(index)}
               />
             ))}
           </div>
-        )}
+        </div>
+
+        {/* Side Content: Video + Audio */}
+        <div className="hero-side-articles">
+          {/* Video */}
+          {featuredVideo && (
+            <div
+              className="hero-side-card"
+              onClick={() => onContentClick(featuredVideo)}
+            >
+              <div className="hero-side-image-wrapper">
+                <ResponsiveImage
+                  image={featuredVideo.image}
+                  fallbackUrl={featuredVideo.imageFallback}
+                  alt={featuredVideo.title}
+                  className="hero-side-image"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
+                />
+                <div className="hero-side-media-badge">
+                  <Video size={30} />
+                </div>
+              </div>
+              <div className="hero-side-body">
+                <span
+                  className="hero-side-category"
+                  style={{
+                    backgroundColor: getCategoryColor(featuredVideo.category),
+                  }}
+                >
+                  {getCategoryLabel(featuredVideo.category)}
+                </span>
+                <h3 className="hero-side-title">{featuredVideo.title}</h3>
+                <div className="hero-side-meta">
+                  <span>{featuredVideo.author}</span>
+                  <span>•</span>
+                  <span>{cmsService.formatDate(featuredVideo.date)}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Audio */}
+          {featuredAudio && (
+            <div
+              className="hero-side-card"
+              onClick={() => onContentClick(featuredAudio)}
+            >
+              <div className="hero-side-image-wrapper">
+                <ResponsiveImage
+                  image={featuredAudio.image}
+                  fallbackUrl={featuredAudio.imageFallback}
+                  alt={featuredAudio.title}
+                  className="hero-side-image"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
+                />
+                <div className="hero-side-media-badge">
+                  <Mic size={30} />
+                </div>
+              </div>
+              <div className="hero-side-body">
+                <span
+                  className="hero-side-category"
+                  style={{
+                    backgroundColor: getCategoryColor(featuredAudio.category),
+                  }}
+                >
+                  {getCategoryLabel(featuredAudio.category)}
+                </span>
+                <h3 className="hero-side-title">{featuredAudio.title}</h3>
+                <div className="hero-side-meta">
+                  <span>{featuredAudio.author}</span>
+                  <span>•</span>
+                  <span>{cmsService.formatDate(featuredAudio.date)}</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

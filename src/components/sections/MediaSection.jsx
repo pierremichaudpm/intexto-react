@@ -1,78 +1,61 @@
-import { useState, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import ContentCard from "../common/ContentCard";
-import CategoryFilter from "./CategoryFilter";
+import { useContent } from "../../context/ContentContext";
 
-const MediaSection = ({ title, items, type, onItemClick, id }) => {
-  const { t } = useTranslation();
-  const [activeCategory, setActiveCategory] = useState("all");
+const MediaSection = ({ videos, audios, onContentClick }) => {
   const [showAll, setShowAll] = useState(false);
+  const { getLineup } = useContent();
 
-  const categories = useMemo(() => {
-    const cats = new Map();
-    items.forEach((item) => {
-      const cat = item.category || item.categorie;
-      if (cat?.name) {
-        cats.set(cat.name, {
-          id: cat.id,
-          name: cat.name,
-          slug: cat.slug || cat.name.toLowerCase(),
-        });
-      }
-    });
-    return Array.from(cats.values());
-  }, [items]);
+  // Use media-mixed lineup if available, otherwise fall back to combining all videos + audios
+  const mediaMixedLineup = getLineup("media-mixed");
 
-  const filteredItems = useMemo(() => {
-    if (activeCategory === "all") return items;
-    return items.filter((item) => {
-      const cat = item.category || item.categorie;
-      return (
-        cat &&
-        (cat.slug === activeCategory ||
-          cat.name?.toLowerCase() === activeCategory)
-      );
-    });
-  }, [items, activeCategory]);
+  let allMedia;
+  if (mediaMixedLineup) {
+    // Lineup items come first (in order), then remaining items by date
+    const lineupItems = [
+      ...mediaMixedLineup.videos.map((v) => ({ ...v, type: "video" })),
+      ...mediaMixedLineup.audios.map((a) => ({ ...a, type: "audio" })),
+    ];
+    const lineupIds = new Set(lineupItems.map((item) => item.id));
+    const remainingMedia = [...(videos || []), ...(audios || [])]
+      .filter((item) => !lineupIds.has(item.id))
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+    allMedia = [...lineupItems, ...remainingMedia];
+  } else {
+    allMedia = [...(videos || []), ...(audios || [])];
+  }
 
-  const displayedItems = showAll ? filteredItems : filteredItems.slice(0, 6);
+  if (allMedia.length === 0) return null;
 
-  if (!items || items.length === 0) return null;
+  const initialCount = 3;
+  const displayMedia = showAll ? allMedia : allMedia.slice(0, initialCount);
+  const hasMore = allMedia.length > initialCount;
 
   return (
-    <section className="media-section" id={id} aria-label={title}>
-      <div className="media-section__header">
-        <h2 className="media-section__title">{title}</h2>
-        <CategoryFilter
-          categories={categories}
-          activeCategory={activeCategory}
-          onCategoryChange={setActiveCategory}
-        />
-      </div>
-
-      <div className="media-section__grid">
-        {displayedItems.map((item) => (
-          <ContentCard
-            key={item.id}
-            item={item}
-            type={type}
-            onClick={onItemClick}
-          />
-        ))}
-      </div>
-
-      {filteredItems.length > 6 && (
-        <div className="media-section__load-more">
-          <button
-            className="btn btn--outline"
-            onClick={() => setShowAll(!showAll)}
-          >
-            {showAll
-              ? t("section.showLess")
-              : t("section.showAll", { count: filteredItems.length })}
-          </button>
+    <section className="media-section">
+      <div className="media-section-container">
+        <div className="media-section-header">
+          <h2 className="media-section-title">Audio et Vidéo</h2>
         </div>
-      )}
+
+        <div className="media-grid">
+          {displayMedia.map((media) => (
+            <ContentCard
+              key={media.id}
+              content={media}
+              onClick={onContentClick}
+            />
+          ))}
+        </div>
+
+        {hasMore && !showAll && (
+          <div className="media-load-more">
+            <button className="load-more-btn" onClick={() => setShowAll(true)}>
+              Plus de contenu
+            </button>
+          </div>
+        )}
+      </div>
     </section>
   );
 };
