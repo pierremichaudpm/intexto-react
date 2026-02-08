@@ -66,7 +66,7 @@ async function fetchContent(type, slug, locale = "fr") {
     const timeout = setTimeout(() => controller.abort(), 5000);
 
     const localeParam = locale && locale !== "fr" ? `locale=${locale}&` : "";
-    const url = `${STRAPI_URL}/api/${endpoint}?${localeParam}filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`;
+    const url = `${STRAPI_URL}/api/${endpoint}?${localeParam}filters[slug][$eq]=${encodeURIComponent(slug)}&populate[0]=image&populate[1]=thumbnail&populate[2]=coverImage&populate[3]=category`;
     const response = await fetch(url, { signal: controller.signal });
     clearTimeout(timeout);
 
@@ -86,7 +86,10 @@ async function fetchContent(type, slug, locale = "fr") {
 function extractMeta(type, item, locale = "fr") {
   const title = item.title || SITE_NAME;
   const description =
-    item.excerpt || item.description || DEFAULT_DESCRIPTIONS[locale] || DEFAULT_DESCRIPTIONS.fr;
+    item.excerpt ||
+    item.description ||
+    DEFAULT_DESCRIPTIONS[locale] ||
+    DEFAULT_DESCRIPTIONS.fr;
   const author = item.author || "Rédaction Intexto";
   const publishedAt = item.publishedDate || item.publishedAt || item.createdAt;
 
@@ -197,19 +200,22 @@ const app = express();
 
 // Bot interception for language-prefixed content routes
 // English and Kreyòl: /:lang/article/:slug
-app.get("/:lang(en|ht)/:type(article|video|audio)/:slug", async (req, res, next) => {
-  const userAgent = req.headers["user-agent"] || "";
-  if (!isBot(userAgent)) return next();
+app.get(
+  "/:lang(en|ht)/:type(article|video|audio)/:slug",
+  async (req, res, next) => {
+    const userAgent = req.headers["user-agent"] || "";
+    if (!isBot(userAgent)) return next();
 
-  const { lang, type, slug } = req.params;
-  const meta = await fetchContent(type, decodeURIComponent(slug), lang);
+    const { lang, type, slug } = req.params;
+    const meta = await fetchContent(type, decodeURIComponent(slug), lang);
 
-  if (!meta) return next();
+    if (!meta) return next();
 
-  res.set("Content-Type", "text/html; charset=UTF-8");
-  res.set("Cache-Control", "public, max-age=300, s-maxage=600");
-  res.send(buildOgHtml(meta));
-});
+    res.set("Content-Type", "text/html; charset=UTF-8");
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+    res.send(buildOgHtml(meta));
+  },
+);
 
 // Bot interception for French content routes (no prefix)
 app.get("/:type(article|video|audio)/:slug", async (req, res, next) => {
