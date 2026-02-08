@@ -1,7 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import ContentCard from "../common/ContentCard";
+import { useTranslation } from "react-i18next";
 
 const AudioSection = ({ audios, onContentClick }) => {
+  const { t } = useTranslation();
   if (!audios || audios.length === 0) return null;
 
   // Sort by date (newest first) - lineup ordering is handled by the parent
@@ -15,7 +17,7 @@ const AudioSection = ({ audios, onContentClick }) => {
     <section className="media-section audio-section">
       <div className="media-section-container">
         <div className="media-section-header">
-          <h2 className="media-section-title">Podcasts</h2>
+          <h2 className="media-section-title">{t("section.podcasts")}</h2>
           <a href="#podcasts" className="media-section-more">
             Voir tout <ArrowRight size={18} />
           </a>

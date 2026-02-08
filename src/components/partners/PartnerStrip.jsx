@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const STRIP_WIDTH = 728;
 const STRIP_HEIGHT = 90;
@@ -117,6 +118,7 @@ const partnerStripHtml = `<!DOCTYPE html>
 </html>`;
 
 const PartnerStrip = ({ type = "top" }) => {
+  const { t } = useTranslation();
   const wrapRef = useRef(null);
   const [scale, setScale] = useState(1);
 

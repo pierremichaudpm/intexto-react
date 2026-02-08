@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Cookie, Shield } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const GDPRBanner = () => {
+  const { t } = useTranslation();
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const GDPRBanner = () => {
           <button
             className="gdpr-banner-close"
             onClick={handleClose}
-            aria-label="Fermer"
+            aria-label={t("gdpr.close")}
           >
             <X size={20} />
           </button>

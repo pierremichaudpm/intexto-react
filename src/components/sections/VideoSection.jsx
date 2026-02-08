@@ -1,7 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import ContentCard from "../common/ContentCard";
+import { useTranslation } from "react-i18next";
 
 const VideoSection = ({ videos, onContentClick }) => {
+  const { t } = useTranslation();
   if (!videos || videos.length === 0) return null;
 
   // Sort by date (newest first) - lineup ordering is handled by the parent
@@ -15,7 +17,7 @@ const VideoSection = ({ videos, onContentClick }) => {
     <section className="media-section video-section">
       <div className="media-section-container">
         <div className="media-section-header">
-          <h2 className="media-section-title">Vidéos</h2>
+          <h2 className="media-section-title">{t("section.videos")}</h2>
           <a href="#videos" className="media-section-more">
             Voir tout <ArrowRight size={18} />
           </a>

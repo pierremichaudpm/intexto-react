@@ -7,6 +7,7 @@ import {
   Suspense,
 } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useContent } from "../context/ContentContext";
 import HeroSection from "../components/content/HeroSection";
@@ -22,6 +23,7 @@ const ContentModal = lazy(() => import("../components/common/ContentModal"));
 
 const HomePage = () => {
   const { slug } = useParams();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { filter, setFilter, getFilteredContent, loading, content } =
     useContent();
@@ -101,7 +103,7 @@ const HomePage = () => {
     return (
       <div className="loading-container">
         <div className="loading-spinner"></div>
-        <p>Chargement...</p>
+        <p>{t("loading.content")}</p>
       </div>
     );
   }
@@ -142,7 +144,7 @@ const HomePage = () => {
 
             {displayedContent.length === 0 && (
               <div className="no-content">
-                <p>Aucun contenu trouvé</p>
+                <p>{t("content.noContent")}</p>
               </div>
             )}
 
@@ -154,7 +156,7 @@ const HomePage = () => {
                   className="load-more-btn"
                   onClick={handleLoadMore}
                 >
-                  Charger plus d'articles
+                  {t("content.loadMore")}
                 </motion.button>
               </div>
             )}

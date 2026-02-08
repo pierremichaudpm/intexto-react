@@ -11,6 +11,7 @@ import {
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
 const MagazineWidget = () => {
+  const { t } = useTranslation();
   const [currentIssue, setCurrentIssue] = useState(0);
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -91,7 +92,7 @@ const MagazineWidget = () => {
 
   const handleDownload = () => {
     if (!currentMagazine.pdfUrl) {
-      alert("PDF non disponible");
+      alert(t("magazine.pdfUnavailable"));
       return;
     }
     // Add download flag for Cloudinary
@@ -107,7 +108,7 @@ const MagazineWidget = () => {
 
   const handlePreview = () => {
     if (!currentMagazine.pdfUrl) {
-      alert("PDF non disponible");
+      alert(t("magazine.pdfUnavailable"));
       return;
     }
     window.open(currentMagazine.pdfUrl, "_blank", "noopener,noreferrer");
@@ -117,7 +118,7 @@ const MagazineWidget = () => {
     <div className="magazine-widget">
       <div className="magazine-widget-header">
         <BookOpen size={20} />
-        <h3>Version Papier</h3>
+        <h3>{t("magazine.printVersion")}</h3>
       </div>
 
       <div className="magazine-cover-container">
@@ -154,14 +155,14 @@ const MagazineWidget = () => {
               <button
                 className="magazine-nav magazine-nav-left"
                 onClick={handlePrevious}
-                aria-label="Édition précédente"
+                aria-label={t("magazine.previousEdition")}
               >
                 <ChevronLeft size={20} />
               </button>
               <button
                 className="magazine-nav magazine-nav-right"
                 onClick={handleNext}
-                aria-label="Édition suivante"
+                aria-label={t("magazine.nextEdition")}
               >
                 <ChevronRight size={20} />
               </button>

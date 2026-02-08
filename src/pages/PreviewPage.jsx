@@ -7,10 +7,12 @@ import strapiService from "../services/strapiService";
 import cmsService from "../services/cmsService";
 import ResponsiveImage from "../components/common/ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../config/categories";
+import { useTranslation } from "react-i18next";
 
 const PREVIEW_SECRET = import.meta.env.VITE_PREVIEW_SECRET;
 
 const PreviewPage = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,12 +28,12 @@ const PreviewPage = () => {
 
   useEffect(() => {
     if (secret !== PREVIEW_SECRET) {
-      setError("Acces non autorise");
+      setError(t("preview.error.unauthorized"));
       setLoading(false);
       return;
     }
     if (!type || !slug) {
-      setError("Parametres manquants");
+      setError(t("preview.error.missing"));
       setLoading(false);
       return;
     }
@@ -40,7 +42,7 @@ const PreviewPage = () => {
       setLoading(true);
       const data = await strapiService.fetchDraftContent(type, slug);
       if (!data) {
-        setError("Contenu introuvable");
+        setError(t("preview.error.notFound"));
       } else {
         setContent(data);
       }
@@ -112,7 +114,7 @@ const PreviewPage = () => {
 
   return (
     <div className="preview-page">
-      <div className="preview-banner">Apercu — {status === "draft" ? "Brouillon" : "Publie"}</div>
+      <div className="preview-banner">Apercu — {status === "draft" ? t("preview.draft") : t("preview.published")}</div>
 
       <div className="preview-content">
         {type === "video" && mediaUrl ? (

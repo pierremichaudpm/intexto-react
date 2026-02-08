@@ -9,6 +9,7 @@ import {
 } from "react-icons/si";
 
 const Footer = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -41,7 +42,7 @@ const Footer = () => {
           <div className="newsletter-icon">
             <Mail size={48} />
           </div>
-          <h2 className="newsletter-title">Restez informé</h2>
+          <h2 className="newsletter-title">{t("footer.stayInformed")}</h2>
           <p className="newsletter-subtitle">
             Recevez les dernières actualités de la communauté dans votre boîte
             mail. Inscription gratuite&nbsp;!
@@ -50,7 +51,7 @@ const Footer = () => {
             <input
               type="email"
               className="newsletter-input"
-              placeholder="Votre adresse email"
+              placeholder={t("footer.emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -63,11 +64,11 @@ const Footer = () => {
               {isSubscribed ? (
                 <>
                   <Check size={20} />
-                  <span>Inscrit !</span>
+                  <span>{t("footer.subscribed")}</span>
                 </>
               ) : (
                 <>
-                  <span>S'abonner</span>
+                  <span>{t("footer.subscribe")}</span>
                   <ArrowRight size={18} />
                 </>
               )}
@@ -94,7 +95,7 @@ const Footer = () => {
             </div>
 
             <div className="footer-col">
-              <h3>Suivez-nous</h3>
+              <h3>{t("footer.followUs")}</h3>
               <div className="social-links">
                 <a
                   href="https://www.facebook.com/jnnuma/"
@@ -145,7 +146,7 @@ const Footer = () => {
             </div>
 
             <div className="footer-col">
-              <h3>Contact</h3>
+              <h3>{t("footer.contact")}</h3>
               <p>info@intexto.ca</p>
               <p>Montréal, Québec</p>
             </div>

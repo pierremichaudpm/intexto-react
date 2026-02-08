@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const partnerCardA = `<!DOCTYPE html>
 <html lang="fr">
@@ -160,6 +161,7 @@ const partnerCardB = `<!DOCTYPE html>
 </html>`;
 
 const AdBox = ({ position = "sidebar", ad }) => {
+  const { t } = useTranslation();
   const html =
     ad === "visionmax"
       ? partnerCardB
