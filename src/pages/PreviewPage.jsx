@@ -1,179 +1,108 @@
-import { useState, useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
-import Plyr from "plyr";
-import "plyr/dist/plyr.css";
-import strapiService from "../services/strapiService";
-import cmsService from "../services/cmsService";
-import ResponsiveImage from "../components/common/ResponsiveImage";
-import { getCategoryColor, getCategoryLabel } from "../config/categories";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import ContentModal from "../components/common/ContentModal";
 
-const PREVIEW_SECRET = import.meta.env.VITE_PREVIEW_SECRET;
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
 
 const PreviewPage = () => {
-  const [searchParams] = useSearchParams();
-  const [content, setContent] = useState(null);
+  const { t } = useTranslation();
+  const [item, setItem] = useState(null);
+  const [type, setType] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const videoRef = useRef(null);
-  const audioRef = useRef(null);
-  const playerRef = useRef(null);
-
-  const type = searchParams.get("type");
-  const slug = searchParams.get("slug");
-  const status = searchParams.get("status");
-  const secret = searchParams.get("secret");
 
   useEffect(() => {
-    if (secret !== PREVIEW_SECRET) {
-      setError("Acces non autorise");
-      setLoading(false);
-      return;
-    }
-    if (!type || !slug) {
-      setError("Parametres manquants");
+    const params = new URLSearchParams(window.location.search);
+    const contentType = params.get("type");
+    const documentId = params.get("documentId");
+
+    if (!contentType || !documentId) {
+      setError(t("preview.error.missing"));
       setLoading(false);
       return;
     }
 
-    const loadPreview = async () => {
-      setLoading(true);
-      const data = await strapiService.fetchDraftContent(type, slug);
-      if (!data) {
-        setError("Contenu introuvable");
-      } else {
-        setContent(data);
-      }
-      setLoading(false);
+    const typeMap = {
+      articles: "article",
+      videos: "video",
+      audios: "audio",
     };
 
-    loadPreview();
-  }, [type, slug, status, secret]);
+    const fetchPreview = async () => {
+      try {
+        const res = await fetch(
+          `${STRAPI_URL}/api/${contentType}/${documentId}?populate=cover,category&status=draft`,
+        );
 
-  // Initialize Plyr for video/audio
-  useEffect(() => {
-    if (!content) return;
-    const el = videoRef.current || audioRef.current;
-    if (el) {
-      playerRef.current = new Plyr(el, {
-        controls: [
-          "play",
-          "progress",
-          "current-time",
-          "mute",
-          "volume",
-          "fullscreen",
-        ],
-      });
-    }
-    return () => {
-      if (playerRef.current) {
-        playerRef.current.destroy();
-        playerRef.current = null;
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const json = await res.json();
+        setItem(json.data);
+        setType(typeMap[contentType] || "article");
+      } catch (err) {
+        console.error("Preview fetch error:", err);
+        setError(t("preview.error.loadFailed"));
+      } finally {
+        setLoading(false);
       }
     };
-  }, [content]);
+
+    fetchPreview();
+  }, []);
 
   if (loading) {
     return (
-      <div className="preview-page">
-        <div className="preview-banner">Apercu</div>
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Chargement...</p>
-        </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <div className="loading-spinner"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="preview-page">
-        <div className="preview-banner">Apercu</div>
-        <div className="loading-container">
-          <p>{error}</p>
-        </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          color: "#ef4444",
+        }}
+      >
+        <p>{error}</p>
       </div>
     );
   }
 
-  const {
-    title,
-    excerpt,
-    author,
-    date,
-    category,
-    image,
-    imageFallback,
-    videoUrl,
-    audioUrl,
-  } = content;
-  const mediaUrl = videoUrl || audioUrl;
+  if (!item) return null;
 
   return (
-    <div className="preview-page">
-      <div className="preview-banner">Apercu — {status === "draft" ? "Brouillon" : "Publie"}</div>
-
-      <div className="preview-content">
-        {type === "video" && mediaUrl ? (
-          <div className="modal-media-player modal-media-hero">
-            <video ref={videoRef} controls playsInline>
-              <source src={mediaUrl} type="video/mp4" />
-            </video>
-          </div>
-        ) : type === "audio" && mediaUrl ? (
-          <>
-            <ResponsiveImage
-              image={image}
-              fallbackUrl={imageFallback}
-              alt={title}
-              className="modal-image"
-              sizes="90vw"
-              loading="eager"
-            />
-            <div className="modal-media-player modal-audio-hero">
-              <audio ref={audioRef} controls>
-                <source src={mediaUrl} type="audio/mp3" />
-              </audio>
-            </div>
-          </>
-        ) : (
-          <ResponsiveImage
-            image={image}
-            fallbackUrl={imageFallback}
-            alt={title}
-            className="modal-image"
-            sizes="90vw"
-            loading="eager"
-          />
-        )}
-
-        <div className="modal-body">
-          <span
-            className="content-card-category"
-            style={{ backgroundColor: getCategoryColor(category) }}
-          >
-            {getCategoryLabel(category)}
-          </span>
-
-          <h1 className="modal-title">{title}</h1>
-
-          <div className="modal-meta">
-            <span>
-              <strong>{author}</strong>
-            </span>
-            <span>{cmsService.formatDate(date)}</span>
-          </div>
-
-          {(content.content || content.description) && (
-            <div className="modal-text">
-              <ReactMarkdown>
-                {content.content || content.description}
-              </ReactMarkdown>
-            </div>
-          )}
-        </div>
+    <div style={{ background: "#0a0a0a", minHeight: "100vh" }}>
+      <div
+        style={{
+          background: "#f59e0b",
+          color: "#000",
+          padding: "8px 16px",
+          textAlign: "center",
+          fontWeight: "bold",
+          fontSize: "14px",
+        }}
+      >
+        {t("preview.banner")}
       </div>
+      <ContentModal
+        item={item}
+        type={type}
+        isOpen={true}
+        onClose={() => window.close()}
+      />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import {
   useCallback,
 } from "react";
 import strapiService from "../services/strapiService";
+import { useLanguage } from "./LanguageContext";
 
 const ContentContext = createContext();
 
@@ -19,23 +20,24 @@ export const useContent = () => {
 };
 
 export const ContentProvider = ({ children }) => {
+  const { locale } = useLanguage();
   const [content, setContent] = useState([]);
   const [lineups, setLineups] = useState({});
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ category: "all", type: "all" });
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Load content and lineups on mount
+  // Reload content when locale changes
   useEffect(() => {
-    loadContent();
-  }, []);
+    loadContent(locale);
+  }, [locale]);
 
-  const loadContent = async () => {
+  const loadContent = async (loc) => {
     setLoading(true);
     try {
       const [data, lineupsData] = await Promise.all([
-        strapiService.loadContent(),
-        strapiService.fetchLineups(),
+        strapiService.loadContent(loc),
+        strapiService.fetchLineups(loc),
       ]);
       setContent(data);
       setLineups(lineupsData);
@@ -46,24 +48,6 @@ export const ContentProvider = ({ children }) => {
     }
   };
 
-  // Add content (for future CMS integration)
-  const addContent = async (contentData) => {
-    console.warn("Add content not yet implemented with Strapi");
-    throw new Error("Add content requires admin authentication");
-  };
-
-  // Update content (for future CMS integration)
-  const updateContent = async (id, updates) => {
-    console.warn("Update content not yet implemented with Strapi");
-    throw new Error("Update content requires admin authentication");
-  };
-
-  // Delete content (for future CMS integration)
-  const deleteContent = async (id) => {
-    console.warn("Delete content not yet implemented with Strapi");
-    throw new Error("Delete content requires admin authentication");
-  };
-
   // Get lineup by slug
   const getLineup = useCallback(
     (slug) => {
@@ -72,14 +56,12 @@ export const ContentProvider = ({ children }) => {
     [lineups],
   );
 
-  // Get filtered content (articles only for main feed) - memoized
+  // Get filtered content (articles only for main feed)
   const getFilteredContent = useCallback(() => {
-    // Use "articles" lineup if available, otherwise fall back to all articles
     const articlesLineup = lineups["articles"];
     let filtered;
 
     if (articlesLineup && articlesLineup.articles.length > 0) {
-      // Lineup items come first (in lineup order), then remaining articles by date
       const lineupIds = new Set(articlesLineup.articles.map((a) => a.id));
       const remainingArticles = content
         .filter((item) => item.type === "article" && !lineupIds.has(item.id))
@@ -94,12 +76,10 @@ export const ContentProvider = ({ children }) => {
         .sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
-    // Apply category filter
     if (filter.category !== "all") {
       filtered = strapiService.filterByCategory(filtered, filter.category);
     }
 
-    // Apply search
     if (searchQuery) {
       filtered = strapiService.searchContent(filtered, searchQuery);
     }
@@ -107,7 +87,6 @@ export const ContentProvider = ({ children }) => {
     return filtered;
   }, [content, lineups, filter.category, searchQuery]);
 
-  // Get content by ID - memoized
   const getContentById = useCallback(
     (id) => {
       return content.find((item) => item.id === id);
@@ -123,13 +102,10 @@ export const ContentProvider = ({ children }) => {
     setFilter,
     searchQuery,
     setSearchQuery,
-    addContent,
-    updateContent,
-    deleteContent,
     getFilteredContent,
     getContentById,
     getLineup,
-    loadContent,
+    loadContent: () => loadContent(locale),
   };
 
   return (

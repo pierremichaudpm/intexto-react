@@ -1,212 +1,181 @@
-import {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  lazy,
-  Suspense,
-} from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { useContent } from "../context/ContentContext";
+import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import HeroSection from "../components/content/HeroSection";
-import CategoryFilter from "../components/sections/CategoryFilter";
+import HeroCarousel from "../components/content/HeroCarousel";
 import MediaSection from "../components/sections/MediaSection";
-import ContentCard from "../components/common/ContentCard";
-import PartnerCard from "../components/partners/PartnerCard";
-import MagazineWidget from "../components/widgets/MagazineWidget";
+import AudioSection from "../components/sections/AudioSection";
+import VideoSection from "../components/sections/VideoSection";
+import ContentModal from "../components/common/ContentModal";
 import SEOHead from "../components/seo/SEOHead";
+import StructuredData from "../components/seo/StructuredData";
 
-// Lazy load heavy modal component
-const ContentModal = lazy(() => import("../components/common/ContentModal"));
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
 
 const HomePage = () => {
-  const { slug } = useParams();
-  const navigate = useNavigate();
-  const { filter, setFilter, getFilteredContent, loading, content } =
-    useContent();
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [displayCount, setDisplayCount] = useState(isMobile ? 4 : 6);
+  const { t } = useTranslation();
+  const [articles, setArticles] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [audios, setAudios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedType, setSelectedType] = useState(null);
+  const [useCarousel, setUseCarousel] = useState(false);
 
-  const filteredContent = getFilteredContent();
-  const displayedContent = filteredContent.slice(0, displayCount);
-
-  // Get all videos and audios for dedicated sections (memoized)
-  const allVideos = useMemo(
-    () => content.filter((item) => item.type === "video"),
-    [content],
-  );
-  const allAudios = useMemo(
-    () => content.filter((item) => item.type === "audio"),
-    [content],
-  );
-
-  // Track mobile breakpoint
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+    const fetchContent = async () => {
+      try {
+        setLoading(true);
+        const [articlesRes, videosRes, audiosRes] = await Promise.all([
+          fetch(
+            `${STRAPI_URL}/api/articles?populate=cover,category&sort=publishedAt:desc&pagination[limit]=50`,
+          ),
+          fetch(
+            `${STRAPI_URL}/api/videos?populate=cover,category&sort=publishedAt:desc&pagination[limit]=50`,
+          ),
+          fetch(
+            `${STRAPI_URL}/api/audios?populate=cover,category&sort=publishedAt:desc&pagination[limit]=50`,
+          ),
+        ]);
 
-  // Scroll to top on page load
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+        const [articlesData, videosData, audiosData] = await Promise.all([
+          articlesRes.json(),
+          videosRes.json(),
+          audiosRes.json(),
+        ]);
 
-  // Handle direct URL access - open modal if slug is in URL
-  useEffect(() => {
-    if (slug && content.length > 0) {
-      const contentItem = content.find((item) => item.slug === slug);
-      if (contentItem) {
-        setSelectedContent(contentItem);
+        setArticles(articlesData.data || []);
+        setVideos(videosData.data || []);
+        setAudios(audiosData.data || []);
+      } catch (err) {
+        console.error("Failed to fetch content:", err);
+        setError(t("error.loadFailed"));
+      } finally {
+        setLoading(false);
       }
-    }
-  }, [slug, content]);
+    };
 
-  const handleCategoryFilter = useCallback(
-    (categoryId) => {
-      setFilter((prev) => ({ ...prev, category: categoryId }));
-      setDisplayCount(isMobile ? 4 : 6);
-    },
-    [setFilter, isMobile],
-  );
-
-  const handleLoadMore = useCallback(() => {
-    setDisplayCount((prev) => prev + 9);
+    fetchContent();
   }, []);
 
-  const handleContentClick = useCallback(
-    (contentItem) => {
-      setSelectedContent(contentItem);
-      navigate(`/${contentItem.type}/${contentItem.slug}`, { replace: false });
-    },
-    [navigate],
-  );
+  useEffect(() => {
+    const checkWidth = () => setUseCarousel(window.innerWidth < 768);
+    checkWidth();
+    window.addEventListener("resize", checkWidth);
+    return () => window.removeEventListener("resize", checkWidth);
+  }, []);
 
-  const handleModalClose = useCallback(() => {
-    setSelectedContent(null);
-    navigate("/", { replace: false });
-  }, [navigate]);
+  const getHeroItems = useCallback(() => {
+    const heroItems = [];
+    if (articles.length > 0) {
+      heroItems.push({ item: articles[0], type: "article" });
+    }
+    if (videos.length > 0) {
+      heroItems.push({ item: videos[0], type: "video" });
+    }
+    if (audios.length > 0) {
+      heroItems.push({ item: audios[0], type: "audio" });
+    }
+    return heroItems;
+  }, [articles, videos, audios]);
 
-  const handleContentChange = useCallback(
-    (newContent) => {
-      setSelectedContent(newContent);
-      navigate(`/${newContent.type}/${newContent.slug}`, { replace: false });
-    },
-    [navigate],
-  );
+  const handleItemClick = (item, type) => {
+    if (!type) {
+      if (articles.find((a) => a.id === item.id)) type = "article";
+      else if (videos.find((v) => v.id === item.id)) type = "video";
+      else if (audios.find((a) => a.id === item.id)) type = "audio";
+    }
+    setSelectedItem(item);
+    setSelectedType(type || "article");
+  };
+
+  const handleModalClose = () => {
+    setSelectedItem(null);
+    setSelectedType(null);
+  };
 
   if (loading) {
     return (
-      <div className="loading-container">
+      <div className="loading-screen">
         <div className="loading-spinner"></div>
-        <p>Chargement...</p>
+        <p>{t("loading.content")}</p>
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <div className="error-screen">
+        <p>{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="btn btn--primary"
+        >
+          {t("error.retry")}
+        </button>
+      </div>
+    );
+  }
+
+  const heroItems = getHeroItems();
+  const gridArticles = articles.length > 1 ? articles.slice(1) : articles;
+
   return (
     <>
       <SEOHead />
+      <StructuredData articles={articles} videos={videos} audios={audios} />
 
-      {/* Hero Section */}
-      <HeroSection onContentClick={handleContentClick} />
+      <main className="home-page">
+        {heroItems.length > 0 &&
+          (useCarousel ? (
+            <HeroCarousel
+              items={heroItems}
+              onItemClick={(item) => {
+                const entry = heroItems.find((h) => h.item.id === item.id);
+                handleItemClick(item, entry?.type);
+              }}
+            />
+          ) : (
+            <HeroSection
+              items={heroItems}
+              onItemClick={(item) => {
+                const entry = heroItems.find((h) => h.item.id === item.id);
+                handleItemClick(item, entry?.type);
+              }}
+            />
+          ))}
 
-      {/* Mobile only: VisionMax banner between hero and filters */}
-      <div className="mobile-only mobile-hero-ad">
-        <PartnerCard ad="visionmax" />
-      </div>
+        {gridArticles.length > 0 && (
+          <MediaSection
+            title={t("section.articles")}
+            items={gridArticles}
+            type="article"
+            onItemClick={(item) => handleItemClick(item, "article")}
+            id="articles"
+          />
+        )}
 
-      {/* Category Filter */}
-      <CategoryFilter
-        activeCategory={filter.category}
-        onCategoryChange={handleCategoryFilter}
-      />
+        {videos.length > 0 && (
+          <VideoSection
+            items={videos}
+            onItemClick={(item) => handleItemClick(item, "video")}
+          />
+        )}
 
-      {/* Main Content with Sidebar */}
-      <main className="main-content-wrapper">
-        <div className="main-content-grid">
-          {/* Content Grid */}
-          <div className="content-section">
-            <div className="content-grid">
-              {displayedContent.map((contentItem, index) => (
-                <ContentCard
-                  key={contentItem.id}
-                  content={contentItem}
-                  onClick={handleContentClick}
-                  delay={index * 0.05}
-                />
-              ))}
-            </div>
-
-            {displayedContent.length === 0 && (
-              <div className="no-content">
-                <p>Aucun contenu trouvé</p>
-              </div>
-            )}
-
-            {displayCount < filteredContent.length && (
-              <div className="load-more-container">
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -3 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="load-more-btn"
-                  onClick={handleLoadMore}
-                >
-                  Charger plus d'articles
-                </motion.button>
-              </div>
-            )}
-
-            {/* Mobile only: StudioMicho banner between articles and media */}
-            <div className="mobile-only mobile-mid-ad">
-              <PartnerCard ad="studiomicho" />
-            </div>
-
-            {/* Mobile only: Audio/Video section before magazine */}
-            <div className="mobile-only">
-              <MediaSection
-                videos={allVideos}
-                audios={allAudios}
-                onContentClick={handleContentClick}
-              />
-            </div>
-          </div>
-
-          {/* Sidebar with Ad and Magazine Widget */}
-          <aside className="content-sidebar">
-            <div className="desktop-only">
-              <PartnerCard position="sidebar" />
-            </div>
-            <MagazineWidget />
-            <div className="desktop-only">
-              <PartnerCard position="sidebar-half" />
-            </div>
-          </aside>
-        </div>
+        {audios.length > 0 && (
+          <AudioSection
+            items={audios}
+            onItemClick={(item) => handleItemClick(item, "audio")}
+          />
+        )}
       </main>
 
-      {/* Desktop only: Dedicated Media Section */}
-      <div className="desktop-only">
-        <MediaSection
-          videos={allVideos}
-          audios={allAudios}
-          onContentClick={handleContentClick}
-        />
-      </div>
-
-      {/* Content Modal - lazy loaded */}
-      {selectedContent && (
-        <Suspense fallback={null}>
-          <ContentModal
-            content={selectedContent}
-            isOpen={!!selectedContent}
-            onClose={handleModalClose}
-            onContentChange={handleContentChange}
-          />
-        </Suspense>
-      )}
+      <ContentModal
+        item={selectedItem}
+        type={selectedType}
+        isOpen={!!selectedItem}
+        onClose={handleModalClose}
+      />
     </>
   );
 };

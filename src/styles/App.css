@@ -3552,3 +3552,51 @@ p {
 html {
     scroll-behavior: smooth;
 }
+
+/* ==================== Language Toggle ==================== */
+.language-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 12px;
+}
+
+.language-toggle__separator {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  margin: 0 2px;
+  user-select: none;
+}
+
+.language-toggle__btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.language-toggle__btn:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.language-toggle__btn--active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Mobile adjustments */
+.header-actions-mobile .language-toggle {
+  margin-right: 8px;
+}
+
+.header-actions-mobile .language-toggle__btn {
+  font-size: 11px;
+  padding: 3px 5px;
+}

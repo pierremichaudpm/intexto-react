@@ -11,9 +11,25 @@ const STRAPI_URL =
 const SITE_URL = "https://www.intexto.ca";
 const SITE_NAME = "Intexto";
 const DEFAULT_IMAGE = `${SITE_URL}/Images/og-image.png`;
-const DEFAULT_DESCRIPTION =
-  "Intexto est le journal de référence de la communauté haïtienne à Montréal. Actualités, politique, culture, et événements.";
 const DIST_DIR = join(__dirname, "dist");
+
+const LOCALE_OG = {
+  fr: "fr_CA",
+  en: "en_CA",
+  ht: "ht_HT",
+};
+
+const DEFAULT_DESCRIPTIONS = {
+  fr: "Intexto est le journal de référence de la communauté haïtienne à Montréal. Actualités, politique, culture, et événements.",
+  en: "Intexto is the leading news source for the Haitian community in Montreal. News, politics, culture, and events.",
+  ht: "Intexto se jounal referans kominote ayisyen nan Monreyal. Nouvèl, politik, kilti, ak evènman.",
+};
+
+const READ_ON = {
+  fr: "Lire sur Intexto",
+  en: "Read on Intexto",
+  ht: "Li sou Intexto",
+};
 
 // Social media bot user-agent patterns
 const BOT_PATTERNS = [
@@ -36,7 +52,7 @@ function isBot(userAgent) {
   return BOT_PATTERNS.some((bot) => userAgent.includes(bot));
 }
 
-async function fetchContent(type, slug) {
+async function fetchContent(type, slug, locale = "fr") {
   const endpointMap = {
     article: "articles",
     video: "videos",
@@ -49,7 +65,7 @@ async function fetchContent(type, slug) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
 
-    const url = `${STRAPI_URL}/api/${endpoint}?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`;
+    const url = `${STRAPI_URL}/api/${endpoint}?locale=${locale}&filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`;
     const response = await fetch(url, { signal: controller.signal });
     clearTimeout(timeout);
 
@@ -59,16 +75,17 @@ async function fetchContent(type, slug) {
     const item = data.data?.[0];
     if (!item) return null;
 
-    return extractMeta(type, item);
+    return extractMeta(type, item, locale);
   } catch (error) {
     console.error(`[og-meta] Error fetching ${type}/${slug}:`, error.message);
     return null;
   }
 }
 
-function extractMeta(type, item) {
+function extractMeta(type, item, locale = "fr") {
   const title = item.title || SITE_NAME;
-  const description = item.excerpt || item.description || DEFAULT_DESCRIPTION;
+  const description =
+    item.excerpt || item.description || DEFAULT_DESCRIPTIONS[locale] || DEFAULT_DESCRIPTIONS.fr;
   const author = item.author || "Rédaction Intexto";
   const publishedAt = item.publishedDate || item.publishedAt || item.createdAt;
 
@@ -86,9 +103,10 @@ function extractMeta(type, item) {
   }
 
   const slug = item.slug;
-  const url = `${SITE_URL}/${type}/${slug}`;
+  const prefix = locale === "fr" ? "" : `/${locale}`;
+  const url = `${SITE_URL}${prefix}/${type}/${slug}`;
 
-  return { title, description, image, url, author, publishedAt, type };
+  return { title, description, image, url, author, publishedAt, type, locale };
 }
 
 function escapeHtml(str) {
@@ -106,15 +124,38 @@ function buildOgHtml(meta) {
   const escapedTitle = escapeHtml(meta.title);
   const escapedDescription = escapeHtml(meta.description);
   const escapedAuthor = escapeHtml(meta.author);
+  const locale = meta.locale || "fr";
+  const ogLocale = LOCALE_OG[locale] || "fr_CA";
+  const readOn = READ_ON[locale] || READ_ON.fr;
+
+  // Build alternate locale tags
+  const alternateLocales = Object.entries(LOCALE_OG)
+    .filter(([loc]) => loc !== locale)
+    .map(
+      ([, ogLoc]) =>
+        `  <meta property="og:locale:alternate" content="${ogLoc}">`,
+    )
+    .join("\n");
+
+  // Build hreflang links
+  const slug = meta.url.split("/").pop();
+  const typeSegment = meta.type;
+  const hreflangLinks = ["fr", "en", "ht"]
+    .map((loc) => {
+      const prefix = loc === "fr" ? "" : `/${loc}`;
+      return `  <link rel="alternate" hreflang="${loc}" href="${SITE_URL}${prefix}/${typeSegment}/${slug}">`;
+    })
+    .join("\n");
 
   return `<!DOCTYPE html>
-<html lang="fr" prefix="og: https://ogp.me/ns#">
+<html lang="${locale}" prefix="og: https://ogp.me/ns#">
 <head>
   <meta charset="UTF-8">
   <title>${escapedTitle} | ${SITE_NAME}</title>
   <meta name="description" content="${escapedDescription}">
   <meta name="author" content="${escapedAuthor}">
   <link rel="canonical" href="${meta.url}">
+${hreflangLinks}
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="${ogType}">
@@ -125,7 +166,8 @@ function buildOgHtml(meta) {
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="${SITE_NAME}">
-  <meta property="og:locale" content="fr_CA">
+  <meta property="og:locale" content="${ogLocale}">
+${alternateLocales}
   ${meta.publishedAt ? `<meta property="article:published_time" content="${meta.publishedAt}">` : ""}
   ${meta.author ? `<meta property="article:author" content="${escapedAuthor}">` : ""}
 
@@ -145,27 +187,38 @@ function buildOgHtml(meta) {
   <h1>${escapedTitle}</h1>
   <p>${escapedDescription}</p>
   <img src="${meta.image}" alt="${escapedTitle}">
-  <a href="${meta.url}">Lire sur ${SITE_NAME}</a>
+  <a href="${meta.url}">${readOn}</a>
 </body>
 </html>`;
 }
 
 const app = express();
 
-// Bot interception for content routes
+// Bot interception for language-prefixed content routes
+// English and Kreyòl: /:lang/article/:slug
+app.get("/:lang(en|ht)/:type(article|video|audio)/:slug", async (req, res, next) => {
+  const userAgent = req.headers["user-agent"] || "";
+  if (!isBot(userAgent)) return next();
+
+  const { lang, type, slug } = req.params;
+  const meta = await fetchContent(type, decodeURIComponent(slug), lang);
+
+  if (!meta) return next();
+
+  res.set("Content-Type", "text/html; charset=UTF-8");
+  res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+  res.send(buildOgHtml(meta));
+});
+
+// Bot interception for French content routes (no prefix)
 app.get("/:type(article|video|audio)/:slug", async (req, res, next) => {
   const userAgent = req.headers["user-agent"] || "";
-
-  if (!isBot(userAgent)) {
-    return next();
-  }
+  if (!isBot(userAgent)) return next();
 
   const { type, slug } = req.params;
-  const meta = await fetchContent(type, decodeURIComponent(slug));
+  const meta = await fetchContent(type, decodeURIComponent(slug), "fr");
 
-  if (!meta) {
-    return next();
-  }
+  if (!meta) return next();
 
   res.set("Content-Type", "text/html; charset=UTF-8");
   res.set("Cache-Control", "public, max-age=300, s-maxage=600");

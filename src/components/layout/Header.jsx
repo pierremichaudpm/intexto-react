@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Menu, X } from "lucide-react";
 import {
@@ -8,8 +9,32 @@ import {
   SiWhatsapp,
   SiLinkedin,
 } from "react-icons/si";
+import { useLanguage } from "../../context/LanguageContext";
+import { SUPPORTED_LOCALES, LOCALE_LABELS } from "../../i18n";
+
+const LanguageToggle = () => {
+  const { locale, setLocale } = useLanguage();
+
+  return (
+    <div className="language-toggle">
+      {SUPPORTED_LOCALES.map((loc, i) => (
+        <span key={loc}>
+          {i > 0 && <span className="language-toggle__separator">|</span>}
+          <button
+            className={`language-toggle__btn ${locale === loc ? "language-toggle__btn--active" : ""}`}
+            onClick={() => setLocale(loc)}
+            aria-label={loc === "fr" ? "Français" : loc === "en" ? "English" : "Kreyòl"}
+          >
+            {LOCALE_LABELS[loc]}
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+};
 
 const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -21,7 +46,6 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
     onSearchClick();
   };
 
-  // Door opening animation variants
   const menuVariants = {
     closed: {
       rotateY: -90,
@@ -78,14 +102,13 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
           />
         </div>
 
-        {/* Ad banner in center on desktop */}
         <div className="header-ad-slot">{adBanner}</div>
 
         {!hideSearch && (
           <>
-            {/* Desktop actions */}
             <div className="header-actions header-actions-desktop">
-              {/* Social media links */}
+              {/* <LanguageToggle /> — uncomment when ready to show language switcher */}
+
               <div className="header-social-links">
                 <a
                   href="https://www.facebook.com/jnnuma/"
@@ -139,8 +162,8 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
               </button>
             </div>
 
-            {/* Mobile burger menu */}
             <div className="header-actions-mobile">
+              {/* <LanguageToggle /> — uncomment when ready to show language switcher */}
               <button
                 className="mobile-burger-btn"
                 onClick={toggleMobileMenu}
@@ -175,7 +198,6 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
         )}
       </div>
 
-      {/* Mobile menu panel - door effect */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -186,7 +208,6 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
             exit="exit"
           >
             <div className="mobile-menu-content">
-              {/* Search button */}
               <motion.button
                 className="mobile-menu-item mobile-menu-search"
                 onClick={handleSearchClick}
@@ -196,10 +217,9 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                 animate="open"
               >
                 <Search size={20} />
-                <span>Rechercher</span>
+                <span>{t("nav.search")}</span>
               </motion.button>
 
-              {/* Divider */}
               <motion.div
                 className="mobile-menu-divider"
                 custom={1}
@@ -208,7 +228,6 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                 animate="open"
               />
 
-              {/* Social links label */}
               <motion.span
                 className="mobile-menu-label"
                 custom={2}
@@ -216,10 +235,9 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                 initial="closed"
                 animate="open"
               >
-                Suivez-nous
+                {t("nav.followUs")}
               </motion.span>
 
-              {/* Social media links */}
               <div className="mobile-menu-social">
                 <motion.a
                   href="https://www.facebook.com/jnnuma/"

@@ -1,57 +1,31 @@
-import { motion } from "framer-motion";
-import { getCategoryColor, getCategoryLabel } from "../../config/categories";
+import { useTranslation } from "react-i18next";
 
-const categories = [
-  { id: "all", label: "Tout" },
-  { id: "moisdelhistoiredesnoirs", label: "Mois de l'histoire des Noirs" },
-  { id: "politique", label: "Politique" },
-  { id: "actualite", label: "Actualité" },
-  { id: "culture", label: "Culture" },
-  { id: "economie", label: "Économie" },
-  { id: "immigration", label: "Immigration" },
-  { id: "sante", label: "Santé" },
-  { id: "opinion", label: "Opinion" },
-  { id: "apropos", label: "À propos" },
-];
+const CategoryFilter = ({ categories, activeCategory, onCategoryChange }) => {
+  const { t } = useTranslation();
 
-const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
+  if (!categories || categories.length <= 1) return null;
+
   return (
-    <div className="category-filter">
-      <div className="category-filter-container">
-        <img
-          src="/Images/intextologo2.png"
-          alt="Intexto"
-          className="category-filter-logo"
-        />
-        {categories.map((category) => {
-          const isActive = activeCategory === category.id;
-          const color =
-            category.id === "all" || category.id === "apropos"
-              ? "#004ea0"
-              : getCategoryColor(category.id);
-
-          return (
-            <motion.button
-              key={category.id}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`category-btn ${isActive ? "active" : ""}`}
-              style={
-                isActive
-                  ? {
-                      backgroundColor: color,
-                      borderColor: color,
-                      color: "white",
-                    }
-                  : undefined
-              }
-              onClick={() => onCategoryChange(category.id)}
-            >
-              {category.label}
-            </motion.button>
-          );
-        })}
-      </div>
+    <div className="category-filter" role="tablist" aria-label={t("category.filterLabel")}>
+      <button
+        className={`category-filter__btn ${activeCategory === "all" ? "category-filter__btn--active" : ""}`}
+        onClick={() => onCategoryChange("all")}
+        role="tab"
+        aria-selected={activeCategory === "all"}
+      >
+        {t("category.all")}
+      </button>
+      {categories.map((cat) => (
+        <button
+          key={cat.id || cat}
+          className={`category-filter__btn ${activeCategory === (cat.slug || cat) ? "category-filter__btn--active" : ""}`}
+          onClick={() => onCategoryChange(cat.slug || cat)}
+          role="tab"
+          aria-selected={activeCategory === (cat.slug || cat)}
+        >
+          {cat.name || cat}
+        </button>
+      ))}
     </div>
   );
 };

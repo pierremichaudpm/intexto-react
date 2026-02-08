@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LanguageProvider } from "./context/LanguageContext";
 import { ContentProvider } from "./context/ContentContext";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
@@ -39,12 +40,18 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <ContentProvider>
-        <Routes>
-          <Route path="/preview" element={<PreviewPage />} />
-          <Route path="*" element={<AppContent />} />
-        </Routes>
-      </ContentProvider>
+      <LanguageProvider>
+        <ContentProvider>
+          <Routes>
+            <Route path="/preview" element={<PreviewPage />} />
+            {/* French (default, no prefix) */}
+            <Route path="/*" element={<AppContent />} />
+            {/* English and Kreyòl (with prefix) */}
+            <Route path="/en/*" element={<AppContent />} />
+            <Route path="/ht/*" element={<AppContent />} />
+          </Routes>
+        </ContentProvider>
+      </LanguageProvider>
     </BrowserRouter>
   );
 }

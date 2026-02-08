@@ -1,6 +1,7 @@
 /**
  * Strapi API Service
  * Handles all communication with Strapi CMS backend
+ * Supports locale-aware content fetching for i18n
  */
 
 const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
@@ -13,12 +14,12 @@ class StrapiService {
   /**
    * Fetch all content (articles, videos, audios) with populated relations
    */
-  async loadContent() {
+  async loadContent(locale = "fr") {
     try {
       const [articles, videos, audios] = await Promise.all([
-        this.fetchArticles(),
-        this.fetchVideos(),
-        this.fetchAudios(),
+        this.fetchArticles(locale),
+        this.fetchVideos(locale),
+        this.fetchAudios(locale),
       ]);
 
       // Combine all content
@@ -41,10 +42,10 @@ class StrapiService {
   /**
    * Fetch all lineups with their ordered content items populated
    */
-  async fetchLineups() {
+  async fetchLineups(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/lineups?populate[articles][populate]=*&populate[videos][populate]=*&populate[audios][populate]=*`,
+        `${this.apiUrl}/api/lineups?locale=${locale}&populate[articles][populate]=*&populate[videos][populate]=*&populate[audios][populate]=*`,
       );
       const data = await response.json();
       const lineups = {};
@@ -74,9 +75,11 @@ class StrapiService {
   /**
    * Fetch articles with category populated
    */
-  async fetchArticles() {
+  async fetchArticles(locale = "fr") {
     try {
-      const response = await fetch(`${this.apiUrl}/api/articles?populate=*`);
+      const response = await fetch(
+        `${this.apiUrl}/api/articles?locale=${locale}&populate=*`,
+      );
       const data = await response.json();
       return data.data.map((item) => this.transformArticle(item));
     } catch (error) {
@@ -88,9 +91,11 @@ class StrapiService {
   /**
    * Fetch videos with category populated
    */
-  async fetchVideos() {
+  async fetchVideos(locale = "fr") {
     try {
-      const response = await fetch(`${this.apiUrl}/api/videos?populate=*`);
+      const response = await fetch(
+        `${this.apiUrl}/api/videos?locale=${locale}&populate=*`,
+      );
       const data = await response.json();
       return data.data.map((item) => this.transformVideo(item));
     } catch (error) {
@@ -102,9 +107,11 @@ class StrapiService {
   /**
    * Fetch audios with category populated
    */
-  async fetchAudios() {
+  async fetchAudios(locale = "fr") {
     try {
-      const response = await fetch(`${this.apiUrl}/api/audios?populate=*`);
+      const response = await fetch(
+        `${this.apiUrl}/api/audios?locale=${locale}&populate=*`,
+      );
       const data = await response.json();
       return data.data.map((item) => this.transformAudio(item));
     } catch (error) {
@@ -114,11 +121,13 @@ class StrapiService {
   }
 
   /**
-   * Fetch categories
+   * Fetch categories for the given locale
    */
-  async fetchCategories() {
+  async fetchCategories(locale = "fr") {
     try {
-      const response = await fetch(`${this.apiUrl}/api/categories`);
+      const response = await fetch(
+        `${this.apiUrl}/api/categories?locale=${locale}`,
+      );
       const data = await response.json();
       return data.data.map((cat) => ({
         id: cat.documentId,
@@ -159,7 +168,6 @@ class StrapiService {
    * Transform Strapi article to app format
    */
   transformArticle(item) {
-    // Handle image URL (check if absolute or relative)
     const imageUrl = item.image?.url;
     const isAbsoluteUrl =
       imageUrl?.startsWith("http://") || imageUrl?.startsWith("https://");
@@ -190,7 +198,6 @@ class StrapiService {
    * Transform Strapi video to app format
    */
   transformVideo(item) {
-    // Prioritize videoFile (uploaded) over videoUrl (external like YouTube)
     const videoFileUrl = item.videoFile?.url;
     const isVideoAbsolute =
       videoFileUrl?.startsWith("http://") ||
@@ -201,7 +208,6 @@ class StrapiService {
         : `${this.apiUrl}${videoFileUrl}`
       : item.videoUrl;
 
-    // Handle thumbnail URL
     const thumbnailUrl = item.thumbnail?.url;
     const isThumbnailAbsolute =
       thumbnailUrl?.startsWith("http://") ||
@@ -234,7 +240,6 @@ class StrapiService {
    * Transform Strapi audio to app format
    */
   transformAudio(item) {
-    // Prioritize audioFile (uploaded) over audioUrl (external like SoundCloud)
     const audioFileUrl = item.audioFile?.url;
     const isAudioAbsolute =
       audioFileUrl?.startsWith("http://") ||
@@ -245,7 +250,6 @@ class StrapiService {
         : `${this.apiUrl}${audioFileUrl}`
       : item.audioUrl;
 
-    // Handle cover image URL
     const coverUrl = item.coverImage?.url;
     const isCoverAbsolute =
       coverUrl?.startsWith("http://") || coverUrl?.startsWith("https://");
@@ -273,9 +277,6 @@ class StrapiService {
     };
   }
 
-  /**
-   * Get placeholder image based on content type
-   */
   getPlaceholderImage(type) {
     const placeholders = {
       article:
@@ -288,25 +289,16 @@ class StrapiService {
     return placeholders[type] || placeholders.article;
   }
 
-  /**
-   * Filter content by category
-   */
   filterByCategory(content, category) {
     if (category === "all") return content;
     return content.filter((item) => item.category === category);
   }
 
-  /**
-   * Filter content by type
-   */
   filterByType(content, type) {
     if (type === "all") return content;
     return content.filter((item) => item.type === type);
   }
 
-  /**
-   * Search content
-   */
   searchContent(content, query) {
     if (!query) return content;
     const lowerQuery = query.toLowerCase();
@@ -321,7 +313,7 @@ class StrapiService {
   /**
    * Fetch a single draft content item by type and slug for preview
    */
-  async fetchDraftContent(type, slug) {
+  async fetchDraftContent(type, slug, locale = "fr") {
     const endpointMap = {
       article: "articles",
       video: "videos",
@@ -332,7 +324,7 @@ class StrapiService {
 
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/${endpoint}?filters[slug][$eq]=${encodeURIComponent(slug)}&status=draft&populate=*`,
+        `${this.apiUrl}/api/${endpoint}?locale=${locale}&filters[slug][$eq]=${encodeURIComponent(slug)}&status=draft&populate=*`,
       );
       const data = await response.json();
       const item = data.data?.[0];
@@ -353,4 +345,3 @@ class StrapiService {
 }
 
 export default new StrapiService();
-// Build trigger Sun Feb  1 06:36:17 EST 2026
