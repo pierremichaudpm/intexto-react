@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Mail, ArrowRight, Check } from "lucide-react";
 import {
   SiFacebook,
