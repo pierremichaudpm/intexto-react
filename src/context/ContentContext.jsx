@@ -35,12 +35,37 @@ export const ContentProvider = ({ children }) => {
   const loadContent = async (loc) => {
     setLoading(true);
     try {
+      // Lineups always come from FR (source of truth for ordering).
+      // Content comes from the requested locale.
       const [data, lineupsData] = await Promise.all([
         strapiService.loadContent(loc),
         strapiService.fetchLineups(loc),
       ]);
       setContent(data);
-      setLineups(lineupsData);
+
+      // For non-FR locales, rebuild lineup items from locale content
+      // using the FR documentId order
+      if (loc !== "fr") {
+        const contentById = new Map(data.map((item) => [item.id, item]));
+        const resolved = {};
+        for (const [slug, lineup] of Object.entries(lineupsData)) {
+          resolved[slug] = {
+            ...lineup,
+            articles: (lineup.articleOrder || [])
+              .map((docId) => contentById.get(docId))
+              .filter(Boolean),
+            videos: (lineup.videoOrder || [])
+              .map((docId) => contentById.get(docId))
+              .filter(Boolean),
+            audios: (lineup.audioOrder || [])
+              .map((docId) => contentById.get(docId))
+              .filter(Boolean),
+          };
+        }
+        setLineups(resolved);
+      } else {
+        setLineups(lineupsData);
+      }
     } catch (error) {
       console.error("Error loading content:", error);
     } finally {
