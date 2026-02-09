@@ -1,20 +1,23 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
-const categories = [
-  { id: "all", label: "Tout" },
-  { id: "moisdelhistoiredesnoirs", label: "Mois de l'histoire des Noirs" },
-  { id: "politique", label: "Politique" },
-  { id: "actualite", label: "Actualité" },
-  { id: "culture", label: "Culture" },
-  { id: "economie", label: "Économie" },
-  { id: "immigration", label: "Immigration" },
-  { id: "sante", label: "Santé" },
-  { id: "opinion", label: "Opinion" },
-  { id: "apropos", label: "À propos" },
+const categorySlugs = [
+  "all",
+  "moisdelhistoiredesnoirs",
+  "politique",
+  "actualite",
+  "culture",
+  "economie",
+  "immigration",
+  "sante",
+  "opinion",
+  "apropos",
 ];
 
 const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="category-filter">
       <div className="category-filter-container">
@@ -23,16 +26,18 @@ const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
           alt="Intexto"
           className="category-filter-logo"
         />
-        {categories.map((category) => {
-          const isActive = activeCategory === category.id;
+        {categorySlugs.map((slug) => {
+          const isActive = activeCategory === slug;
           const color =
-            category.id === "all" || category.id === "apropos"
+            slug === "all" || slug === "apropos"
               ? "#004ea0"
-              : getCategoryColor(category.id);
+              : getCategoryColor(slug);
+          const label =
+            slug === "all" ? t("category.all") : getCategoryLabel(slug, t);
 
           return (
             <motion.button
-              key={category.id}
+              key={slug}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`category-btn ${isActive ? "active" : ""}`}
@@ -45,9 +50,9 @@ const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
                     }
                   : undefined
               }
-              onClick={() => onCategoryChange(category.id)}
+              onClick={() => onCategoryChange(slug)}
             >
-              {category.label}
+              {label}
             </motion.button>
           );
         })}

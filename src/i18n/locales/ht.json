@@ -74,5 +74,20 @@
   "magazine.pdfUnavailable": "PDF pa disponib",
   "magazine.previousEdition": "Edisyon avan",
   "magazine.nextEdition": "Edisyon apre",
-  "magazine.goToEdition": "Ale nan edisyon"
+  "magazine.goToEdition": "Ale nan edisyon",
+  "category.actualite": "Nouvèl",
+  "category.politique": "Politik",
+  "category.economie": "Ekonomi",
+  "category.societe": "Sosyete",
+  "category.culture": "Kilti",
+  "category.sport": "Espò",
+  "category.tech": "Teknoloji",
+  "category.sante": "Sante",
+  "category.environnement": "Anviwònman",
+  "category.voyage": "Vwayaj",
+  "category.international": "Entènasyonal",
+  "category.opinion": "Opinyon",
+  "category.immigration": "Imigrasyon",
+  "category.moisdelhistoiredesnoirs": "Mwa Istwa Nwa yo",
+  "category.apropos": "Konsènan"
 }

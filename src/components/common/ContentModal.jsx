@@ -18,8 +18,10 @@ import StructuredData from "../seo/StructuredData";
 import Header from "../layout/Header";
 import ResponsiveImage from "./ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
+import { useTranslation } from "react-i18next";
 
 const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
+  const { t } = useTranslation();
   const { content: allContent } = useContent();
   const videoRef = useRef(null);
   const audioRef = useRef(null);
@@ -238,7 +240,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                   className="content-card-category"
                   style={{ backgroundColor: getCategoryColor(category) }}
                 >
-                  {getCategoryLabel(category)}
+                  {getCategoryLabel(category, t)}
                 </span>
 
                 <h1 className="modal-title">{title}</h1>
@@ -254,34 +256,34 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                 <div className="modal-share">
                   <div className="modal-share-label">
                     <Share2 size={16} />
-                    <span>Partager:</span>
+                    <span>{t("share.label")}</span>
                   </div>
                   <div className="modal-share-buttons">
                     <button
                       className="modal-share-btn facebook"
                       onClick={() => handleShare("facebook")}
-                      title="Partager sur Facebook"
+                      title={t("share.facebook")}
                     >
                       <Facebook size={18} />
                     </button>
                     <button
                       className="modal-share-btn twitter"
                       onClick={() => handleShare("twitter")}
-                      title="Partager sur Twitter"
+                      title={t("share.twitter")}
                     >
                       <Twitter size={18} />
                     </button>
                     <button
                       className="modal-share-btn linkedin"
                       onClick={() => handleShare("linkedin")}
-                      title="Partager sur LinkedIn"
+                      title={t("share.linkedin")}
                     >
                       <Linkedin size={18} />
                     </button>
                     <button
                       className="modal-share-btn whatsapp"
                       onClick={() => handleShare("whatsapp")}
-                      title="Partager sur WhatsApp"
+                      title={t("share.whatsapp")}
                     >
                       <MessageCircle size={18} />
                     </button>
@@ -299,7 +301,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                 {/* Related Stories */}
                 {relatedStories.length > 0 && (
                   <div className="modal-related">
-                    <h3 className="modal-related-title">Contenus suggérés</h3>
+                    <h3 className="modal-related-title">{t("content.suggestedContent")}</h3>
                     <div className="modal-related-grid">
                       {relatedStories.map((story) => (
                         <div
@@ -360,7 +362,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                                 ),
                               }}
                             >
-                              {getCategoryLabel(story.category)}
+                              {getCategoryLabel(story.category, t)}
                             </span>
                             <h4 className="modal-related-title-text">
                               {story.title}

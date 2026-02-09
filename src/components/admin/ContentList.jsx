@@ -2,8 +2,10 @@ import { useContent } from "../../context/ContentContext";
 import { Trash2, Star } from "lucide-react";
 import cmsService from "../../services/cmsService";
 import { getCategoryLabel } from "../../config/categories";
+import { useTranslation } from "react-i18next";
 
 const ContentList = () => {
+  const { t } = useTranslation();
   const { content, deleteContent } = useContent();
 
   const handleDelete = async (id, title) => {
@@ -31,7 +33,7 @@ const ContentList = () => {
           <div className="content-item-info">
             <h4>{item.title}</h4>
             <div className="content-item-meta">
-              {getCategoryLabel(item.category)} • {item.type} •{" "}
+              {getCategoryLabel(item.category, t)} • {item.type} •{" "}
               {cmsService.formatDate(item.date)}
               {item.featured && (
                 <span className="featured-badge">

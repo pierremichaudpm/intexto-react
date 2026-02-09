@@ -41,12 +41,17 @@ export const getCategoryColor = (category) => {
   return categoryColors[category] || defaultCategoryColor;
 };
 
-// Helper function to get category label with fallback (capitalize slug)
-export const getCategoryLabel = (category) => {
+// Helper function to get category label with i18n support
+// Pass the t() function from useTranslation() to get translated labels
+export const getCategoryLabel = (category, t) => {
+  if (t) {
+    const key = `category.${category}`;
+    const translated = t(key);
+    if (translated !== key) return translated;
+  }
   if (categoryLabels[category]) {
     return categoryLabels[category];
   }
-  // Fallback: capitalize first letter of slug
   return category
     ? category.charAt(0).toUpperCase() + category.slice(1)
     : "Autre";

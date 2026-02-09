@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "./ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
+import { useTranslation } from "react-i18next";
 
 const HeroCard = ({ content, size = "medium", onClick }) => {
+  const { t } = useTranslation();
   const { title, category, image, imageFallback, author, date } = content;
 
   return (
@@ -30,7 +32,7 @@ const HeroCard = ({ content, size = "medium", onClick }) => {
           className="hero-card-category"
           style={{ backgroundColor: getCategoryColor(category) }}
         >
-          {getCategoryLabel(category)}
+          {getCategoryLabel(category, t)}
         </span>
 
         <h2 className="hero-card-title">{title}</h2>

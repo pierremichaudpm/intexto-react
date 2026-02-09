@@ -11,8 +11,10 @@ import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "../common/ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
+import { useTranslation } from "react-i18next";
 
 const HeroSection = ({ onContentClick }) => {
+  const { t } = useTranslation();
   const { content, getLineup } = useContent();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
@@ -140,7 +142,7 @@ const HeroSection = ({ onContentClick }) => {
                     backgroundColor: getCategoryColor(current.category),
                   }}
                 >
-                  {getCategoryLabel(current.category)}
+                  {getCategoryLabel(current.category, t)}
                 </span>
                 <h2 className="hero-main-title">{current.title}</h2>
               </div>
@@ -200,7 +202,7 @@ const HeroSection = ({ onContentClick }) => {
                     backgroundColor: getCategoryColor(featuredVideo.category),
                   }}
                 >
-                  {getCategoryLabel(featuredVideo.category)}
+                  {getCategoryLabel(featuredVideo.category, t)}
                 </span>
                 <h3 className="hero-side-title">{featuredVideo.title}</h3>
                 <div className="hero-side-meta">
@@ -237,7 +239,7 @@ const HeroSection = ({ onContentClick }) => {
                     backgroundColor: getCategoryColor(featuredAudio.category),
                   }}
                 >
-                  {getCategoryLabel(featuredAudio.category)}
+                  {getCategoryLabel(featuredAudio.category, t)}
                 </span>
                 <h3 className="hero-side-title">{featuredAudio.title}</h3>
                 <div className="hero-side-meta">

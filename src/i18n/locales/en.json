@@ -74,5 +74,20 @@
   "magazine.pdfUnavailable": "PDF unavailable",
   "magazine.previousEdition": "Previous edition",
   "magazine.nextEdition": "Next edition",
-  "magazine.goToEdition": "Go to edition"
+  "magazine.goToEdition": "Go to edition",
+  "category.actualite": "News",
+  "category.politique": "Politics",
+  "category.economie": "Economy",
+  "category.societe": "Society",
+  "category.culture": "Culture",
+  "category.sport": "Sports",
+  "category.tech": "Tech",
+  "category.sante": "Health",
+  "category.environnement": "Environment",
+  "category.voyage": "Travel",
+  "category.international": "International",
+  "category.opinion": "Opinion",
+  "category.immigration": "Immigration",
+  "category.moisdelhistoiredesnoirs": "Black History Month",
+  "category.apropos": "About"
 }

@@ -96,7 +96,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
             {searchQuery.length >= 2 && results.length === 0 && (
               <div className="search-no-results">
                 <Search size={48} />
-                <p>Aucun résultat trouvé pour "{searchQuery}"</p>
+                <p>{t("search.noResults", { query: searchQuery })}</p>
               </div>
             )}
 
@@ -131,7 +131,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                     className="search-result-category"
                     style={{ backgroundColor: getCategoryColor(item.category) }}
                   >
-                    {getCategoryLabel(item.category)}
+                    {getCategoryLabel(item.category, t)}
                   </span>
                   <h4>{item.title}</h4>
                   <p className="search-result-meta">
@@ -143,8 +143,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
 
             {results.length > 0 && (
               <p className="search-results-count">
-                {results.length} résultat{results.length > 1 ? "s" : ""} trouvé
-                {results.length > 1 ? "s" : ""}
+                {t("search.resultsCount", { count: results.length })}
               </p>
             )}
           </div>

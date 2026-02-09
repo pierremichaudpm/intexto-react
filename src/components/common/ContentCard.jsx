@@ -4,8 +4,10 @@ import { Video, Mic } from "lucide-react";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "./ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
+import { useTranslation } from "react-i18next";
 
 const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
+  const { t } = useTranslation();
   const {
     type,
     title,
@@ -68,7 +70,7 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
               type === "article" ? getCategoryColor(category) : undefined,
           }}
         >
-          {getCategoryLabel(category)}
+          {getCategoryLabel(category, t)}
         </span>
 
         <h3 className="content-card-title">{title}</h3>

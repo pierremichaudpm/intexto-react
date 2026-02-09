@@ -9,6 +9,7 @@ import {
   SiWhatsapp,
   SiLinkedin,
 } from "react-icons/si";
+import { Link } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
 import { SUPPORTED_LOCALES, LOCALE_LABELS } from "../../i18n";
 
@@ -35,6 +36,7 @@ const LanguageToggle = () => {
 
 const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
   const { t } = useTranslation();
+  const { buildPath } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -95,11 +97,13 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
     >
       <div className="header-container">
         <div className="logo-section">
-          <img
-            src="/Images/intextologo.png"
-            alt="Intexto Logo"
-            className="logo"
-          />
+          <Link to={buildPath("/")} aria-label="Intexto - Home">
+            <img
+              src="/Images/intextologo.png"
+              alt="Intexto Logo"
+              className="logo"
+            />
+          </Link>
         </div>
 
         <div className="header-ad-slot">{adBanner}</div>

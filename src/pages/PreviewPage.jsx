@@ -155,7 +155,7 @@ const PreviewPage = () => {
             className="content-card-category"
             style={{ backgroundColor: getCategoryColor(category) }}
           >
-            {getCategoryLabel(category)}
+            {getCategoryLabel(category, t)}
           </span>
 
           <h1 className="modal-title">{title}</h1>
