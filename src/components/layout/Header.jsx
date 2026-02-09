@@ -30,6 +30,7 @@ const LanguageToggle = () => {
           </button>
         </span>
       ))}
+      <span className="language-toggle__beta">BETA</span>
     </div>
   );
 };
@@ -111,7 +112,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
         {!hideSearch && (
           <>
             <div className="header-actions header-actions-desktop">
-              {/* <LanguageToggle /> — uncomment when ready to show language switcher */}
+              <LanguageToggle />
 
               <div className="header-social-links">
                 <a
@@ -121,7 +122,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="Facebook"
                 >
-                  <SiFacebook size={18} />
+                  <SiFacebook size={15} />
                 </a>
                 <a
                   href="https://www.instagram.com/jnnuma/reels/?hl=en"
@@ -130,7 +131,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="Instagram"
                 >
-                  <SiInstagram size={18} />
+                  <SiInstagram size={15} />
                 </a>
                 <a
                   href="https://x.com/jeannuma"
@@ -139,7 +140,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="X (Twitter)"
                 >
-                  <SiX size={16} />
+                  <SiX size={13} />
                 </a>
                 <a
                   href="https://www.linkedin.com/in/jean-numa-goudou-a27ab130/"
@@ -148,7 +149,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="LinkedIn"
                 >
-                  <SiLinkedin size={18} />
+                  <SiLinkedin size={15} />
                 </a>
                 <a
                   href="https://wa.me/14383951256"
@@ -157,7 +158,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
                   className="header-social-btn"
                   title="WhatsApp"
                 >
-                  <SiWhatsapp size={18} />
+                  <SiWhatsapp size={15} />
                 </a>
               </div>
 
@@ -167,7 +168,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
             </div>
 
             <div className="header-actions-mobile">
-              {/* <LanguageToggle /> — uncomment when ready to show language switcher */}
+              <LanguageToggle />
               <button
                 className="mobile-burger-btn"
                 onClick={toggleMobileMenu}

@@ -191,8 +191,8 @@ p {
 }
 
 .header-social-btn {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3558,37 +3558,51 @@ html {
   display: flex;
   align-items: center;
   gap: 2px;
-  margin-right: 12px;
+  position: relative;
 }
 
 .language-toggle__separator {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 12px;
-  margin: 0 2px;
+  color: #ccc;
+  font-size: 11px;
+  margin: 0 1px;
   user-select: none;
 }
 
 .language-toggle__btn {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
-  font-weight: 600;
+  color: #888;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 4px;
+  padding: 3px 5px;
+  border-radius: 3px;
   transition: all 0.2s ease;
 }
 
 .language-toggle__btn:hover {
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-primary);
+  background: rgba(0, 78, 160, 0.06);
 }
 
 .language-toggle__btn--active {
+  color: var(--color-primary);
+  background: rgba(0, 78, 160, 0.1);
+}
+
+.language-toggle__beta {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
   color: #fff;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--color-primary);
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-left: 4px;
+  line-height: 1.4;
+  vertical-align: middle;
 }
 
 /* Mobile adjustments */
@@ -3597,6 +3611,11 @@ html {
 }
 
 .header-actions-mobile .language-toggle__btn {
-  font-size: 11px;
-  padding: 3px 5px;
+  font-size: 10px;
+  padding: 2px 4px;
+}
+
+.header-actions-mobile .language-toggle__beta {
+  font-size: 7px;
+  padding: 1px 3px;
 }
