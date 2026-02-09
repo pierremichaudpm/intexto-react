@@ -18,19 +18,21 @@ const LanguageToggle = () => {
 
   return (
     <div className="language-toggle">
-      {SUPPORTED_LOCALES.map((loc, i) => (
-        <span key={loc}>
-          {i > 0 && <span className="language-toggle__separator">|</span>}
-          <button
-            className={`language-toggle__btn ${locale === loc ? "language-toggle__btn--active" : ""}`}
-            onClick={() => setLocale(loc)}
-            aria-label={loc === "fr" ? "Français" : loc === "en" ? "English" : "Kreyòl"}
-          >
-            {LOCALE_LABELS[loc]}
-          </button>
-        </span>
-      ))}
       <span className="language-toggle__beta">BETA</span>
+      <div className="language-toggle__buttons">
+        {SUPPORTED_LOCALES.map((loc, i) => (
+          <span key={loc}>
+            {i > 0 && <span className="language-toggle__separator">|</span>}
+            <button
+              className={`language-toggle__btn ${locale === loc ? "language-toggle__btn--active" : ""}`}
+              onClick={() => setLocale(loc)}
+              aria-label={loc === "fr" ? "Français" : loc === "en" ? "English" : "Kreyòl"}
+            >
+              {LOCALE_LABELS[loc]}
+            </button>
+          </span>
+        ))}
+      </div>
     </div>
   );
 };

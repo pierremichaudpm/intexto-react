@@ -3556,9 +3556,15 @@ html {
 /* ==================== Language Toggle ==================== */
 .language-toggle {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.language-toggle__buttons {
+  display: flex;
   align-items: center;
   gap: 2px;
-  position: relative;
 }
 
 .language-toggle__separator {
@@ -3593,16 +3599,14 @@ html {
 }
 
 .language-toggle__beta {
-  font-size: 8px;
+  font-size: 7px;
   font-weight: 800;
   letter-spacing: 0.5px;
   color: #fff;
   background: var(--color-primary);
-  padding: 1px 4px;
+  padding: 1px 5px;
   border-radius: 3px;
-  margin-left: 4px;
   line-height: 1.4;
-  vertical-align: middle;
 }
 
 /* Mobile adjustments */
