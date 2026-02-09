@@ -26,7 +26,9 @@ const LanguageToggle = () => {
             <button
               className={`language-toggle__btn ${locale === loc ? "language-toggle__btn--active" : ""}`}
               onClick={() => setLocale(loc)}
-              aria-label={loc === "fr" ? "Français" : loc === "en" ? "English" : "Kreyòl"}
+              aria-label={
+                loc === "fr" ? "Français" : loc === "en" ? "English" : "Kreyòl"
+              }
             >
               {LOCALE_LABELS[loc]}
             </button>
@@ -114,7 +116,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
         {!hideSearch && (
           <>
             <div className="header-actions header-actions-desktop">
-              <LanguageToggle />
+              {/* <LanguageToggle /> — hidden until EN/HT are ready */}
 
               <div className="header-social-links">
                 <a
@@ -170,7 +172,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
             </div>
 
             <div className="header-actions-mobile">
-              <LanguageToggle />
+              {/* <LanguageToggle /> — hidden until EN/HT are ready */}
               <button
                 className="mobile-burger-btn"
                 onClick={toggleMobileMenu}
