@@ -61,12 +61,20 @@ async function fetchContent(type, slug, locale = "fr") {
   const endpoint = endpointMap[type];
   if (!endpoint) return null;
 
+  // Each content type has different image fields — Strapi v5 rejects
+  // populate keys that don't exist on the schema.
+  const populateMap = {
+    article: "populate[0]=image&populate[1]=category",
+    video: "populate[0]=thumbnail&populate[1]=category",
+    audio: "populate[0]=coverImage&populate[1]=category",
+  };
+
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
 
     const localeParam = locale && locale !== "fr" ? `locale=${locale}&` : "";
-    const url = `${STRAPI_URL}/api/${endpoint}?${localeParam}filters[slug][$eq]=${encodeURIComponent(slug)}&populate[0]=image&populate[1]=thumbnail&populate[2]=coverImage&populate[3]=category`;
+    const url = `${STRAPI_URL}/api/${endpoint}?${localeParam}filters[slug][$eq]=${encodeURIComponent(slug)}&${populateMap[type]}`;
     const response = await fetch(url, { signal: controller.signal });
     clearTimeout(timeout);
 
