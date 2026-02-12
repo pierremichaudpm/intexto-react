@@ -9,7 +9,9 @@ import {
   BookOpen,
 } from "lucide-react";
 
-const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+// In production, API calls go through the Express proxy (same domain).
+const API_URL = import.meta.env.PROD ? "" : STRAPI_URL;
 
 const MagazineWidget = () => {
   const { t } = useTranslation();
@@ -38,7 +40,7 @@ const MagazineWidget = () => {
               }
               // Ensure absolute URL
               if (coverUrl && !coverUrl.startsWith("http")) {
-                coverUrl = `${API_URL}${coverUrl}`;
+                coverUrl = `${STRAPI_URL}${coverUrl}`;
               }
             }
 
@@ -48,7 +50,7 @@ const MagazineWidget = () => {
               pdfUrl = item.pdfFile.url;
               // Ensure absolute URL
               if (!pdfUrl.startsWith("http")) {
-                pdfUrl = `${API_URL}${pdfUrl}`;
+                pdfUrl = `${STRAPI_URL}${pdfUrl}`;
               }
             }
 

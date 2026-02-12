@@ -206,6 +206,36 @@ ${alternateLocales}
 
 const app = express();
 
+// ── Strapi API Proxy ──────────────────────────────────────────────
+// Proxies /api/* requests to the Strapi backend so that browsers on
+// restricted networks (e.g. federal government) never need to reach
+// railway.app directly — all traffic stays on the intexto.ca domain.
+app.use("/api", async (req, res) => {
+  const targetUrl = `${STRAPI_URL}/api${req.url}`;
+  try {
+    const headers = { "Content-Type": "application/json" };
+    const response = await fetch(targetUrl, {
+      method: req.method,
+      headers,
+      ...(req.method !== "GET" && req.method !== "HEAD"
+        ? { body: JSON.stringify(req.body) }
+        : {}),
+    });
+
+    // Forward status and content-type
+    res.status(response.status);
+    const contentType = response.headers.get("content-type");
+    if (contentType) res.set("Content-Type", contentType);
+    res.set("Cache-Control", "public, max-age=60, s-maxage=120");
+
+    const data = await response.arrayBuffer();
+    res.send(Buffer.from(data));
+  } catch (error) {
+    console.error("[proxy] Error proxying to Strapi:", error.message);
+    res.status(502).json({ error: "Backend unavailable" });
+  }
+});
+
 // Bot interception for language-prefixed content routes
 // English and Kreyòl: /:lang/article/:slug
 app.get(

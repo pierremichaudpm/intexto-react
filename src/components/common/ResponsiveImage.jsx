@@ -4,7 +4,7 @@
  * with srcset and sizes for optimal loading on different devices
  */
 
-const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 
 // Helper to get full URL (handles both absolute Cloudinary URLs and relative local URLs)
 const getFullUrl = (url) => {
@@ -12,7 +12,7 @@ const getFullUrl = (url) => {
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }
-  return `${API_URL}${url}`;
+  return `${STRAPI_URL}${url}`;
 };
 
 const ResponsiveImage = ({

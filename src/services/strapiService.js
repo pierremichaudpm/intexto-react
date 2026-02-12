@@ -4,11 +4,17 @@
  * Supports locale-aware content fetching for i18n
  */
 
-const API_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+// In production the Express server proxies /api/* to Strapi, so the
+// browser never contacts railway.app directly (fixes gov firewall blocks).
+// In dev mode (Vite), we still call Strapi directly.
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
+const API_URL = import.meta.env.PROD ? "" : STRAPI_URL;
 
 class StrapiService {
   constructor() {
     this.apiUrl = API_URL;
+    // Keep full Strapi URL for building absolute image URLs
+    this.strapiUrl = STRAPI_URL;
   }
 
   /**
@@ -169,7 +175,7 @@ class StrapiService {
       imageData.url?.startsWith("https://");
     const fullUrl = isAbsoluteUrl
       ? imageData.url
-      : `${this.apiUrl}${imageData.url}`;
+      : `${this.strapiUrl}${imageData.url}`;
 
     return {
       url: fullUrl,
@@ -190,7 +196,7 @@ class StrapiService {
     const fullImageUrl = imageUrl
       ? isAbsoluteUrl
         ? imageUrl
-        : `${this.apiUrl}${imageUrl}`
+        : `${this.strapiUrl}${imageUrl}`
       : this.getPlaceholderImage("article");
 
     return {
@@ -221,7 +227,7 @@ class StrapiService {
     const mediaUrl = videoFileUrl
       ? isVideoAbsolute
         ? videoFileUrl
-        : `${this.apiUrl}${videoFileUrl}`
+        : `${this.strapiUrl}${videoFileUrl}`
       : item.videoUrl;
 
     const thumbnailUrl = item.thumbnail?.url;
@@ -231,7 +237,7 @@ class StrapiService {
     const fullThumbnailUrl = thumbnailUrl
       ? isThumbnailAbsolute
         ? thumbnailUrl
-        : `${this.apiUrl}${thumbnailUrl}`
+        : `${this.strapiUrl}${thumbnailUrl}`
       : this.getPlaceholderImage("video");
 
     return {
@@ -263,7 +269,7 @@ class StrapiService {
     const mediaUrl = audioFileUrl
       ? isAudioAbsolute
         ? audioFileUrl
-        : `${this.apiUrl}${audioFileUrl}`
+        : `${this.strapiUrl}${audioFileUrl}`
       : item.audioUrl;
 
     const coverUrl = item.coverImage?.url;
@@ -272,7 +278,7 @@ class StrapiService {
     const fullCoverUrl = coverUrl
       ? isCoverAbsolute
         ? coverUrl
-        : `${this.apiUrl}${coverUrl}`
+        : `${this.strapiUrl}${coverUrl}`
       : this.getPlaceholderImage("audio");
 
     return {
