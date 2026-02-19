@@ -213,6 +213,8 @@ class StrapiService {
       imageFallback: fullImageUrl,
       readTime: item.readTime || "5 min",
       tags: item.tags || [],
+      imageCaption: item.imageCaption || "",
+      imageCredit: item.imageCredit || "",
     };
   }
 
@@ -255,6 +257,8 @@ class StrapiService {
       videoUrl: mediaUrl,
       duration: item.duration || "10 min",
       tags: item.tags || [],
+      imageCaption: item.imageCaption || "",
+      imageCredit: item.imageCredit || "",
     };
   }
 
@@ -296,6 +300,8 @@ class StrapiService {
       audioUrl: mediaUrl,
       duration: item.duration || "30 min",
       tags: item.tags || [],
+      imageCaption: item.imageCaption || "",
+      imageCredit: item.imageCredit || "",
     };
   }
 

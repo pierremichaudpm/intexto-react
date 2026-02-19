@@ -1551,6 +1551,34 @@ p {
     border-radius: 12px;
 }
 
+.modal-image-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.5rem 2rem 0 2rem;
+    padding: 0;
+    font-size: 0.8rem;
+    color: var(--color-text-light, #888);
+    line-height: 1.4;
+}
+
+.modal-image-caption-text {
+    font-style: italic;
+}
+
+.modal-image-credit {
+    margin-left: auto;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.modal-image-credit::before {
+    content: "Photo: ";
+    font-weight: 600;
+}
+
 .modal-body {
     padding: 2rem;
 }
@@ -3437,6 +3465,11 @@ p {
     .modal-image {
         max-height: 300px;
         margin-top: 20px;
+    }
+
+    .modal-image-caption {
+        margin: 0.4rem 1rem 0 1rem;
+        font-size: 0.75rem;
     }
 
     .modal-body {

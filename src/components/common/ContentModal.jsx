@@ -110,6 +110,8 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
     date,
     videoUrl,
     audioUrl,
+    imageCaption,
+    imageCredit,
   } = content;
 
   // Use videoUrl or audioUrl depending on content type
@@ -218,6 +220,12 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
                     loading="eager"
                   />
+                  {(imageCaption || imageCredit) && (
+                    <figcaption className="modal-image-caption">
+                      {imageCaption && <span className="modal-image-caption-text">{imageCaption}</span>}
+                      {imageCredit && <span className="modal-image-credit">{imageCredit}</span>}
+                    </figcaption>
+                  )}
                   <div className="modal-media-player modal-audio-hero">
                     <audio ref={audioRef} controls>
                       <source src={mediaUrl} type="audio/mp3" />
@@ -225,14 +233,22 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                   </div>
                 </>
               ) : (
-                <ResponsiveImage
-                  image={image}
-                  fallbackUrl={imageFallback}
-                  alt={title}
-                  className="modal-image"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
-                  loading="eager"
-                />
+                <>
+                  <ResponsiveImage
+                    image={image}
+                    fallbackUrl={imageFallback}
+                    alt={title}
+                    className="modal-image"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
+                    loading="eager"
+                  />
+                  {(imageCaption || imageCredit) && (
+                    <figcaption className="modal-image-caption">
+                      {imageCaption && <span className="modal-image-caption-text">{imageCaption}</span>}
+                      {imageCredit && <span className="modal-image-credit">{imageCredit}</span>}
+                    </figcaption>
+                  )}
+                </>
               )}
 
               <div className="modal-body">
