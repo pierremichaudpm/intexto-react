@@ -22,6 +22,10 @@ const GDPRBanner = () => {
   const handleAccept = () => {
     localStorage.setItem("gdpr-consent", "accepted");
     localStorage.setItem("gdpr-consent-date", new Date().toISOString());
+    // Immediately grant GA4 analytics consent
+    if (typeof window.gtag === "function") {
+      window.gtag("consent", "update", { analytics_storage: "granted" });
+    }
     setShowBanner(false);
   };
 

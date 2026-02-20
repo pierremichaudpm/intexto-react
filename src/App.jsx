@@ -9,10 +9,12 @@ import PartnerStrip from "./components/partners/PartnerStrip";
 import GDPRBanner from "./components/common/GDPRBanner";
 import HomePage from "./pages/HomePage";
 import PreviewPage from "./pages/PreviewPage";
+import useAnalytics from "./hooks/useAnalytics";
 import "./styles/App.css";
 
 function AppContent() {
   const [searchOpen, setSearchOpen] = useState(false);
+  useAnalytics();
 
   return (
     <div className="app">
