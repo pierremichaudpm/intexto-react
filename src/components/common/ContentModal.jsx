@@ -20,6 +20,14 @@ import ResponsiveImage from "./ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 import { useTranslation } from "react-i18next";
 
+const getYouTubeId = (url) => {
+  if (!url) return null;
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  );
+  return match ? match[1] : null;
+};
+
 const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
   const { t } = useTranslation();
   const { content: allContent } = useContent();
@@ -66,7 +74,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
       return;
     }
 
-    if (content.type === "video" && videoRef.current && content.videoUrl) {
+    if (content.type === "video" && videoRef.current && content.videoUrl && !getYouTubeId(content.videoUrl)) {
       playerRef.current = new Plyr(videoRef.current, {
         controls: [
           "play-large",
@@ -204,7 +212,18 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
               </button>
 
               {/* Show video/audio player instead of image for media content */}
-              {type === "video" && mediaUrl ? (
+              {type === "video" && mediaUrl && getYouTubeId(mediaUrl) ? (
+                <div className="modal-media-player modal-media-hero">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(mediaUrl)}?rel=0&modestbranding=1`}
+                    title={title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                    style={{ border: 0, width: "100%", aspectRatio: "16/9" }}
+                  />
+                </div>
+              ) : type === "video" && mediaUrl ? (
                 <div className="modal-media-player modal-media-hero">
                   <video ref={videoRef} controls playsInline>
                     <source src={mediaUrl} type="video/mp4" />
