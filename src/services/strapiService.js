@@ -62,7 +62,7 @@ class StrapiService {
     try {
       // Always fetch FR lineups — they are the source of truth for ordering
       const response = await fetch(
-        `${this.apiUrl}/api/lineups?populate[articles][populate][0]=image&populate[articles][populate][1]=category&populate[videos][populate][0]=thumbnail&populate[videos][populate][1]=videoFile&populate[videos][populate][2]=category&populate[audios][populate][0]=coverImage&populate[audios][populate][1]=audioFile&populate[audios][populate][2]=category`,
+        `${this.apiUrl}/api/lineups?populate[articles][populate][0]=image&populate[articles][populate][1]=category&populate[videos][populate][0]=thumbnail&populate[videos][populate][1]=category&populate[audios][populate][0]=coverImage&populate[audios][populate][1]=audioFile&populate[audios][populate][2]=category`,
       );
       const data = await response.json();
       const lineups = {};
@@ -116,7 +116,7 @@ class StrapiService {
   async fetchVideos(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/videos?${this.localeParam(locale)}populate[0]=thumbnail&populate[1]=videoFile&populate[2]=category`,
+        `${this.apiUrl}/api/videos?${this.localeParam(locale)}populate[0]=thumbnail&populate[1]=category`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformVideo(item));
@@ -222,15 +222,7 @@ class StrapiService {
    * Transform Strapi video to app format
    */
   transformVideo(item) {
-    const videoFileUrl = item.videoFile?.url;
-    const isVideoAbsolute =
-      videoFileUrl?.startsWith("http://") ||
-      videoFileUrl?.startsWith("https://");
-    const mediaUrl = videoFileUrl
-      ? isVideoAbsolute
-        ? videoFileUrl
-        : `${this.strapiUrl}${videoFileUrl}`
-      : item.videoUrl;
+    const mediaUrl = item.videoUrl || null;
 
     const thumbnailUrl = item.thumbnail?.url;
     const isThumbnailAbsolute =
@@ -352,7 +344,7 @@ class StrapiService {
 
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/${endpoint}?${this.localeParam(locale)}filters[slug][$eq]=${encodeURIComponent(slug)}&status=draft&populate[0]=image&populate[1]=thumbnail&populate[2]=coverImage&populate[3]=videoFile&populate[4]=audioFile&populate[5]=category`,
+        `${this.apiUrl}/api/${endpoint}?${this.localeParam(locale)}filters[slug][$eq]=${encodeURIComponent(slug)}&status=draft&populate[0]=image&populate[1]=thumbnail&populate[2]=coverImage&populate[3]=audioFile&populate[4]=category`,
       );
       const data = await response.json();
       const item = data.data?.[0];
