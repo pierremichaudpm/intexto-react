@@ -100,7 +100,7 @@ class StrapiService {
   async fetchArticles(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/articles?${this.localeParam(locale)}populate[0]=image&populate[1]=category`,
+        `${this.apiUrl}/api/articles?${this.localeParam(locale)}populate[0]=image&populate[1]=category&pagination[pageSize]=200`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformArticle(item));
@@ -116,7 +116,7 @@ class StrapiService {
   async fetchVideos(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/videos?${this.localeParam(locale)}populate[0]=thumbnail&populate[1]=category`,
+        `${this.apiUrl}/api/videos?${this.localeParam(locale)}populate[0]=thumbnail&populate[1]=category&pagination[pageSize]=200`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformVideo(item));
@@ -132,7 +132,7 @@ class StrapiService {
   async fetchAudios(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/audios?${this.localeParam(locale)}populate[0]=coverImage&populate[1]=audioFile&populate[2]=category`,
+        `${this.apiUrl}/api/audios?${this.localeParam(locale)}populate[0]=coverImage&populate[1]=audioFile&populate[2]=category&pagination[pageSize]=200`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformAudio(item));
