@@ -298,15 +298,8 @@ class StrapiService {
   }
 
   getPlaceholderImage(type) {
-    const placeholders = {
-      article:
-        "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800",
-      video:
-        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800",
-      audio:
-        "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800",
-    };
-    return placeholders[type] || placeholders.article;
+    // Use InTexto OG image as placeholder — neutral and branded
+    return "/Images/og-image.png";
   }
 
   filterByCategory(content, category) {
