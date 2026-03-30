@@ -3589,57 +3589,41 @@ html {
 /* ==================== Language Toggle ==================== */
 .language-toggle {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-}
-
-.language-toggle__buttons {
-  display: flex;
   align-items: center;
   gap: 2px;
-}
-
-.language-toggle__separator {
-  color: #ccc;
-  font-size: 11px;
-  margin: 0 1px;
-  user-select: none;
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 2px;
+  margin-right: 12px;
 }
 
 .language-toggle__btn {
   background: none;
   border: none;
-  color: #888;
-  font-size: 11px;
+  color: #666;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
-  padding: 3px 5px;
-  border-radius: 3px;
+  padding: 5px 10px;
+  border-radius: 4px;
   transition: all 0.2s ease;
 }
 
 .language-toggle__btn:hover {
   color: var(--color-primary);
-  background: rgba(0, 78, 160, 0.06);
+  background: rgba(0, 78, 160, 0.08);
 }
 
 .language-toggle__btn--active {
-  color: var(--color-primary);
-  background: rgba(0, 78, 160, 0.1);
-}
-
-.language-toggle__beta {
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
   color: #fff;
   background: var(--color-primary);
-  padding: 1px 5px;
-  border-radius: 3px;
-  line-height: 1.4;
+}
+
+.language-toggle__btn--active:hover {
+  color: #fff;
+  background: var(--color-primary);
 }
 
 /* Mobile adjustments */
@@ -3648,11 +3632,6 @@ html {
 }
 
 .header-actions-mobile .language-toggle__btn {
-  font-size: 10px;
-  padding: 2px 4px;
-}
-
-.header-actions-mobile .language-toggle__beta {
-  font-size: 7px;
-  padding: 1px 3px;
+  font-size: 11px;
+  padding: 4px 8px;
 }
