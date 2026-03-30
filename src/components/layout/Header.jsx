@@ -116,7 +116,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
         {!hideSearch && (
           <>
             <div className="header-actions header-actions-desktop">
-              {/* <LanguageToggle /> — hidden until EN/HT are ready */}
+              <LanguageToggle />
 
               <div className="header-social-links">
                 <a
@@ -172,7 +172,7 @@ const Header = ({ onSearchClick, adBanner, hideSearch = false }) => {
             </div>
 
             <div className="header-actions-mobile">
-              {/* <LanguageToggle /> — hidden until EN/HT are ready */}
+              <LanguageToggle />
               <button
                 className="mobile-burger-btn"
                 onClick={toggleMobileMenu}
