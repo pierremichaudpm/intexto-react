@@ -55,14 +55,12 @@ class StrapiService {
 
   /**
    * Fetch all lineups with their ordered content items populated.
-   * Always fetches FR lineups (which have correct ordering), then
-   * extracts documentId order so locale content can be sorted to match.
+   * Lineups are synced per locale in Strapi, so we fetch the requested locale directly.
    */
   async fetchLineups(locale = "fr") {
     try {
-      // Always fetch FR lineups — they are the source of truth for ordering
       const response = await fetch(
-        `${this.apiUrl}/api/lineups?populate[articles][populate][0]=image&populate[articles][populate][1]=category&populate[videos][populate][0]=thumbnail&populate[videos][populate][1]=category&populate[audios][populate][0]=coverImage&populate[audios][populate][1]=audioFile&populate[audios][populate][2]=category`,
+        `${this.apiUrl}/api/lineups?${this.localeParam(locale)}populate[articles][populate][0]=image&populate[articles][populate][1]=category&populate[videos][populate][0]=thumbnail&populate[videos][populate][1]=category&populate[audios][populate][0]=coverImage&populate[audios][populate][1]=audioFile&populate[audios][populate][2]=category`,
       );
       const data = await response.json();
       const lineups = {};
@@ -71,11 +69,6 @@ class StrapiService {
         lineups[slug] = {
           name: lineup.name,
           slug: slug,
-          // Store documentId order from FR lineups
-          articleOrder: (lineup.articles || []).map((item) => item.documentId),
-          videoOrder: (lineup.videos || []).map((item) => item.documentId),
-          audioOrder: (lineup.audios || []).map((item) => item.documentId),
-          // Also store transformed FR content as fallback
           articles: (lineup.articles || [])
             .map((item) => this.transformArticle(item))
             .filter(Boolean),
