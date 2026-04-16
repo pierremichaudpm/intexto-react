@@ -4,13 +4,13 @@ import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 
 const categorySlugs = [
   "all",
-  "moisdelhistoiredesnoirs",
   "politique",
   "actualite",
   "culture",
   "economie",
   "immigration",
   "sante",
+  "chronique",
   "opinion",
   "apropos",
 ];
