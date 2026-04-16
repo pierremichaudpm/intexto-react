@@ -1,5 +1,29 @@
 # WORKING_LOG.md — Journal de développement
 
+## 2026-04-16 — Incident : site HS + images manquantes
+
+### Symptômes
+- intexto.ca n'affichait plus de contenu (page blanche avec header seulement).
+- Les articles récents affichaient le logo InTexto en placeholder au lieu de leur image.
+
+### Cause et fix
+Tous les problèmes venaient du backend Strapi, pas du frontend — **aucun changement côté React** cette session.
+
+1. **502 sur Strapi** : le bootstrap de Strapi bloquait son port HTTP en tentant de re-traduire tous les articles à chaque boot. Fix côté `intexto-strapi` (commit `2a63a0e`).
+
+2. **Images fantômes** : les médias avaient été ajoutés aux drafts Strapi mais pas re-publiés. Fix via re-publish en boucle de l'API admin.
+
+Voir `intexto-strapi/WORKING_LOG.md` pour le détail technique.
+
+### À noter pour le frontend
+Le fallback ResponsiveImage → logo InTexto a **très bien joué son rôle** de garde-fou visuel : au lieu de casser le layout, les cartes affichaient un placeholder lisible. Pas de modification nécessaire.
+
+### Prochaines étapes
+- Surveiller `intexto.ca/api` après chaque publication majeure pour détecter les 502 rapidement (ajouter un monitoring type UptimeRobot ?)
+- Confirmer que les images manquantes sont bien réapparues après le re-publish (refresh Ctrl+F5)
+
+---
+
 ## 2026-03-15 — Session YouTube + nettoyage
 
 ### Progrès
