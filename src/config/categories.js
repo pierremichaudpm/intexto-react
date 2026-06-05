@@ -15,6 +15,8 @@ export const categoryColors = {
   immigration: "#16a085",
   moisdelhistoiredesnoirs: "#000000",
   chronique: "#e67e22",
+  publireportage: "#888888",
+  avisdedeces: "#555555",
 };
 
 export const categoryLabels = {
@@ -33,6 +35,13 @@ export const categoryLabels = {
   immigration: "Immigration",
   moisdelhistoiredesnoirs: "Mois de l'histoire des Noirs",
   chronique: "Chronique",
+  publireportage: "Publireportage",
+  avisdedeces: "Avis de décès",
+};
+
+export const categoryCardBackgrounds = {
+  publireportage: "#f2f2f2",
+  avisdedeces: "#efefef",
 };
 
 // Default color for unknown categories
@@ -41,6 +50,11 @@ export const defaultCategoryColor = "#666666";
 // Helper function to get category color with fallback
 export const getCategoryColor = (category) => {
   return categoryColors[category] || defaultCategoryColor;
+};
+
+// Helper function to get optional card background for special categories
+export const getCategoryCardBackground = (category) => {
+  return categoryCardBackgrounds[category] || null;
 };
 
 // Helper function to get category label with i18n support

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Video, Mic } from "lucide-react";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "./ResponsiveImage";
-import { getCategoryColor, getCategoryLabel } from "../../config/categories";
+import { getCategoryColor, getCategoryLabel, getCategoryCardBackground } from "../../config/categories";
 import { useTranslation } from "react-i18next";
 
 const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
@@ -26,6 +26,8 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
     return dur;
   };
 
+  const cardBackground = type === "article" ? getCategoryCardBackground(category) : null;
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 40 }}
@@ -34,6 +36,7 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
       whileHover={{ y: -6 }}
       className="content-card"
       data-type={type}
+      style={cardBackground ? { background: cardBackground } : undefined}
       onClick={() => onClick(content)}
     >
       <div
