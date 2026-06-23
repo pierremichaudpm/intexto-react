@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Mail, ArrowRight, Check } from "lucide-react";
+import { Mail, ArrowRight } from "lucide-react";
 import {
   SiFacebook,
   SiInstagram,
@@ -11,29 +10,6 @@ import {
 
 const Footer = () => {
   const { t } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [isSubscribed, setIsSubscribed] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (email) {
-      // Store in localStorage
-      const subscribers = JSON.parse(
-        localStorage.getItem("intexto_newsletter") || "[]",
-      );
-      subscribers.push({
-        email: email,
-        date: new Date().toISOString(),
-      });
-      localStorage.setItem("intexto_newsletter", JSON.stringify(subscribers));
-
-      setIsSubscribed(true);
-      setTimeout(() => {
-        setIsSubscribed(false);
-        setEmail("");
-      }, 3000);
-    }
-  };
 
   return (
     <>
@@ -48,33 +24,15 @@ const Footer = () => {
             Recevez les dernières actualités de la communauté dans votre boîte
             mail. Inscription gratuite&nbsp;!
           </p>
-          <form className="newsletter-form" onSubmit={handleSubmit}>
-            <input
-              type="email"
-              className="newsletter-input"
-              placeholder={t("footer.emailPlaceholder")}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              className={`newsletter-btn ${isSubscribed ? "subscribed" : ""}`}
-              disabled={isSubscribed}
-            >
-              {isSubscribed ? (
-                <>
-                  <Check size={20} />
-                  <span>{t("footer.subscribed")}</span>
-                </>
-              ) : (
-                <>
-                  <span>{t("footer.subscribe")}</span>
-                  <ArrowRight size={18} />
-                </>
-              )}
-            </button>
-          </form>
+          <a
+            href="https://intexto.beehiiv.com/subscribe"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="newsletter-btn"
+          >
+            <span>{t("footer.subscribe")}</span>
+            <ArrowRight size={18} />
+          </a>
           <p className="newsletter-privacy">
             En vous inscrivant, vous acceptez notre{" "}
             <a href="#">politique de confidentialité</a>. Désinscription

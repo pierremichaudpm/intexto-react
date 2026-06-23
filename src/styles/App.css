@@ -2934,15 +2934,11 @@ p {
     gap: 0.5rem;
 }
 
-.newsletter-btn:hover:not(:disabled) {
+.newsletter-btn:hover {
     background: var(--color-primary-dark);
     transform: translateY(-3px);
     box-shadow: 0 8px 30px rgba(221, 79, 79, 0.4);
-}
-
-.newsletter-btn.subscribed {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+    text-decoration: none;
 }
 
 .newsletter-privacy {
