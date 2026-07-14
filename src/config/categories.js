@@ -17,6 +17,8 @@ export const categoryColors = {
   chronique: "#e67e22",
   publireportage: "#888888",
   avisdedeces: "#555555",
+  endirect: "#e01414",
+  balado: "#5f27cd",
 };
 
 export const categoryLabels = {
@@ -37,6 +39,8 @@ export const categoryLabels = {
   chronique: "Chronique",
   publireportage: "Publireportage",
   avisdedeces: "Avis de décès",
+  endirect: "En direct",
+  balado: "Balado",
 };
 
 export const categoryCardBackgrounds = {

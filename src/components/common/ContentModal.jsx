@@ -273,6 +273,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
               <div className="modal-body">
                 <span
                   className="content-card-category"
+                  data-category={category}
                   style={{ backgroundColor: getCategoryColor(category) }}
                 >
                   {getCategoryLabel(category, t)}

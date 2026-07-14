@@ -68,6 +68,7 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
       <div className="content-card-body">
         <span
           className="content-card-category"
+          data-category={category}
           style={{
             backgroundColor:
               type === "article" ? getCategoryColor(category) : undefined,

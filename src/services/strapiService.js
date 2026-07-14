@@ -180,6 +180,14 @@ class StrapiService {
   }
 
   /**
+   * Normalize a Strapi category slug to the frontend convention (no hyphens),
+   * so auto-generated slugs like "en-direct" match the "endirect" config keys
+   */
+  normalizeCategorySlug(slug) {
+    return slug ? slug.replace(/-/g, "") : "actualite";
+  }
+
+  /**
    * Transform Strapi article to app format
    */
   transformArticle(item) {
@@ -199,7 +207,7 @@ class StrapiService {
       slug: item.slug,
       excerpt: item.excerpt,
       content: item.content,
-      category: item.category?.slug || "actualite",
+      category: this.normalizeCategorySlug(item.category?.slug),
       author: item.author || "Rédaction Intexto",
       date: item.publishedDate || item.publishedAt || item.createdAt,
       image: item.image ? this.transformImage(item.image) : null,
@@ -234,7 +242,7 @@ class StrapiService {
       slug: item.slug,
       excerpt: item.excerpt,
       description: item.description,
-      category: item.category?.slug || "actualite",
+      category: this.normalizeCategorySlug(item.category?.slug),
       author: item.author || "Équipe Vidéo Intexto",
       date: item.publishedDate || item.publishedAt || item.createdAt,
       image: item.thumbnail ? this.transformImage(item.thumbnail) : null,
@@ -277,7 +285,7 @@ class StrapiService {
       slug: item.slug,
       excerpt: item.excerpt,
       description: item.description,
-      category: item.category?.slug || "actualite",
+      category: this.normalizeCategorySlug(item.category?.slug),
       author: item.author || "Équipe Podcast Intexto",
       date: item.publishedDate || item.publishedAt || item.createdAt,
       image: item.coverImage ? this.transformImage(item.coverImage) : null,
