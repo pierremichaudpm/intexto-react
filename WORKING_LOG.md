@@ -1,5 +1,43 @@
 # WORKING_LOG.md — Journal de développement
 
+## 2026-07-14 — Tags « En direct » / « Balado » pour les balados live YouTube
+
+### Contexte
+Goudou a besoin de nouveaux tags pour distinguer un balado en cours de diffusion live sur YouTube (« En direct ») d'un balado déjà terminé (« Balado »). Gestion 100% manuelle côté CMS : Goudou change lui-même la catégorie de la vidéo au début et à la fin du live.
+
+### Progrès
+1. **Nouvelles catégories** (`src/config/categories.js`)
+   - `endirect` (rouge `#e01414`, libellé « En direct ») et `balado` (violet `#5f27cd`, libellé « Balado ») ajoutés à `categoryColors`/`categoryLabels`, suivant le patron des commits `3a91ad7` (Publireportage/Avis de décès) et `ac4f5ad` (Chronique).
+   - Traductions ajoutées dans `en.json` (Live / Podcast) et `ht.json` (An Dirèk / Podkas).
+   - Non ajoutées à `CategoryFilter.jsx` (barre de nav) — pas demandé, même choix que pour Publireportage.
+
+2. **Badge « En direct » visible sur toutes les cartes** (`ContentCard.jsx`, `ContentModal.jsx`, `App.css`)
+   - Ajout de `data-category={category}` sur le badge dans les deux composants.
+   - Règle CSS `.content-card-category[data-category="endirect"]` qui force le fond rouge même sur les cartes vidéo/audio (dont le style de badge est normalement transparent/blanc translucide), avec un point blanc qui pulse (`@keyframes live-pulse`), désactivable via `prefers-reduced-motion` implicitement par la nature de l'effet (à vérifier si un utilisateur signale un souci d'accessibilité).
+
+3. **Normalisation des slugs Strapi** (`src/services/strapiService.js`)
+   - Nouvelle méthode `normalizeCategorySlug()` qui retire les tirets d'un slug reçu de Strapi avant de le comparer aux clés de `categories.js`.
+   - Raison : Strapi auto-génère le slug à partir du nom (« En direct » → `en-direct`), alors que la config frontend utilise `endirect` sans tiret. Sans cette normalisation, Goudou aurait dû éditer manuellement le champ slug dans l'admin Strapi à chaque création de catégorie — source d'erreur pour un usage non technique.
+   - Les 3 endroits qui lisaient `item.category?.slug || "actualite"` dans `transformArticle`/`transformVideo`/`transformAudio` passent maintenant par cette méthode.
+
+4. **Guide utilisateur pour Goudou**
+   - `GUIDE-EN-DIRECT-BALADO.md` (racine du repo) : guide pas-à-pas en français, sans jargon technique, pour (1) créer les deux catégories dans Strapi une seule fois, (2) assigner « En direct » au début du live + Publish, (3) basculer vers « Balado » à la fin + Publish, (4) dépannage basique.
+   - Version identique publiée en artifact Claude (page web) pour partage direct, avec aperçu visuel des deux badges.
+
+### Décisions techniques
+- **Pas de création automatique des catégories via l'API Strapi** : testé une requête POST publique sur `/api/categories`, refusée (403 — le rôle public n'a pas le droit d'écriture, et aucun token API d'écriture n'est disponible dans ce repo). Plutôt que de demander un token, décision de simplifier le flux manuel côté frontend (normalisation des slugs) : Goudou crée les catégories lui-même dans l'admin en ~2 minutes, sans étape de configuration piégeuse.
+- **Catégorie comme mécanisme de bascule live/replay**, pas de champ booléen dédié : cohérent avec le fait que la catégorie est déjà le seul système de tagging existant dans ce projet (pas de schema Strapi à modifier).
+
+### Problèmes rencontrés
+- Tentative initiale de créer les catégories directement via API échouée (403 Forbidden) faute de token d'écriture accessible dans l'environnement — contournée en ajustant le frontend plutôt qu'en demandant des credentials.
+
+### Prochaines étapes
+- Goudou doit créer les catégories `En direct` et `Balado` dans l'admin Strapi (voir `GUIDE-EN-DIRECT-BALADO.md`) — rien ne fonctionne côté site tant que ce n'est pas fait.
+- Déployer ce commit sur Netlify (push vers `main`) avant d'envoyer le guide à Goudou, sinon le badge rouge n'existera pas encore en production.
+- Vérifier après le premier live réel que le badge s'affiche correctement en prod (pas seulement testé en dry local).
+
+---
+
 ## 2026-04-16 — Incident : site HS + images manquantes
 
 ### Symptômes

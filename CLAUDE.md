@@ -30,6 +30,11 @@ src/
 - Les URLs YouTube sont détectées et rendues via iframe youtube-nocookie.com. Les autres URLs vidéo utilisent Plyr.
 - Les lineups (manchettes) sont ordonnées côté Strapi FR, l'ordre est appliqué aux autres locales.
 - Les images passent par Cloudinary (URLs absolues) ou Strapi local (URLs relatives préfixées).
+- **Slugs de catégorie normalisés sans tiret** : `strapiService.normalizeCategorySlug()` retire les tirets des slugs Strapi à la réception (ex. `en-direct` → `endirect`). Ça permet à l'utilisateur CMS de créer une catégorie en tapant juste son nom dans Strapi (slug auto-généré avec tiret) sans avoir à corriger le slug pour qu'il matche les clés de `config/categories.js`.
+- **Catégories spéciales sans lien avec la nav** : `publireportage`, `avisdedeces`, `chronique`, `moisdelhistoiredesnoirs`, `endirect`, `balado` existent dans `categoryColors`/`categoryLabels` mais ne sont pas forcément dans `CategoryFilter.jsx` (`categorySlugs`) — ce sont deux listes distinctes à mettre à jour séparément selon le besoin.
+
+## Catégories vidéo/audio « En direct » / « Balado » (2026-07-14)
+Pour les balados diffusés en direct sur YouTube : Goudou assigne manuellement la catégorie **En direct** (slug `endirect`) pendant le live (badge rouge pulsant sur toutes les cartes, y compris vidéo/audio dont le badge est normalement transparent), puis bascule vers **Balado** (slug `balado`) une fois le live terminé. Gestion 100% manuelle côté CMS, aucune automatisation. Guide pas-à-pas pour Goudou : voir `GUIDE-EN-DIRECT-BALADO.md` à la racine du repo (aussi publié en artifact Claude).
 
 ## Commandes
 ```bash
