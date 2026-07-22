@@ -2041,6 +2041,40 @@ p {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Archives widget — même lettrage que le widget Version Papier */
+.archives-widget {
+    margin-top: 1.5rem;
+}
+
+.archives-wordmark {
+    color: var(--color-primary);
+}
+
+.archives-body {
+    margin-bottom: 1.5rem;
+}
+
+.archives-logo {
+    display: block;
+    width: 70%;
+    max-width: 220px;
+    height: auto;
+    margin: 0 auto 1rem;
+}
+
+.archives-description {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    text-align: center;
+}
+
+.archives-btn {
+    width: 100%;
+    text-decoration: none;
+}
+
 .modal-media-player {
     margin: 2rem 0;
     border-radius: 12px;

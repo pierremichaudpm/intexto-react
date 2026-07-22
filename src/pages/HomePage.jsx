@@ -17,6 +17,7 @@ import MediaSection from "../components/sections/MediaSection";
 import ContentCard from "../components/common/ContentCard";
 import PartnerCard from "../components/partners/PartnerCard";
 import MagazineWidget from "../components/widgets/MagazineWidget";
+import ArchivesWidget from "../components/widgets/ArchivesWidget";
 import SEOHead from "../components/seo/SEOHead";
 
 // Lazy load heavy modal component
@@ -184,6 +185,7 @@ const HomePage = () => {
               <PartnerCard position="sidebar" />
             </div>
             <MagazineWidget />
+            <ArchivesWidget />
             <div className="desktop-only">
               <PartnerCard position="sidebar-half" />
             </div>
