@@ -2042,10 +2042,7 @@ p {
 }
 
 /* Archives widget — même lettrage que le widget Version Papier */
-.archives-widget {
-    margin-top: 1.5rem;
-}
-
+/* Pas de margin-top : .content-sidebar est en flex column avec gap: 2rem */
 .archives-wordmark {
     color: var(--color-primary);
 }
