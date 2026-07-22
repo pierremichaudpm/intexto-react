@@ -12,7 +12,7 @@ const ArchivesWidget = () => {
       <div className="magazine-widget-header">
         <Archive size={20} />
         <h3>
-          inTexto <span className="archives-wordmark">Archives</span>
+          <span className="archives-wordmark">Archives</span>
         </h3>
       </div>
 

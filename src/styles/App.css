@@ -2045,6 +2045,7 @@ p {
 /* Pas de margin-top : .content-sidebar est en flex column avec gap: 2rem */
 .archives-wordmark {
     color: var(--color-primary);
+    font-size: 1.5rem;
 }
 
 .archives-body {
