@@ -1,15 +1,25 @@
+/* eslint-disable react-refresh/only-export-components -- Context provider and its consumer hook share this module. */
 import {
   createContext,
   useContext,
   useState,
   useEffect,
-  useMemo,
   useCallback,
+  useRef,
 } from "react";
 import strapiService from "../services/strapiService";
 import { useLanguage } from "./LanguageContext";
 
 const ContentContext = createContext();
+
+function bootstrapContent(locale) {
+  const bootstrap = window.__INTEXTO_BOOTSTRAP__;
+  if (bootstrap?.locale !== locale) return [];
+  return bootstrap.items.map(item => {
+    const transform = { article: "transformArticle", video: "transformVideo", audio: "transformAudio" }[item.type];
+    return strapiService[transform](item);
+  });
+}
 
 export const useContent = () => {
   const context = useContext(ContentContext);
@@ -21,32 +31,39 @@ export const useContent = () => {
 
 export const ContentProvider = ({ children }) => {
   const { locale } = useLanguage();
-  const [content, setContent] = useState([]);
+  const [content, setContent] = useState(() => bootstrapContent(locale));
   const [lineups, setLineups] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(window.__INTEXTO_BOOTSTRAP__?.locale !== locale);
   const [filter, setFilter] = useState({ category: "all", type: "all" });
   const [searchQuery, setSearchQuery] = useState("");
+  const loadVersion = useRef(0);
 
-  // Reload content when locale changes
-  useEffect(() => {
-    loadContent(locale);
-  }, [locale]);
-
-  const loadContent = async (loc) => {
-    setLoading(true);
+  const loadContent = useCallback(async (loc) => {
+    const version = ++loadVersion.current;
+    const bootstrap = window.__INTEXTO_BOOTSTRAP__;
+    if (bootstrap?.locale !== loc) setLoading(true);
     try {
       const [data, lineupsData] = await Promise.all([
         strapiService.loadContent(loc),
         strapiService.fetchLineups(loc),
       ]);
-      setContent(data);
+      if (version !== loadVersion.current) return;
+      // Keep a directly requested article reachable even beyond the feed's page limit.
+      const requested = bootstrap?.locale === loc
+        ? bootstrapContent(loc).filter(item => !data.some(other => other.id === item.id && other.type === item.type))
+        : [];
+      setContent([...data, ...requested]);
       setLineups(lineupsData);
     } catch (error) {
       console.error("Error loading content:", error);
     } finally {
-      setLoading(false);
+      if (version === loadVersion.current) setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadContent(locale);
+  }, [locale, loadContent]);
 
   // Get lineup by slug
   const getLineup = useCallback(

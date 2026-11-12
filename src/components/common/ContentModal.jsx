@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import {
   X,
   Share2,
@@ -14,7 +14,8 @@ import ReactMarkdown from "react-markdown";
 import { useContent } from "../../context/ContentContext";
 import cmsService from "../../services/cmsService";
 import SEOHead from "../seo/SEOHead";
-import StructuredData from "../seo/StructuredData";
+import { contentUrl } from "../../lib/seo";
+import { useLanguage } from "../../context/LanguageContext";
 import Header from "../layout/Header";
 import ResponsiveImage from "./ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
@@ -30,6 +31,7 @@ const getYouTubeId = (url) => {
 
 const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
   const { t } = useTranslation();
+  const { locale } = useLanguage();
   const { content: allContent } = useContent();
   const videoRef = useRef(null);
   const audioRef = useRef(null);
@@ -143,7 +145,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
   };
 
   // Social sharing functions - use canonical URL for proper sharing
-  const shareUrl = `https://www.intexto.ca/${type}/${content.slug}`;
+  const shareUrl = contentUrl(content, locale);
   const shareTitle = title;
 
   const handleShare = (platform) => {
@@ -170,13 +172,14 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
             title={`${title} | Intexto`}
             description={excerpt}
             image={imageFallback || (image && image.url) || undefined}
-            url={`https://www.intexto.ca/${type}/${content.slug}`}
+            url={shareUrl}
             type={type === "article" ? "article" : "website"}
             author={author}
             publishedTime={date}
+            modifiedTime={content.updatedAt}
+            content={content}
           />
-          <StructuredData content={content} />
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -197,7 +200,7 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
               <X size={24} />
             </button>
 
-            <motion.div
+            <Motion.div
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 50, opacity: 0 }}
@@ -411,8 +414,8 @@ const ContentModal = ({ content, isOpen, onClose, onContentChange }) => {
                   </div>
                 )}
               </div>
-            </motion.div>
-          </motion.div>
+            </Motion.div>
+          </Motion.div>
         </>
       )}
     </AnimatePresence>

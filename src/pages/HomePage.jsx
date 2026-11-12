@@ -6,9 +6,9 @@ import {
   lazy,
   Suspense,
 } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import { useContent } from "../context/ContentContext";
 import { useLanguage } from "../context/LanguageContext";
 import HeroSection from "../components/content/HeroSection";
@@ -25,12 +25,14 @@ const ContentModal = lazy(() => import("../components/common/ContentModal"));
 
 const HomePage = () => {
   const { slug } = useParams();
+  const { pathname } = useLocation();
+  const routeType = pathname.match(/\/(article|video|audio)\//)?.[1];
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { filter, setFilter, getFilteredContent, loading, content } =
     useContent();
   const { buildPath } = useLanguage();
-  const [selectedContent, setSelectedContent] = useState(null);
+  const selectedContent = content.find(item => item.slug === slug && item.type === routeType) || null;
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [displayCount, setDisplayCount] = useState(isMobile ? 4 : 6);
 
@@ -59,16 +61,6 @@ const HomePage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Handle direct URL access - open modal if slug is in URL
-  useEffect(() => {
-    if (slug && content.length > 0) {
-      const contentItem = content.find((item) => item.slug === slug);
-      if (contentItem) {
-        setSelectedContent(contentItem);
-      }
-    }
-  }, [slug, content]);
-
   const handleCategoryFilter = useCallback(
     (categoryId) => {
       setFilter((prev) => ({ ...prev, category: categoryId }));
@@ -83,23 +75,20 @@ const HomePage = () => {
 
   const handleContentClick = useCallback(
     (contentItem) => {
-      setSelectedContent(contentItem);
       navigate(buildPath(`/${contentItem.type}/${contentItem.slug}`), { replace: false });
     },
-    [navigate],
+    [navigate, buildPath],
   );
 
   const handleModalClose = useCallback(() => {
-    setSelectedContent(null);
     navigate(buildPath("/"), { replace: false });
-  }, [navigate]);
+  }, [navigate, buildPath]);
 
   const handleContentChange = useCallback(
     (newContent) => {
-      setSelectedContent(newContent);
       navigate(buildPath(`/${newContent.type}/${newContent.slug}`), { replace: false });
     },
-    [navigate],
+    [navigate, buildPath],
   );
 
   if (loading) {
@@ -113,7 +102,7 @@ const HomePage = () => {
 
   return (
     <>
-      <SEOHead />
+      {!slug && !selectedContent && <SEOHead />}
 
       {/* Hero Section */}
       <HeroSection onContentClick={handleContentClick} />
@@ -153,14 +142,14 @@ const HomePage = () => {
 
             {displayCount < filteredContent.length && (
               <div className="load-more-container">
-                <motion.button
+                <Motion.button
                   whileHover={{ scale: 1.05, y: -3 }}
                   whileTap={{ scale: 0.98 }}
                   className="load-more-btn"
                   onClick={handleLoadMore}
                 >
                   {t("content.loadMore")}
-                </motion.button>
+                </Motion.button>
               </div>
             )}
 

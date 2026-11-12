@@ -1,8 +1,8 @@
-import { createContext, useContext, useState, useCallback, useEffect } from "react";
+/* eslint-disable react-refresh/only-export-components -- Context provider and its consumer hook share this module. */
+import { createContext, useContext, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
-  DEFAULT_LOCALE,
   SUPPORTED_LOCALES,
   getLocaleFromPath,
   localePath,
@@ -24,19 +24,7 @@ export const LanguageProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Derive locale from URL on mount and on URL change
-  const [locale, setLocaleState] = useState(() => {
-    return getLocaleFromPath(location.pathname);
-  });
-
-  // Sync locale with URL when location changes
-  useEffect(() => {
-    const urlLocale = getLocaleFromPath(location.pathname);
-    if (urlLocale !== locale) {
-      setLocaleState(urlLocale);
-      i18n.changeLanguage(urlLocale);
-    }
-  }, [location.pathname]);
+  const locale = getLocaleFromPath(location.pathname);
 
   // Sync i18n on initial load
   useEffect(() => {
@@ -44,7 +32,7 @@ export const LanguageProvider = ({ children }) => {
       i18n.changeLanguage(locale);
     }
     localStorage.setItem("intexto-locale", locale);
-  }, [locale]);
+  }, [locale, i18n]);
 
   const setLocale = useCallback(
     (newLocale) => {
@@ -55,14 +43,16 @@ export const LanguageProvider = ({ children }) => {
       const search = location.search;
 
       // Navigate to the new locale path
-      const newPath = localePath(basePath, newLocale);
+      const alternate = document.head.querySelector(`link[rel="alternate"][hreflang="${newLocale}"]`);
+      // Translations have their own slugs. Never invent a translated article URL.
+      const newPath = /^\/(article|video|audio)\//.test(basePath)
+        ? (alternate ? new URL(alternate.href).pathname : localePath("/", newLocale))
+        : localePath(basePath, newLocale);
       navigate(newPath + search);
 
-      setLocaleState(newLocale);
-      i18n.changeLanguage(newLocale);
       localStorage.setItem("intexto-locale", newLocale);
     },
-    [locale, location.pathname, location.search, navigate, i18n],
+    [locale, location.pathname, location.search, navigate],
   );
 
   // Helper to build localized paths

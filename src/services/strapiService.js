@@ -7,6 +7,8 @@
 // In production the Express server proxies /api/* to Strapi, so the
 // browser never contacts railway.app directly (fixes gov firewall blocks).
 // In dev mode (Vite), we still call Strapi directly.
+import { alternatesFor } from "../lib/seo";
+
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || "http://localhost:1337";
 const API_URL = import.meta.env.PROD ? "" : STRAPI_URL;
 
@@ -23,6 +25,13 @@ class StrapiService {
    */
   localeParam(locale) {
     return locale && locale !== "fr" ? `locale=${locale}&` : "";
+  }
+
+  populateQuery(fields) {
+    const params = new URLSearchParams();
+    fields.forEach(field => params.set(`populate[${field}]`, "true"));
+    ["slug", "locale", "publishedAt"].forEach((field, i) => params.set(`populate[localizations][fields][${i}]`, field));
+    return params.toString();
   }
 
   /**
@@ -93,7 +102,7 @@ class StrapiService {
   async fetchArticles(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/articles?${this.localeParam(locale)}populate[0]=image&populate[1]=category&pagination[pageSize]=200`,
+        `${this.apiUrl}/api/articles?${this.localeParam(locale)}${this.populateQuery(["image", "category"])}&pagination[pageSize]=200`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformArticle(item));
@@ -109,7 +118,7 @@ class StrapiService {
   async fetchVideos(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/videos?${this.localeParam(locale)}populate[0]=thumbnail&populate[1]=category&pagination[pageSize]=200`,
+        `${this.apiUrl}/api/videos?${this.localeParam(locale)}${this.populateQuery(["thumbnail", "category"])}&pagination[pageSize]=200`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformVideo(item));
@@ -125,7 +134,7 @@ class StrapiService {
   async fetchAudios(locale = "fr") {
     try {
       const response = await fetch(
-        `${this.apiUrl}/api/audios?${this.localeParam(locale)}populate[0]=coverImage&populate[1]=audioFile&populate[2]=category&pagination[pageSize]=200`,
+        `${this.apiUrl}/api/audios?${this.localeParam(locale)}${this.populateQuery(["coverImage", "audioFile", "category"])}&pagination[pageSize]=200`,
       );
       const data = await response.json();
       return data.data.map((item) => this.transformAudio(item));
@@ -203,6 +212,9 @@ class StrapiService {
     return {
       id: item.documentId,
       type: "article",
+      locale: item.locale || "fr",
+      updatedAt: item.updatedAt,
+      alternates: alternatesFor({ ...item, type: "article" }),
       title: item.title,
       slug: item.slug,
       excerpt: item.excerpt,
@@ -238,6 +250,9 @@ class StrapiService {
     return {
       id: item.documentId,
       type: "video",
+      locale: item.locale || "fr",
+      updatedAt: item.updatedAt,
+      alternates: alternatesFor({ ...item, type: "video" }),
       title: item.title,
       slug: item.slug,
       excerpt: item.excerpt,
@@ -281,6 +296,9 @@ class StrapiService {
     return {
       id: item.documentId,
       type: "audio",
+      locale: item.locale || "fr",
+      updatedAt: item.updatedAt,
+      alternates: alternatesFor({ ...item, type: "audio" }),
       title: item.title,
       slug: item.slug,
       excerpt: item.excerpt,
@@ -298,7 +316,7 @@ class StrapiService {
     };
   }
 
-  getPlaceholderImage(type) {
+  getPlaceholderImage() {
     // Use InTexto OG image as placeholder — neutral and branded
     return "/Images/og-image.png";
   }

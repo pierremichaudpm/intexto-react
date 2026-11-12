@@ -11,9 +11,12 @@ import cmsService from "../../services/cmsService";
 import ResponsiveImage from "../common/ResponsiveImage";
 import { getCategoryColor, getCategoryLabel } from "../../config/categories";
 import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../context/LanguageContext";
+import { contentPath } from "../../lib/seo";
 
 const HeroSection = ({ onContentClick }) => {
   const { t } = useTranslation();
+  const { locale } = useLanguage();
   const { content, getLineup } = useContent();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
@@ -111,11 +114,17 @@ const HeroSection = ({ onContentClick }) => {
         >
           {/* Keep images mounted and loaded before their first transition. */}
           {articles.map((article, index) => (
-            <div
+            <a
               key={article.id}
+              href={contentPath("article", article.slug, locale)}
               aria-hidden={index !== activeIndex}
               className={`hero-main-slide${index === activeIndex ? " is-active" : ""}`}
-              onClick={() => onContentClick(article)}
+              onClick={(event) => {
+                if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                onContentClick(article);
+              }}
+              tabIndex={index === activeIndex ? 0 : -1}
             >
               <div className="hero-main-image-wrapper">
                 <ResponsiveImage
@@ -141,7 +150,7 @@ const HeroSection = ({ onContentClick }) => {
                 </span>
                 <h2 className="hero-main-title">{article.title}</h2>
               </div>
-            </div>
+            </a>
           ))}
 
           {/* Navigation */}

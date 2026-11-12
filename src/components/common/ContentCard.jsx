@@ -1,13 +1,17 @@
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import { Video, Mic } from "lucide-react";
 import cmsService from "../../services/cmsService";
 import ResponsiveImage from "./ResponsiveImage";
 import { getCategoryColor, getCategoryLabel, getCategoryCardBackground } from "../../config/categories";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { useLanguage } from "../../context/LanguageContext";
+import { contentPath } from "../../lib/seo";
 
 const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
   const { t } = useTranslation();
+  const { locale } = useLanguage();
   const {
     type,
     title,
@@ -29,7 +33,7 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
   const cardBackground = type === "article" ? getCategoryCardBackground(category) : null;
 
   return (
-    <motion.article
+    <Motion.article
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] }}
@@ -37,7 +41,9 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
       className="content-card"
       data-type={type}
       style={cardBackground ? { background: cardBackground } : undefined}
-      onClick={() => onClick(content)}
+      onClick={(event) => {
+        if (!event.target.closest("a")) onClick(content);
+      }}
     >
       <div
         className="content-card-image-wrapper"
@@ -77,7 +83,13 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
           {getCategoryLabel(category, t)}
         </span>
 
-        <h3 className="content-card-title">{title}</h3>
+        <h3 className="content-card-title">
+          <Link to={contentPath(type, content.slug, locale)} onClick={(event) => {
+            if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            onClick(content);
+          }}>{title}</Link>
+        </h3>
         <p className="content-card-excerpt">{excerpt}</p>
 
         <div className="content-card-footer">
@@ -87,7 +99,7 @@ const ContentCard = memo(function ContentCard({ content, onClick, delay = 0 }) {
           </span>
         </div>
       </div>
-    </motion.article>
+    </Motion.article>
   );
 });
 

@@ -440,6 +440,32 @@ p {
 }
 
 /* HERO SECTION - NEW LAYOUT */
+.server-reader {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.7;
+}
+
+.server-reader header,
+.server-reader footer,
+.server-reader article,
+.server-reader p,
+.server-reader h1,
+.server-reader h2 {
+    margin-bottom: 1.5rem;
+}
+
+.server-reader img {
+    max-width: 100%;
+    height: auto;
+}
+
+.content-card-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
 .hero-section-new {
     background: #ffffff;
     padding: 3rem 0;

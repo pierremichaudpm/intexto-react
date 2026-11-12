@@ -2,6 +2,39 @@
 
 Site web moderne pour le journal haïtien Intexto, construit avec **React + Vite** et système de gestion de contenu intégré.
 
+## Production et référencement
+
+Le site public tourne sur **Railway avec Node/Express** : `npm run build` puis
+`npm start`. Le serveur `server/app.js` doit servir le site ; un hébergement
+purement statique ou `vite preview` ne fournit pas le rendu et les sitemaps
+dynamiques décrits ici. L'ancienne configuration Netlify n'est pas le chemin de
+déploiement de production actuel.
+
+Le serveur fournit le même HTML complet aux lecteurs et aux robots : accueil,
+articles, vidéos et balados. Les métadonnées, URL canoniques, traductions publiées
+et schémas JSON-LD utilisent `src/lib/seo.js`, également utilisé par le client.
+Le contenu initial est transmis à React pour éviter un écran de chargement lors
+de l'ouverture directe d'un article. Les réponses sont compressées et les
+lectures CMS sont mises en cache pendant une minute, avec déduplication des
+requêtes simultanées. Une panne CMS donne une réponse temporaire 503, jamais
+un faux article ou un sitemap vide en cache.
+
+- `/sitemap.xml` : tous les contenus publiés, paginés dans les trois langues.
+- `/news-sitemap.xml` : articles des dernières 48 heures seulement.
+- `/robots.txt` : exploration publique autorisée, prévisualisations exclues.
+- Une URL absente retourne 404 ; les prévisualisations restent `noindex`.
+- `server/legacy-redirects.json` : correspondances exactes issues des champs
+  `source_url` et `slug` de `intextoarchives/content/index.json`, relevés le
+  12 novembre 2026. Les anciennes URL redirigent en 301 vers leur article
+  récupéré sur le site d'archives, sans redirection générale vers l'accueil.
+
+Validation : `npm run test:seo` (tests HTTP et rendu), puis `npm run build`.
+Après déploiement, soumettre les deux sitemaps dans Google Search Console et
+Bing Webmaster Tools, inspecter l'accueil et quelques articles, puis vérifier
+les motifs d'exclusion, les éventuelles actions manuelles et les demandes de
+suppression. Les corrections techniques permettent l'exploration ; elles ne
+garantissent ni un classement ni une citation dans les réponses IA.
+
 ## ✨ Caractéristiques
 
 ### 🚀 Technologies
