@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { motion as Motion } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
@@ -112,24 +111,10 @@ const HeroSection = ({ onContentClick }) => {
         >
           {/* Keep images mounted and loaded before their first transition. */}
           {articles.map((article, index) => (
-            <Motion.div
+            <div
               key={article.id}
-              initial={false}
-              animate={{ opacity: index === activeIndex ? 1 : 0 }}
-              transition={{
-                opacity: {
-                  // Keep the outgoing image opaque until the incoming fade ends.
-                  duration: index === activeIndex ? 1.2 : 0,
-                  delay: index === activeIndex ? 0 : 1.2,
-                  ease: [0.4, 0, 0.2, 1],
-                },
-              }}
-              style={{
-                zIndex: index === activeIndex ? 1 : 0,
-                pointerEvents: index === activeIndex ? "auto" : "none",
-              }}
               aria-hidden={index !== activeIndex}
-              className="hero-main-slide"
+              className={`hero-main-slide${index === activeIndex ? " is-active" : ""}`}
               onClick={() => onContentClick(article)}
             >
               <div className="hero-main-image-wrapper">
@@ -156,7 +141,7 @@ const HeroSection = ({ onContentClick }) => {
                 </span>
                 <h2 className="hero-main-title">{article.title}</h2>
               </div>
-            </Motion.div>
+            </div>
           ))}
 
           {/* Navigation */}
