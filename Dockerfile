@@ -31,6 +31,8 @@ RUN npm install --omit=dev --legacy-peer-deps
 # Copy built assets and server
 COPY --from=builder /app/dist ./dist
 COPY server.js ./
+COPY server ./server
+COPY src/lib/seo.js ./src/lib/seo.js
 
 # Start the app - Railway provides PORT env var
 CMD ["node", "server.js"]
