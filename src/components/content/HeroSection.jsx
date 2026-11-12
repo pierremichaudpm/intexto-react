@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
@@ -94,7 +94,7 @@ const HeroSection = ({ onContentClick }) => {
 
   if (articles.length === 0) return null;
 
-  const current = articles[currentIndex];
+  const activeIndex = currentIndex % articles.length;
 
   return (
     <section className="hero-section-new">
@@ -110,27 +110,37 @@ const HeroSection = ({ onContentClick }) => {
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          <AnimatePresence initial={false}>
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+          {/* Keep images mounted and loaded before their first transition. */}
+          {articles.map((article, index) => (
+            <Motion.div
+              key={article.id}
+              initial={false}
+              animate={{ opacity: index === activeIndex ? 1 : 0 }}
               transition={{
-                duration: 1.2,
-                ease: [0.4, 0, 0.2, 1],
+                opacity: {
+                  // Keep the outgoing image opaque until the incoming fade ends.
+                  duration: index === activeIndex ? 1.2 : 0,
+                  delay: index === activeIndex ? 0 : 1.2,
+                  ease: [0.4, 0, 0.2, 1],
+                },
               }}
+              style={{
+                zIndex: index === activeIndex ? 1 : 0,
+                pointerEvents: index === activeIndex ? "auto" : "none",
+              }}
+              aria-hidden={index !== activeIndex}
               className="hero-main-slide"
-              onClick={() => onContentClick(current)}
+              onClick={() => onContentClick(article)}
             >
               <div className="hero-main-image-wrapper">
                 <ResponsiveImage
-                  image={current.image}
-                  fallbackUrl={current.imageFallback}
-                  alt={current.title}
+                  image={article.image}
+                  fallbackUrl={article.imageFallback}
+                  alt={article.title}
                   className="hero-main-image"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 60vw"
-                  priority={currentIndex === 0}
+                  priority={index === 0}
+                  loading="eager"
                 />
                 <div className="hero-main-gradient" />
               </div>
@@ -139,15 +149,15 @@ const HeroSection = ({ onContentClick }) => {
                 <span
                   className="hero-main-category"
                   style={{
-                    backgroundColor: getCategoryColor(current.category),
+                    backgroundColor: getCategoryColor(article.category),
                   }}
                 >
-                  {getCategoryLabel(current.category, t)}
+                  {getCategoryLabel(article.category, t)}
                 </span>
-                <h2 className="hero-main-title">{current.title}</h2>
+                <h2 className="hero-main-title">{article.title}</h2>
               </div>
-            </motion.div>
-          </AnimatePresence>
+            </Motion.div>
+          ))}
 
           {/* Navigation */}
           <button
@@ -168,7 +178,7 @@ const HeroSection = ({ onContentClick }) => {
             {articles.map((_, index) => (
               <button
                 key={index}
-                className={`hero-dot ${index === currentIndex ? "active" : ""}`}
+                className={`hero-dot ${index === activeIndex ? "active" : ""}`}
                 onClick={() => setCurrentIndex(index)}
               />
             ))}
